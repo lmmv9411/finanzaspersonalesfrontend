@@ -58,7 +58,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useMovementStore } from '../stores/movementStore'
-import Swal from 'sweetalert2'
 
 const movementStore = useMovementStore()
 
