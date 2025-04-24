@@ -47,8 +47,6 @@ import { useMovementStore } from '../stores/movementStore'
 const movementStore = useMovementStore()
 
 // cargar movimientos al montar componente
-onMounted(() => {
-    movementStore.fetchMovements();
-})
+onMounted(() => movementStore.fetchMovements())
 
 </script>

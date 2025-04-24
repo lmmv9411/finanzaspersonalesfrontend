@@ -63,7 +63,7 @@ export const useMovementStore = defineStore('movement', () => {
             }
 
             const newMovement = await response.json()
-            movements.value.push(newMovement)
+            movements.value.unshift(newMovement)
             await fetchBalance()
         } catch (error) {
             console.error('Error al registrar movimiento', error)
