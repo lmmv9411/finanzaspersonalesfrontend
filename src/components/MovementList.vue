@@ -1,12 +1,12 @@
 <template>
 
-    <h2 class="mx-auto w-fit text-2xl font-semibold mt-4">Movimientos Registrados</h2>
+    <h2 class="mx-auto dark:text-white w-fit text-2xl font-semibold mt-4">Movimientos Registrados</h2>
 
     <div class="w-full max-w-3xl mx-auto p-4 overflow-x-auto">
 
-        <table class="w-full table-auto border-collapse whitespace-nowrap">
+        <table class="dark:text-white w-full table-auto border-collapse whitespace-nowrap">
             <thead>
-                <tr class="border-b border-gray-300">
+                <tr class="border-b dark:border-gray-300">
                     <th class="px-4 py-2">Tipo</th>
                     <th class="px-4 py-2">Monto</th>
                     <th class="px-4 py-2">Descripción</th>

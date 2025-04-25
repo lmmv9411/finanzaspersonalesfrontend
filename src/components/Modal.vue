@@ -4,7 +4,7 @@
          class="fixed inset-0 z-50 flex items-center justify-center bg-black/30"
          @click.self="close">
         <Transition name="slide-down">
-            <div v-show="isRendered" class="bg-white p-4 rounded-lg shadow-xl w-90">
+            <div v-show="isRendered" class="dark:bg-gray-900 p-4 rounded-lg shadow-xl w-90">
                 <slot></slot>
             </div>
         </Transition>

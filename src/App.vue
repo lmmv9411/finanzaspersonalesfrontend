@@ -2,10 +2,13 @@
 import AddMovementModal from './components/AddMovementModal.vue';
 import Balance from './components/Balance.vue';
 import MovementList from './components/MovementList.vue';
+import ToggleTheme from './components/ToggleTheme.vue';
+
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-100 p-6">
+  <div class="min-h-screen dark:bg-gray-900 p-6">
+    <ToggleTheme />
     <AddMovementModal />
     <Balance />
     <MovementList />
