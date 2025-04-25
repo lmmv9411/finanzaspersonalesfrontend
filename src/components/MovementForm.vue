@@ -1,6 +1,6 @@
 <template>
     <div
-         class=" mx-auto p-4 border border-gray-300 rounded-lg shadow-lg dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700">
+         class=" mx-auto p-4 border border-gray-300 rounded-lg shadow-lg bg-white dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700">
         <h2 class="text-2xl font-semibold mb-4" @click="toggle">Registrar Movimiento</h2>
 
         <form @submit.prevent="submitForm" class="flex flex-col gap-4 items-end" autocomplete="off">
@@ -41,7 +41,7 @@
                 <select
                         id="category"
                         v-model="movement.CategoryId"
-                        class="mt-1 p-2 border border-gray-300 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded w-full">
+                        class="mt-1 p-2 border border-gray-300 dark:bg-gray-900 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded w-full">
                     <option value="" disabled>Selecciona una categoría</option>
                     <option v-for="category in categories" :key="category.id" :value="category.id">
                         {{ category.name }}
