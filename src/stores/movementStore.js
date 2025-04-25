@@ -1,7 +1,7 @@
 // src/stores/movementStore.js
 import { defineStore } from 'pinia'
 import Swal from 'sweetalert2'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 const api = 'http://192.168.1.45:3000/api'
 
@@ -13,10 +13,17 @@ export const useMovementStore = defineStore('movement', () => {
         balance: 0
     })
 
+    const startDate = ref(new Date())
+    const endDate = ref(new Date())
+
+
     const fetchMovements = async () => {
         try {
-            const response = await fetch(`${api}/movements`)
+            const sd = startDate.value.toISOString().split('T')[0] + 'T00:00:00.000Z'
+            const ed = endDate.value.toISOString().split('T')[0] + 'T23:59:59.999Z'
+            const response = await fetch(`${api}/movements/date?startDate=${sd}&endDate=${ed}`)
             movements.value = await response.json()
+            fetchBalance()
         } catch (error) {
             console.error('Error al cargar movimientos', error)
         }
@@ -81,17 +88,9 @@ export const useMovementStore = defineStore('movement', () => {
 
     const fetchBalance = async () => {
         try {
-            const d = new Date();
-            const startDate = new Date(d.getFullYear(), d.getMonth(), 1, 0, 0, 0, 0);
-
-            const endDate = new Date(d.getFullYear(), d.getMonth() + 1, 0, 23, 59, 59, 999);
-
-            endDate.setMinutes(endDate.getMinutes() - endDate.getTimezoneOffset());
-
-            console.log(startDate.toISOString(), endDate.toISOString());
-
-            const res = await fetch(`${api}/movements/balance?startDate=${startDate}&endDate=${endDate}`)
-
+            const sd = startDate.value.toISOString().split('T')[0] + 'T00:00:00.000Z'
+            const ed = endDate.value.toISOString().split('T')[0] + 'T23:59:59.999Z'
+            const res = await fetch(`${api}/movements/balance?startDate=${sd}&endDate=${ed}`)
             const data = await res.json()
             balance.value = data
         } catch (error) {
@@ -99,5 +98,15 @@ export const useMovementStore = defineStore('movement', () => {
         }
     }
 
-    return { movements, balance, fetchBalance, fetchMovements, addMovement }
+    onMounted(() => {
+        const d = new Date();
+
+        startDate.value = new Date(d.getFullYear(), d.getMonth(), 1, 0, 0, 0, 0);
+
+        endDate.value = new Date(d.getFullYear(), d.getMonth() + 1, 0, 23, 59, 59, 999);
+
+        endDate.value.setMinutes(endDate.value.getMinutes() - endDate.value.getTimezoneOffset());
+    })
+
+    return { movements, balance, fetchBalance, fetchMovements, addMovement, startDate, endDate }
 })
