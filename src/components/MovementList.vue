@@ -2,7 +2,7 @@
 
     <h2 class="mx-auto dark:text-white w-fit text-2xl font-semibold mt-4">Movimientos Registrados</h2>
 
-    <div class="w-full max-w-3xl mx-auto p-4 overflow-x-auto">
+    <div class="w-full max-w-4xl mx-auto p-4 overflow-x-auto">
 
         <table class="dark:text-white w-full table-auto border-collapse whitespace-nowrap">
             <thead>

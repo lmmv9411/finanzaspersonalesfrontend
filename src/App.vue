@@ -7,7 +7,7 @@ import ToggleTheme from './components/ToggleTheme.vue';
 </script>
 
 <template>
-  <div class="min-h-screen dark:bg-gray-900 p-6">
+  <div class="min-h-screen dark:bg-gray-900 p-6 flex flex-col sm:items-center">
     <ToggleTheme />
     <AddMovementModal />
     <Balance />

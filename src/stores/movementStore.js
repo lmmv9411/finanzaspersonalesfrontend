@@ -81,7 +81,17 @@ export const useMovementStore = defineStore('movement', () => {
 
     const fetchBalance = async () => {
         try {
-            const res = await fetch(`${api}/movements/balance`)
+            const d = new Date();
+            const startDate = new Date(d.getFullYear(), d.getMonth(), 1, 0, 0, 0, 0);
+
+            const endDate = new Date(d.getFullYear(), d.getMonth() + 1, 0, 23, 59, 59, 999);
+
+            endDate.setMinutes(endDate.getMinutes() - endDate.getTimezoneOffset());
+
+            console.log(startDate.toISOString(), endDate.toISOString());
+
+            const res = await fetch(`${api}/movements/balance?startDate=${startDate}&endDate=${endDate}`)
+
             const data = await res.json()
             balance.value = data
         } catch (error) {

@@ -10,7 +10,7 @@
                 <select
                         id="type"
                         v-model="movement.type"
-                        class="mt-1 p-2 border border-gray-300 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded w-full">
+                        class="mt-1 p-2 w-full border border-gray-300 dark:bg-gray-900 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded">
                     <option value="ingreso">Ingreso</option>
                     <option value="gasto">Gasto</option>
                 </select>
