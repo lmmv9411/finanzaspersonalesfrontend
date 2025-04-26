@@ -1,7 +1,7 @@
 <template>
     <aside
            :class="[
-            'fixed md:static top-0 left-0 w-64 h-full dark:bg-gray-950 bg-white transform transition-transform duration-300 z-50 shadow-xl bg-gray-200',
+            'fixed md:static top-0 left-0 w-64 h-full dark:bg-gray-900 bg-white transform transition-transform duration-300 z-50 shadow-xl bg-gray-200',
             isOpen ? 'translate-x-0' : '-translate-x-full',
             'md:translate-x-0'
         ]">
@@ -46,7 +46,7 @@ const router = useRouter();
 watch(
     () => router.currentRoute.value,
     () => {
-        emits('toggleSidebar', false);
+        emits('toggleSidebar');
     }
 );
 

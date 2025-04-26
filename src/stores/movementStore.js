@@ -17,13 +17,15 @@ export const useMovementStore = defineStore('movement', () => {
     const endDate = ref(new Date())
 
 
-    const fetchMovements = async () => {
+    const fetchMovements = async (init) => {
         try {
             const sd = startDate.value.toISOString().split('T')[0] + 'T00:00:00.000Z'
             const ed = endDate.value.toISOString().split('T')[0] + 'T23:59:59.999Z'
             const response = await fetch(`${api}/movements/date?startDate=${sd}&endDate=${ed}`)
             movements.value = await response.json()
-            fetchBalance()
+            if (!init) {
+                fetchBalance()
+            }
         } catch (error) {
             console.error('Error al cargar movimientos', error)
         }

@@ -6,7 +6,7 @@ import MovementList from '../components/MovementList.vue';
 </script>
 
 <template>
-    <div class="min-h-screen dark:bg-gray-900 p-6 flex flex-col sm:items-center">
+    <div class="min-h-screen dark:bg-gray-900 p-2 flex flex-col sm:items-center">
         <AddMovementModal />
         <Balance />
         <MovementList />

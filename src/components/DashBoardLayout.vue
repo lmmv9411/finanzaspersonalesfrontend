@@ -4,7 +4,7 @@
 
         <div class="flex flex-1 overflow-hidden dark:bg-gray-900">
 
-            <SideBar :isOpen="isSidebarOpen" @toggleSidebar="(isOpen) => isSidebarOpen = isOpen" />
+            <SideBar :isOpen="isSidebarOpen" @toggleSidebar="isSidebarOpen = false" />
 
             <main class="overflow-y-auto flex-1">
                 <RouterView />
@@ -22,9 +22,9 @@
 
 <script setup>
 import { ref } from 'vue'
-
 import { RouterView } from 'vue-router'
 import NavBar from './NavBar.vue';
 import SideBar from './SideBar.vue';
+
 const isSidebarOpen = ref(false)
 </script>

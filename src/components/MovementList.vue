@@ -83,7 +83,7 @@ const dateFormatEnd = computed({
 })
 
 // cargar movimientos al montar componente
-onMounted(() => movementStore.fetchMovements())
+onMounted(() => movementStore.fetchMovements(true))
 
 const submit = () => movementStore.fetchMovements()
 
