@@ -10,7 +10,7 @@
                 <select
                         id="type"
                         v-model="movement.type"
-                        class="mt-1 p-2 w-full border border-gray-300 dark:bg-gray-900 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded">
+                        class="p-2 w-full border border-gray-300 dark:bg-gray-900 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded">
                     <option value="ingreso">Ingreso</option>
                     <option value="gasto">Gasto</option>
                 </select>
@@ -23,7 +23,7 @@
                        id="amount"
                        v-model="valor"
                        @input="formatearComoMoneda"
-                       class="mt-1 p-2 border border-gray-300 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded w-full"
+                       class="p-2 border border-gray-300 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded w-full"
                        required />
             </div>
 
@@ -33,7 +33,7 @@
                        type="text"
                        id="description"
                        v-model="movement.description"
-                       class="mt-1 p-2 border border-gray-300 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded w-full" />
+                       class="p-2 border border-gray-300 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded w-full" />
             </div>
 
             <div class="w-full">
@@ -41,7 +41,7 @@
                 <select
                         id="category"
                         v-model="movement.CategoryId"
-                        class="mt-1 p-2 border border-gray-300 dark:bg-gray-900 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded w-full">
+                        class="p-2 border border-gray-300 dark:bg-gray-900 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded w-full">
                     <option value="" disabled>Selecciona una categoría</option>
                     <option v-for="category in categories" :key="category.id" :value="category.id">
                         {{ category.name }}

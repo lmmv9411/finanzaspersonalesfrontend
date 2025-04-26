@@ -3,11 +3,13 @@
         <NavBar @toggleSidebar="isSidebarOpen = true" />
 
         <div class="flex flex-1 overflow-hidden dark:bg-gray-900">
-            <SideBar :isOpen="isSidebarOpen" />
+
+            <SideBar :isOpen="isSidebarOpen" @toggleSidebar="(isOpen) => isSidebarOpen = isOpen" />
 
             <main class="overflow-y-auto flex-1">
                 <RouterView />
             </main>
+
         </div>
 
         <!-- Fondo oscuro para móviles -->
