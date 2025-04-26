@@ -1,18 +1,7 @@
 <script setup>
-import AddMovementModal from './components/AddMovementModal.vue';
-import Balance from './components/Balance.vue';
-import Menu from './components/Menu.vue';
-import MovementList from './components/MovementList.vue';
-import ToggleTheme from './components/ToggleTheme.vue';
-
+import DashBoardLayout from './components/DashBoardLayout.vue';
 </script>
 
 <template>
-  <div class="min-h-screen dark:bg-gray-900 p-6 flex flex-col sm:items-center">
-    <Menu />
-    <ToggleTheme />
-    <AddMovementModal />
-    <Balance />
-    <MovementList />
-  </div>
+  <DashBoardLayout />
 </template>
