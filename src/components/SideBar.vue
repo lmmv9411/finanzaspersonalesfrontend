@@ -5,9 +5,9 @@
             isOpen ? 'translate-x-0' : '-translate-x-full',
             'md:translate-x-0'
         ]">
-        <div class="p-2">
+        <div class="p-2 h-full flex flex-col">
             <h2 class="text-lg font-bold mb-6 dark:text-gray-100">Menú</h2>
-            <nav class="flex flex-col justify-between gap-2">
+            <nav class="flex flex-col flex-1 justify-between gap-2">
                 <div class="flex flex-col gap-2">
                     <RouterLink
                                 v-for="item in menu"

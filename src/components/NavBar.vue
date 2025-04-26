@@ -1,5 +1,5 @@
 <template>
-    <header class="flex items-center justify-between bg-gray-800 text-white p-2 shadow-xl">
+    <header class="flex items-center justify-between bg-slate-800 text-white p-2 shadow-xl">
         <div class="text-xl font-bold">Mis Finanzas</div>
         <button
                 @click="$emit('toggleSidebar')"

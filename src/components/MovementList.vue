@@ -2,7 +2,7 @@
 
     <h2 class="mx-auto dark:text-white w-fit text-2xl font-semibold mt-4">Movimientos Registrados</h2>
 
-    <form @submit.prevent="submit" class="flex gap-2 dark:text-gray-300 items-start flex-col sm:flex-row sm:items-end">
+    <form @submit.prevent="submit" class="shadow-md p-2 rounded dark:bg-gray-800 bg-slate-100 flex gap-2 dark:text-gray-300 items-start flex-col sm:flex-row sm:items-end">
 
         <div class="w-full">
             <label for="startDate" class="block text-gray-700 dark:text-gray-300">Fecha Inicio</label>
