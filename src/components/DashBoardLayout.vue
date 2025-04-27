@@ -1,5 +1,6 @@
 <template>
     <div class="flex flex-row h-screen">
+        
         <SideBar :isOpen="isSidebarOpen" @toggleSidebar="isSidebarOpen = false" />
 
         <div class="flex flex-col flex-1 overflow-hidden dark:bg-gray-900">
