@@ -2,6 +2,7 @@
 import { defineStore } from 'pinia'
 import Swal from 'sweetalert2'
 import { onMounted, ref } from 'vue'
+import axios from 'axios'
 
 const api = 'http://192.168.1.45:3000/api'
 
@@ -15,17 +16,16 @@ export const useMovementStore = defineStore('movement', () => {
 
     const startDate = ref(new Date())
     const endDate = ref(new Date())
+    let sd, ed;
 
 
     const fetchMovements = async (init) => {
+
         try {
-            const sd = startDate.value.toISOString().split('T')[0] + 'T00:00:00.000Z'
-            const ed = endDate.value.toISOString().split('T')[0] + 'T23:59:59.999Z'
-            const response = await fetch(`${api}/movements/date?startDate=${sd}&endDate=${ed}`)
-            movements.value = await response.json()
-            if (!init) {
-                fetchBalance()
-            }
+            const resp = await axios.get(`${api}/movements/date?startDate=${sd}&endDate=${ed}`);
+            movements.value = resp.data
+            init ?? fetchBalance();
+
         } catch (error) {
             console.error('Error al cargar movimientos', error)
         }
@@ -42,36 +42,20 @@ export const useMovementStore = defineStore('movement', () => {
         })
 
         try {
-            const response = await fetch(`${api}/movements`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(movement)
-            })
 
-            if (!response.ok) {
-                Swal.fire({
-                    title: "Error al registrar movimiento",
-                    icon: "error",
-                    toast: true,
-                    position: "top",
-                    timer: 3000,
-                    showConfirmButton: false,
-                    timerProgressBar: true,
-                });
-                throw new Error('Error al registrar el movimiento')
-            } else {
-                Swal.fire({
-                    title: "Movimiento registrado",
-                    icon: "success",
-                    toast: true,
-                    position: "top",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                });
-            }
+            const resp = await axios.post(`${api}/movements`, movement)
 
-            const newMovement = await response.json()
+            Swal.fire({
+                title: "Movimiento registrado",
+                icon: "success",
+                toast: true,
+                position: "top",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+            });
+
+            const newMovement = resp.data
             movements.value.unshift(newMovement)
             await fetchBalance()
         } catch (error) {
@@ -89,14 +73,21 @@ export const useMovementStore = defineStore('movement', () => {
     }
 
     const fetchBalance = async () => {
+
         try {
-            const sd = startDate.value.toISOString().split('T')[0] + 'T00:00:00.000Z'
-            const ed = endDate.value.toISOString().split('T')[0] + 'T23:59:59.999Z'
-            const res = await fetch(`${api}/movements/balance?startDate=${sd}&endDate=${ed}`)
-            const data = await res.json()
-            balance.value = data
+            const resp = await axios.get(`${api}/movements/balance?startDate=${sd}&endDate=${ed}`)
+            balance.value = resp.data
         } catch (error) {
             console.error('Error al obtener el balance:', error)
+            Swal.fire({
+                title: "Error al obtener balance",
+                icon: "error",
+                toast: true,
+                position: "top",
+                timer: 3000,
+                showConfirmButton: false,
+                timerProgressBar: true,
+            });
         }
     }
 
@@ -108,6 +99,9 @@ export const useMovementStore = defineStore('movement', () => {
         endDate.value = new Date(d.getFullYear(), d.getMonth() + 1, 0, 23, 59, 59, 999);
 
         endDate.value.setMinutes(endDate.value.getMinutes() - endDate.value.getTimezoneOffset());
+
+        sd = startDate.value.toISOString().split('T')[0] + 'T00:00:00.000Z'
+        ed = endDate.value.toISOString().split('T')[0] + 'T23:59:59.999Z'
     })
 
     return { movements, balance, fetchBalance, fetchMovements, addMovement, startDate, endDate }

@@ -27,7 +27,7 @@
 
         <table class="dark:text-white w-full table-auto border-collapse whitespace-nowrap">
             <thead>
-                <tr class="border-b dark:border-gray-300">
+                <tr class="border-b border-gray-400">
                     <th class="px-4 py-2">Tipo</th>
                     <th class="px-4 py-2">Monto</th>
                     <th class="px-4 py-2">Descripción</th>
