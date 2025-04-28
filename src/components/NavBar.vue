@@ -2,14 +2,16 @@
     <header class="flex items-center justify-between bg-slate-800 text-white p-2 shadow-xl">
         <div class="text-xl font-bold">Mis Finanzas</div>
 
-        <button class="hamburger hamburger--spin"
-                :class="{ 'is-active': isActive }"
-                @click="toggleSidebar"
-                type="button">
-            <span class="hamburger-box">
-                <span class="hamburger-inner"></span>
-            </span>
-        </button>
+        <div class="md:hidden bg-slate-700 rounded-lg">
+            <button class="hamburger hamburger--spin"
+                    :class="{ 'is-active': isActive }"
+                    @click="toggleSidebar"
+                    type="button">
+                <span class="hamburger-box">
+                    <span class="hamburger-inner"></span>
+                </span>
+            </button>
+        </div>
     </header>
 </template>
 
