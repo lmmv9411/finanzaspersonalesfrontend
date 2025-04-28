@@ -30,8 +30,8 @@
 </template>
 
 <script setup>
+import { AdjustmentsVerticalIcon, ChartBarIcon, HomeIcon, TagIcon } from '@heroicons/vue/24/solid';
 import ToggleTheme from './ToggleTheme.vue';
-import { HomeIcon, ChartBarIcon, AdjustmentsVerticalIcon, ChartPieIcon } from '@heroicons/vue/24/solid';
 
 const props = defineProps({
     isOpen: Boolean
@@ -42,7 +42,7 @@ const emits = defineEmits(['toggleSidebar']);
 const menu = [
     { name: 'Inicio', to: '/', icon: HomeIcon },
     { name: 'Movimientos', to: '/movements', icon: ChartBarIcon },
-    { name: 'Reportes', to: '/reports', icon: ChartPieIcon },
+    { name: 'Categorias', to: '/categories', icon: TagIcon },
     { name: 'Configuraciones', to: '/configs', icon: AdjustmentsVerticalIcon },
 ];
 

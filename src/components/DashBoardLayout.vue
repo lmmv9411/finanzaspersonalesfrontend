@@ -1,13 +1,13 @@
 <template>
     <div class="flex flex-row h-screen">
-        
+
         <SideBar :isOpen="isSidebarOpen" @toggleSidebar="isSidebarOpen = false" />
 
         <div class="flex flex-col flex-1 overflow-hidden dark:bg-gray-900">
 
-            <NavBar @toggleSidebar="isSidebarOpen = true" />
+            <NavBar :isOpen="isSidebarOpen" @toggleSidebar="isSidebarOpen = true" />
 
-            <main class="overflow-y-auto flex-1">
+            <main class="overflow-y-auto flex-1 p-2">
                 <RouterView />
             </main>
 
