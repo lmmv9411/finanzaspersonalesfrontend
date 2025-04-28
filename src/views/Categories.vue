@@ -11,12 +11,11 @@
                    type="text"
                    placeholder="Nombre de categoria"
                    class="p-2 border border-gray-300 dark:bg-gray-900 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded" />
-            <input
-                   v-model="description"
-                   type="text"
-                   placeholder="Descripción de categoria"
-                   class="p-2 border border-gray-300 dark:bg-gray-900 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded" />
-            <button class="bg-blue-500 text-white rounded p-2 cursor-pointer">Crear Categoria</button>
+
+            <button
+                    class="bg-blue-500 text-white rounded p-2 cursor-pointer">
+                {{ isUpdate ? 'Actualizar' : 'Crear' }}
+            </button>
         </form>
 
         <table class="dark:text-white w-fit table-auto border-collapse whitespace-nowrap m-auto">
@@ -32,11 +31,10 @@
                 <tr v-for="categorie in categories" class="border-b text-center" :key="categorie.id">
                     <td class="px-4 py-2">{{ categorie.id }}</td>
                     <td class="px-4 py-2">{{ categorie.name }}</td>
-                    <td class="px-4 py-2"> {{ categorie.description }}</td>
                     <td class="px-4 py-2 flex gap-2">
                         <button @click="deleteCategory(categorie.id)"
                                 class="bg-red-500 text-white rounded p-2 cursor-pointer">Eliminar</button>
-                        <button @click="updateCategory(categorie.id)"
+                        <button @click="onUpdateCategory(categorie.id)"
                                 class="bg-blue-500 text-white rounded p-2 cursor-pointer">Editar</button>
                     </td>
                 </tr>
@@ -50,6 +48,6 @@
 import { useCategories } from '../composables/categories';
 
 
-const { categories, name, description, createCategory, deleteCategory, updateCategory } = useCategories();
+const { categories, name, createCategory, deleteCategory, updateCategory, onUpdateCategory, isUpdate } = useCategories();
 
 </script>

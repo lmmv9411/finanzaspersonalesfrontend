@@ -5,8 +5,9 @@ const api = 'http://localhost:3000/api/categories';
 
 export function useCategories() {
     const name = ref('');
-    const description = ref('');
     const categories = ref([]);
+    const isUpdate = ref(false);
+    let idUpdate = null;
 
     const getCategories = async () => {
         try {
@@ -18,15 +19,19 @@ export function useCategories() {
     }
 
     const createCategory = async () => {
+
+        if (isUpdate.value) {
+            updateCategory(idUpdate)
+            return
+        }
+
         try {
             const response = await axios.post(api, {
-                name: name.value,
-                description: description.value
+                name: name.value
             });
             console.log('Category created:', response.data);
             // Optionally, you can reset the form fields after successful creation
             name.value = '';
-            description.value = '';
             getCategories()
         } catch (error) {
             console.error('Error creating category:', error);
@@ -43,14 +48,29 @@ export function useCategories() {
         }
     };
 
+    const onUpdateCategory = (categoryId) => {
+
+        const idx = categories.value.findIndex(categorie => categorie.id === categoryId);
+
+        if (idx === -1) return
+
+        name.value = categories.value[idx].name;
+        categories.value.splice(idx, 1);
+        isUpdate.value = true;
+        idUpdate = categoryId;
+
+    }
+
     const updateCategory = async (categoryId) => {
         try {
             const response = await axios.put(`${api}/${categoryId}`, {
-                name: name.value,
-                description: description.value
+                name: name.value
             });
             console.log('Category updated:', response.data);
             getCategories()
+            isUpdate.value = false;
+            idUpdate = null;
+            name.value = '';
         } catch (error) {
             console.error('Error updating category:', error);
         }
@@ -58,6 +78,6 @@ export function useCategories() {
 
     onMounted(async () => getCategories());
 
-    return { name, description, categories, createCategory, deleteCategory, updateCategory };
+    return { name, categories, createCategory, deleteCategory, updateCategory, onUpdateCategory, isUpdate, getCategories };
 
 }
