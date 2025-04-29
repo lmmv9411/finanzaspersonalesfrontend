@@ -1,7 +1,7 @@
 import axios from "axios";
 import { onMounted, ref } from "vue";
 
-const api = 'http://localhost:3000/api/categories';
+const api = 'http://192.168.1.45:3000/api/categories';
 
 export function useCategories() {
     const name = ref('');

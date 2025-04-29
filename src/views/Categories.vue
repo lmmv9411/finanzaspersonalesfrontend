@@ -18,12 +18,11 @@
             </button>
         </form>
 
-        <table class="dark:text-white w-fit table-auto border-collapse whitespace-nowrap m-auto">
+        <table class="dark:text-white w-fit table-auto border-collapse whitespace-nowrap m-auto overflow-auto">
             <thead>
                 <tr class="border-b border-gray-400">
                     <th>Id</th>
                     <th>Nombre</th>
-                    <th>Descripción</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
