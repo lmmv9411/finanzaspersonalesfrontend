@@ -13,10 +13,12 @@
     "@tailwindcss/postcss": "^4.1.4",
     "@tailwindcss/vite": "^4.1.4",
     "axios": "^1.9.0",
+    "chart.js": "^4.4.9",
     "hamburgers": "^1.2.1",
     "pinia": "^3.0.2",
     "sweetalert2": "^11.19.1",
     "vue": "^3.5.13",
+    "vue-chartjs": "^5.3.2",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
