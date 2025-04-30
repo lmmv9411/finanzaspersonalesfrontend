@@ -1,49 +1,65 @@
 <template>
-    <div class="w-full max-w-3xl mx-auto">
-        <Bar
-             id="my-chart-id"
-             :data="chartData"
-             :options="chartOptions" />
+    <div class="w-full max-w-md mx-auto dark:bg-slate-800 bg-slate-100 rounded shadow-2xl p-4">
+        <h4 class="text-xl font-semibold dark:text-gray-300">Total Por Categoria</h4>
+        <Pie v-if="hasData" :data="chartData" :options="chartOptions" />
     </div>
 </template>
 
 <script setup>
-import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from 'chart.js'
-import { ref } from 'vue'
-import { Bar } from 'vue-chartjs'
+import { ArcElement, Chart as ChartJS, Legend, Title, Tooltip } from 'chart.js'
+import { computed, onMounted, ref } from 'vue'
+import { Pie } from 'vue-chartjs'
+import ChartDataLabels from 'chartjs-plugin-datalabels'
+import { API_BASE_URL } from '../constants'
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+ChartJS.register(Title, Tooltip, Legend, ArcElement, ChartDataLabels)
 
 const chartData = ref({
-    labels: ['Enero', 'Febrero', 'Marzo', 'Abril'],
-    datasets: [
-        {
-            label: 'Ingresos',
-            data: [4000, 20000, 12000, 5000],
-            backgroundColor: 'rgba(34, 197, 94, 0.6)'
-        },
-        {
-            label: 'Gastos',
-            data: [9000, 11000, 7000, 13000, 20000],
-            backgroundColor: 'rgba(239, 68, 68, 0.6)',
-        }
-    ]
+    labels: [],
+    datasets: [{
+        label: 'total',
+        data: [],
+        backgroundColor: [
+            '#60a5fa', '#f87171', '#34d399', '#fbbf24',
+            '#a78bfa', '#fb7185', '#facc15', '#38bdf8'
+        ]
+    }]
 })
 
 const chartOptions = {
     responsive: true,
     plugins: {
         legend: {
-            position: 'top'
+            position: 'top',
         },
-        title: {
-            display: true,
-            text: 'Ingresos y Gastos Por Mes',
+        datalabels: {
+            formatter: (value, context) => {
+                const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0)
+                const percentage = ((value / total) * 100).toFixed(1)
+                return `${percentage}%`
+            },
+            color: '#fff',
             font: {
-                size: 20
+                size: 16,
+                weight: 'bold'
             }
         }
     }
 }
+
+onMounted(async () => {
+    try {
+        const res = await fetch(`${API_BASE_URL}/stats/totalByCategory?startDate=2025-04-23&endDate=2025-05-25`)
+        const data = await res.json()
+        chartData.value.labels = data.map(d => d.Category.name)
+        chartData.value.datasets[0].data = data.map(d => Number(d.total))
+    } catch (e) {
+        console.error('Error al cargar datos del gráfico:', e)
+    }
+})
+
+const hasData = computed(() => {
+    return chartData.value.datasets[0].data.length > 0
+})
 
 </script>

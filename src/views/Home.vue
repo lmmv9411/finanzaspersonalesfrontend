@@ -6,7 +6,7 @@ import HomeGraphics from '../components/HomeGraphics.vue';
 </script>
 
 <template>
-    <div class="min-h-screen dark:bg-gray-900 p-2 flex flex-col gap-4 sm:items-center">
+    <div class="min-h-screen dark:bg-gray-900 p-2 flex flex-col sm:flex-row sm:items-start gap-4 sm:items-center">
         <AddMovementModal />
         <Balance />
         <HomeGraphics />

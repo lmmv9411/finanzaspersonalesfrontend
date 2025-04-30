@@ -1,7 +1,6 @@
 import axios from "axios";
 import { onMounted, ref } from "vue";
-
-const api = 'http://192.168.1.45:3000/api/categories';
+import { API_BASE_URL } from "../constants/index";
 
 export function useCategories() {
     const name = ref('');
@@ -11,7 +10,7 @@ export function useCategories() {
 
     const getCategories = async () => {
         try {
-            const response = await axios.get(api);
+            const response = await axios.get(`${API_BASE_URL}/categories`);
             categories.value = response.data;
         } catch (error) {
             console.error('Error fetching categories:', error);
@@ -26,7 +25,7 @@ export function useCategories() {
         }
 
         try {
-            const response = await axios.post(api, {
+            const response = await axios.post(`${API_BASE_URL}/categories`, {
                 name: name.value
             });
             console.log('Category created:', response.data);
@@ -40,7 +39,7 @@ export function useCategories() {
 
     const deleteCategory = async (categoryId) => {
         try {
-            const response = await axios.delete(`${api}/${categoryId}`);
+            const response = await axios.delete(`${API_BASE_URL}/categories/${categoryId}`);
             console.log('Category deleted:', response.data);
             getCategories()
         } catch (error) {
@@ -63,7 +62,7 @@ export function useCategories() {
 
     const updateCategory = async (categoryId) => {
         try {
-            const response = await axios.put(`${api}/${categoryId}`, {
+            const response = await axios.put(`${API_BASE_URL}/categories/${categoryId}`, {
                 name: name.value
             });
             console.log('Category updated:', response.data);

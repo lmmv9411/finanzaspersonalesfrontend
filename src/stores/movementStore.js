@@ -1,10 +1,9 @@
 // src/stores/movementStore.js
+import axios from 'axios'
 import { defineStore } from 'pinia'
 import Swal from 'sweetalert2'
 import { onMounted, ref } from 'vue'
-import axios from 'axios'
-
-const api = 'http://192.168.1.45:3000/api'
+import { API_BASE_URL } from '../constants'
 
 export const useMovementStore = defineStore('movement', () => {
     const movements = ref([])
@@ -22,7 +21,7 @@ export const useMovementStore = defineStore('movement', () => {
     const fetchMovements = async (init) => {
 
         try {
-            const resp = await axios.get(`${api}/movements/date?startDate=${sd}&endDate=${ed}`);
+            const resp = await axios.get(`${API_BASE_URL}/movements/date?startDate=${sd}&endDate=${ed}`);
             movements.value = resp.data
             init ?? fetchBalance();
 
@@ -43,7 +42,7 @@ export const useMovementStore = defineStore('movement', () => {
 
         try {
 
-            const resp = await axios.post(`${api}/movements`, movement)
+            const resp = await axios.post(`${API_BASE_URL}/movements`, movement)
 
             Swal.fire({
                 title: "Movimiento registrado",
@@ -75,7 +74,7 @@ export const useMovementStore = defineStore('movement', () => {
     const fetchBalance = async () => {
 
         try {
-            const resp = await axios.get(`${api}/movements/balance?startDate=${sd}&endDate=${ed}`)
+            const resp = await axios.get(`${API_BASE_URL}/movements/balance?startDate=${sd}&endDate=${ed}`)
             balance.value = resp.data
         } catch (error) {
             console.error('Error al obtener el balance:', error)
