@@ -2,7 +2,7 @@
     <div
          class="mx-auto p-4 border border-gray-300 rounded-lg shadow-lg bg-slate-100  dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700">
 
-        <h2 class="text-2xl font-semibold mb-4" @click="toggle">Registrar Movimiento</h2>
+        <h2 class="text-2xl font-semibold mb-4">Registrar Movimiento</h2>
 
         <form @submit.prevent="submitForm" class="flex flex-col gap-4 items-end" autocomplete="off">
 
@@ -58,12 +58,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useMovementStore } from '../stores/movementStore'
 
-const movementStore = useMovementStore()
+const { categories, addMovement } = useMovementStore()
 
-// movimiento vacío
 const movement = ref({
     type: 'ingreso',
     amount: '',
@@ -71,28 +70,13 @@ const movement = ref({
     CategoryId: ''
 })
 
-// categorías disponibles
-const categories = ref([])
-
-// enviar movimiento
 const submitForm = async () => {
 
     movement.value.amount = valor.value.replace(/\D/g, ''); // Limpiar el valor antes de enviarlo
 
-    await movementStore.addMovement(movement.value)
+    await addMovement(movement.value)
     resetForm()
 
-}
-
-// obtener categorías
-const fetchCategories = async () => {
-    try {
-        const response = await fetch('http://192.168.1.45:3000/api/categories')
-        const data = await response.json()
-        categories.value = data
-    } catch (error) {
-        console.error('Error al cargar categorías')
-    }
 }
 
 // reiniciar formulario
@@ -104,11 +88,6 @@ const resetForm = () => {
         categoryId: ''
     }
 }
-
-// cargar categorías al montar componente
-onMounted(() => {
-    fetchCategories()
-})
 
 const valor = ref('');
 

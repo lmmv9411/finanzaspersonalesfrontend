@@ -47,6 +47,6 @@
 import { useCategories } from '../composables/categories';
 
 
-const { categories, name, createCategory, deleteCategory, updateCategory, onUpdateCategory, isUpdate } = useCategories();
+const { categories, name, createCategory, deleteCategory, onUpdateCategory, isUpdate } = useCategories();
 
 </script>

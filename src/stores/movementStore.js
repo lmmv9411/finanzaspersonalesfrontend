@@ -15,6 +15,7 @@ export const useMovementStore = defineStore('movement', () => {
 
     const startDate = ref(new Date())
     const endDate = ref(new Date())
+    const categories = ref([])
     let sd, ed;
 
 
@@ -90,7 +91,17 @@ export const useMovementStore = defineStore('movement', () => {
         }
     }
 
-    onMounted(() => {
+    const fetchCategories = async () => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/categories`)
+            const data = await response.json()
+            categories.value = data
+        } catch (error) {
+            console.error('Error al cargar categorías')
+        }
+    }
+
+    onMounted(async () => {
         const d = new Date();
 
         startDate.value = new Date(d.getFullYear(), d.getMonth(), 1, 0, 0, 0, 0);
@@ -101,7 +112,9 @@ export const useMovementStore = defineStore('movement', () => {
 
         sd = startDate.value.toISOString().split('T')[0] + 'T00:00:00.000Z'
         ed = endDate.value.toISOString().split('T')[0] + 'T23:59:59.999Z'
+
+        await fetchCategories();
     })
 
-    return { movements, balance, fetchBalance, fetchMovements, addMovement, startDate, endDate }
+    return { movements, balance, fetchBalance, fetchMovements, addMovement, startDate, endDate, fetchCategories, categories }
 })
