@@ -72,7 +72,7 @@ export const useMovementStore = defineStore('movement', () => {
         }
     }
 
-    const fetchBalance = async () => {
+    const fetchBalance = async (sd, ed) => {
 
         try {
             const resp = await axios.get(`${API_BASE_URL}/movements/balance?startDate=${sd}&endDate=${ed}`)
