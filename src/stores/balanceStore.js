@@ -2,26 +2,19 @@ import axios from "axios"
 import { defineStore } from "pinia"
 import { ref } from "vue"
 import { API_BASE_URL } from "../constants"
-import { useMovementStore } from "./movementStore"
+import { useGraphStore } from "./graphStore"
 
 export const useBalanceStore = defineStore("balance", () => {
 
-    const movementStore = useMovementStore()
-
     const startDate = ref('')
     const endDate = ref('')
-
-    const chartData = ref({
-        labels: [],
-        datasets: [{
-            label: 'total',
-            data: [],
-            backgroundColor: [
-                '#60a5fa', '#f87171', '#34d399', '#fbbf24',
-                '#a78bfa', '#fb7185', '#facc15', '#38bdf8'
-            ]
-        }]
+    const balance = ref({
+        totalIngreso: 0,
+        totalGasto: 0,
+        balance: 0
     })
+
+    const graphStore = useGraphStore()
 
     const getCurrentMonth = function () {
         const now = new Date()
@@ -36,10 +29,12 @@ export const useBalanceStore = defineStore("balance", () => {
 
     const pick = () => {
         const [year, month] = selectedMonth.value.split('-');
+
         startDate.value = `${year}-${month}-01 00:00:00`;
         endDate.value = new Date(year, month, 0).toISOString().split('T')[0] + ' 23:59:59';
-        movementStore.fetchBalance(startDate.value, endDate.value)
-        getTotalByCategory(chartData);
+
+        fetchBalance()
+        graphStore.getTotalByCategory(startDate.value, endDate.value)
     }
 
     const formatCurrency = (value) => {
@@ -50,15 +45,22 @@ export const useBalanceStore = defineStore("balance", () => {
         }).format(value)
     }
 
-    const getTotalByCategory = async () => {
+    const fetchBalance = async () => {
 
         try {
-            const resp = await axios(`${API_BASE_URL}/stats/totalByCategory?startDate=${startDate.value}&endDate=${endDate.value}`)
-            const { data } = resp
-            chartData.value.labels = data.map(d => d.Category.name)
-            chartData.value.datasets[0].data = data.map(d => Number(d.total))
-        } catch (e) {
-            console.error('Error al cargar datos del gráfico:', e)
+            const resp = await axios.get(`${API_BASE_URL}/movements/balance?startDate=${startDate.value}&endDate=${endDate.value}`)
+            balance.value = resp.data
+        } catch (error) {
+            console.error('Error al obtener el balance:', error)
+            Swal.fire({
+                title: "Error al obtener balance",
+                icon: "error",
+                toast: true,
+                position: "top",
+                timer: 3000,
+                showConfirmButton: false,
+                timerProgressBar: true,
+            });
         }
     }
 
@@ -68,7 +70,7 @@ export const useBalanceStore = defineStore("balance", () => {
         formatCurrency,
         startDate,
         endDate,
-        getTotalByCategory,
-        chartData
+        balance,
+        fetchBalance
     }
 })

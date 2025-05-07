@@ -44,13 +44,13 @@
                         v-model="movement.CategoryId"
                         class="p-2 border border-gray-300 dark:bg-gray-900 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded w-full">
                     <option value="" disabled>Selecciona una categoría</option>
-                    <option v-for="category in categories" :key="category.id" :value="category.id">
+                    <option v-for="category in movementStore.categories" :key="category.id" :value="category.id">
                         {{ category.name }}
                     </option>
                 </select>
             </div>
 
-            <button type="submit" class="w-full sm:w-auto p-2 bg-blue-500 text-white rounded">
+            <button type="submit" class="w-full sm:w-auto p-2 bg-blue-500 text-white rounded cursor-pointer">
                 Registrar Movimiento
             </button>
         </form>
@@ -61,7 +61,7 @@
 import { ref } from 'vue'
 import { useMovementStore } from '../stores/movementStore'
 
-const { categories, addMovement } = useMovementStore()
+const movementStore = useMovementStore()
 
 const movement = ref({
     type: 'ingreso',
@@ -74,7 +74,7 @@ const submitForm = async () => {
 
     movement.value.amount = valor.value.replace(/\D/g, ''); // Limpiar el valor antes de enviarlo
 
-    await addMovement(movement.value)
+    await movementStore.addMovement(movement.value)
     resetForm()
 
 }

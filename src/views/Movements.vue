@@ -64,32 +64,32 @@
 
 <script setup>
 import { computed, onMounted } from 'vue'
-import { useMovementStore } from '../stores/movementStore'
 import { FunnelIcon } from '@heroicons/vue/24/solid'
+import { useMovements } from '../composables/movements'
 
-const movementStore = useMovementStore()
+const movement = useMovements()
 
 const dateFormatStart = computed({
-    get: () => movementStore.startDate.toISOString().split('T')[0],
+    get: () => movement.startDate.toISOString().split('T')[0],
     set: (val) => {
         const date = new Date(val)
         date.setMinutes(date.getMinutes() + date.getTimezoneOffset())
-        movementStore.startDate = date
+        movement.startDate = date
     }
 })
 
 const dateFormatEnd = computed({
-    get: () => movementStore.endDate.toISOString().split('T')[0],
+    get: () => movement.endDate.toISOString().split('T')[0],
     set: (val) => {
         const date = new Date(val)
         date.setMinutes(date.getMinutes() + date.getTimezoneOffset())
-        movementStore.endDate = date
+        movement.endDate = date
     }
 })
 
 // cargar movimientos al montar componente
-onMounted(() => movementStore.fetchMovements(true))
+onMounted(() => movement.fetchMovements(true))
 
-const submit = () => movementStore.fetchMovements()
+const submit = () => movement.fetchMovements()
 
 </script>

@@ -7,13 +7,13 @@
                    class="dark:text-gray-300 p-2 w-fit border border-gray-300 dark:bg-gray-900 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded"
                    v-model="balanceStore.selectedMonth"
                    @change="balanceStore.pick" />
-            <p class="text-green-600">Ingresos: {{ balanceStore.formatCurrency(movementStore.balance.totalIngreso) }}
+            <p class="text-green-600">Ingresos: {{ balanceStore.formatCurrency(balanceStore.balance.totalIngreso) }}
             </p>
-            <p class="text-red-500">Gastos: {{ balanceStore.formatCurrency(movementStore.balance.totalGasto) }}</p>
+            <p class="text-red-500">Gastos: {{ balanceStore.formatCurrency(balanceStore.balance.totalGasto) }}</p>
             <p class="font-bold dark:text-gray-300">
                 Balance:
-                <span :class="movementStore.balance.balance >= 0 ? 'text-green-700' : 'text-red-700'">
-                    {{ balanceStore.formatCurrency(movementStore.balance.balance) }}
+                <span :class="balanceStore.balance.balance >= 0 ? 'text-green-700' : 'text-red-700'">
+                    {{ balanceStore.formatCurrency(balanceStore.balance.balance) }}
                 </span>
             </p>
         </div>
@@ -23,12 +23,9 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useBalanceStore } from '../stores/balanceStore';
-import { useMovementStore } from '../stores/movementStore';
 
-const movementStore = useMovementStore();
 const balanceStore = useBalanceStore();
 
-onMounted(() => movementStore.fetchBalance(balanceStore.startDate, balanceStore.endDate));
-
+onMounted(() => balanceStore.fetchBalance());
 
 </script>

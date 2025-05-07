@@ -1,7 +1,7 @@
 <template>
     <div class="w-full max-w-md mx-auto dark:bg-slate-800 bg-slate-100 rounded shadow-2xl p-4">
         <h4 class="text-xl font-semibold dark:text-gray-300">Total Por Categoria Mes</h4>
-        <Pie v-if="hasData" :data="balanceStore.chartData" :options="chartOptions" />
+        <Pie v-if="hasData" :data="graphStore.chartData" :options="chartOptions" />
     </div>
 </template>
 
@@ -11,10 +11,9 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { computed, onMounted } from 'vue'
 import { Pie } from 'vue-chartjs'
 import { useBalanceStore } from '../stores/balanceStore'
+import { useGraphStore } from '../stores/graphStore'
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement, ChartDataLabels)
-
-const balanceStore = useBalanceStore();
 
 const chartOptions = {
     responsive: true,
@@ -37,8 +36,11 @@ const chartOptions = {
     }
 }
 
-onMounted(() => balanceStore.getTotalByCategory())
+const graphStore = useGraphStore();
+const balanceStore = useBalanceStore();
 
-const hasData = computed(() => balanceStore.chartData.datasets[0].data.length > 0)
+onMounted(() => graphStore.getTotalByCategory(balanceStore.startDate, balanceStore.endDate))
+
+const hasData = computed(() => graphStore.chartData.datasets[0].data.length > 0)
 
 </script>
