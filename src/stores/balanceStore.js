@@ -1,8 +1,7 @@
 import axios from "axios"
 import { defineStore } from "pinia"
-import { ref } from "vue"
+import { ref, watch } from "vue"
 import { API_BASE_URL } from "../constants"
-import { useGraphStore } from "./graphStore"
 
 export const useBalanceStore = defineStore("balance", () => {
 
@@ -13,8 +12,6 @@ export const useBalanceStore = defineStore("balance", () => {
         totalGasto: 0,
         balance: 0
     })
-
-    const graphStore = useGraphStore()
 
     const getCurrentMonth = function () {
         const now = new Date()
@@ -27,15 +24,12 @@ export const useBalanceStore = defineStore("balance", () => {
 
     const selectedMonth = ref(getCurrentMonth())
 
-    const pick = () => {
-        const [year, month] = selectedMonth.value.split('-');
+    watch(selectedMonth, (newVal) => {
+        const [year, month] = newVal.split('-');
 
         startDate.value = `${year}-${month}-01 00:00:00`;
         endDate.value = new Date(year, month, 0).toISOString().split('T')[0] + ' 23:59:59';
-
-        fetchBalance()
-        graphStore.getTotalByCategory(startDate.value, endDate.value)
-    }
+    })
 
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('es-CO', {
@@ -66,7 +60,6 @@ export const useBalanceStore = defineStore("balance", () => {
 
     return {
         selectedMonth,
-        pick,
         formatCurrency,
         startDate,
         endDate,

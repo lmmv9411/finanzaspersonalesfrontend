@@ -1,9 +1,12 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
-import { API_BASE_URL } from "../constants";
 import axios from "axios";
+import { defineStore } from "pinia";
+import { ref, watchEffect } from "vue";
+import { API_BASE_URL } from "../constants";
+import { useBalanceStore } from "./balanceStore";
 
 export const useGraphStore = defineStore("graph", () => {
+
+    const balanceStore = useBalanceStore();
 
     const chartData = ref({
         labels: [],
@@ -17,19 +20,33 @@ export const useGraphStore = defineStore("graph", () => {
         }]
     })
 
+    const chartKey = ref(0);
 
-    const getTotalByCategory = async (sd, ed) => {
+    const getTotalByCategory = async () => {
+
+        const sd = balanceStore.startDate
+        const ed = balanceStore.endDate
 
         try {
             const resp = await axios(`${API_BASE_URL}/stats/totalByCategory?startDate=${sd}&endDate=${ed}`)
             const { data } = resp
+
             chartData.value.labels = data.map(d => d.Category.name)
             chartData.value.datasets[0].data = data.map(d => Number(d.total))
+
+            chartKey.value += 1;
+
         } catch (e) {
             console.error('Error al cargar datos del gráfico:', e)
         }
     }
 
-    return { chartData, getTotalByCategory };
+    watchEffect(() => {
+        if (balanceStore.startDate && balanceStore.endDate) {
+            getTotalByCategory();
+        }
+    })
+
+    return { chartData, getTotalByCategory, chartKey };
 
 })
