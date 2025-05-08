@@ -23,6 +23,7 @@
                     <th class="px-4 py-2">Descripción</th>
                     <th class="px-4 py-2">Categoría</th>
                     <th class="px-4 py-2">Fecha</th>
+                    <th class="px-4 py-2">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,18 +45,45 @@
                         }}
                     </td>
                     <td class="px-4 py-2">{{ movement.description }}</td>
-                    <td class="px-4 py-2">{{ movement.Category?.name }}</td>
+                    <td class="px-4 py-2">{{ movement.Category.name }}</td>
                     <td class="px-4 py-2">{{ new Date(movement.createdAt).toLocaleString() }}</td>
+                    <td class="px-4 py-2 flex gap-2 justify-center">
+                        <button @click="edit(movement)"
+                                class="text-blue-500 hover:text-blue-700 cursor-pointer" title="Editar movimiento">
+                            <PencilSquareIcon class="h-5 w-5" />
+                        </button>
+                        <button @click="deleteMovement(movement.id)"
+                                class="text-red-500 hover:text-red-700 ml-2 cursor-pointer" title="Eliminar movimiento">
+                            <TrashIcon class="h-5 w-5" />
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         </table>
     </div>
+
+
+    <Modal :visible="showModal" @close="showModal = false">
+        <MovementForm isEdit="true" :data="movement" />
+    </Modal>
+
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import { useMovements } from '../composables/movements';
+import { TrashIcon, PencilSquareIcon } from '@heroicons/vue/16/solid';
+import Modal from '../components/Modal.vue';
+import MovementForm from '../components/MovementForm.vue';
 
-const { selectedMonth, movements } = useMovements()
+const showModal = ref(false);
+const movement = ref({});
 
+const edit = (data) => {
+    showModal.value = true
+    movement.value = data
+}
+
+const { selectedMonth, movements, deleteMovement } = useMovements()
 
 </script>

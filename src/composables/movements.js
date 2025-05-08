@@ -1,6 +1,7 @@
 import axios from "axios";
 import { onMounted, ref, watch } from "vue";
 import { API_BASE_URL } from "../constants";
+import Swal from "sweetalert2";
 
 export const useMovements = () => {
 
@@ -19,6 +20,42 @@ export const useMovements = () => {
         }
     }
 
+    const deleteMovement = async (id) => {
+
+        Swal.fire({
+            title: 'Eliminando...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading()
+            }
+        })
+
+        try {
+
+            await axios.delete(`${API_BASE_URL}/movements/${id}`);
+            movements.value = movements.value.filter(movement => movement.id !== id)
+            Swal.fire({
+                title: "Movimiento Eliminado",
+                icon: "success",
+                toast: true,
+                position: "top",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+            });
+        } catch (error) {
+            console.error('Error al eliminar movimiento', error)
+            Swal.fire({
+                title: "Error al eliminar movimiento",
+                icon: "error",
+                toast: true,
+                position: "top",
+                timer: 3000,
+                showConfirmButton: false,
+                timerProgressBar: true,
+            });
+        }
+    }
 
     const getCurrentMonth = function () {
         const now = new Date()
@@ -41,5 +78,5 @@ export const useMovements = () => {
         fetchMovements()
     })
 
-    return { movements, fetchMovements, selectedMonth }
+    return { movements, fetchMovements, selectedMonth, deleteMovement }
 }

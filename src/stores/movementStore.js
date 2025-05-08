@@ -26,7 +26,7 @@ export const useMovementStore = defineStore('movement', () => {
 
         try {
 
-            const resp = await axios.post(`${API_BASE_URL}/movements`, movement)
+            await axios.post(`${API_BASE_URL}/movements`, movement)
 
             Swal.fire({
                 title: "Movimiento registrado",
