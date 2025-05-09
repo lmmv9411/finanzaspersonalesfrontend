@@ -21,7 +21,8 @@ export const useMovementStore = defineStore('movement', () => {
             allowOutsideClick: false,
             didOpen: () => {
                 Swal.showLoading()
-            }
+            },
+            theme: 'auto'
         })
 
         try {
@@ -36,6 +37,7 @@ export const useMovementStore = defineStore('movement', () => {
                 showConfirmButton: false,
                 timer: 3000,
                 timerProgressBar: true,
+                theme: 'auto'
             });
 
             balanceStore.fetchBalance()
@@ -51,6 +53,7 @@ export const useMovementStore = defineStore('movement', () => {
                 timer: 3000,
                 showConfirmButton: false,
                 timerProgressBar: true,
+                theme: 'auto'
             });
         }
     }

@@ -22,6 +22,29 @@ export const useMovements = () => {
 
     const deleteMovement = async (id) => {
 
+
+        const result = await Swal.fire({
+            title: "Eliminar Movimiento?",
+            showCancelButton: true,
+            confirmButtonText: "Eliminar",
+            cancelButtonText: "Cancelar",
+            theme: 'auto'
+        })
+
+        if (!result.isConfirmed) {
+            Swal.fire({
+                title: "No se eliminó!",
+                icon: "info",
+                timer: 2000,
+                theme: 'auto',
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timerProgressBar: true
+            });
+            return
+        }
+
         Swal.fire({
             title: 'Eliminando...',
             allowOutsideClick: false,
@@ -42,6 +65,7 @@ export const useMovements = () => {
                 showConfirmButton: false,
                 timer: 3000,
                 timerProgressBar: true,
+                theme: 'auto'
             });
         } catch (error) {
             console.error('Error al eliminar movimiento', error)
@@ -53,6 +77,7 @@ export const useMovements = () => {
                 timer: 3000,
                 showConfirmButton: false,
                 timerProgressBar: true,
+                theme: 'auto'
             });
         }
     }
