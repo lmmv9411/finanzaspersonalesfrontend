@@ -13,7 +13,6 @@
 
         </div>
 
-        <!-- Fondo oscuro para móviles -->
         <Transition name="fade">
             <div
                  v-if="isSidebarOpen"

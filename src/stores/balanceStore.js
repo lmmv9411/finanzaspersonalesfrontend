@@ -2,6 +2,7 @@ import axios from "axios"
 import { defineStore } from "pinia"
 import { ref, watch } from "vue"
 import { API_BASE_URL } from "../constants"
+import Swal from "sweetalert2"
 
 export const useBalanceStore = defineStore("balance", () => {
 

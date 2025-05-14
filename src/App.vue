@@ -1,7 +1,11 @@
-<script setup>
-import DashBoardLayout from './components/DashBoardLayout.vue';
-</script>
-
 <template>
-  <DashBoardLayout />
+  <RouterView />
 </template>
+
+<script setup>
+
+import { useTheme } from '../src/composables/useTheme'
+
+useTheme()
+
+</script>
