@@ -29,25 +29,22 @@
                 </button>
             </form>
 
-            <p class="mt-4 text-center text-sm text-gray-500">
-                ¿No tienes cuenta?
-                <router-link to="/register" class="text-blue-600 hover:underline">Regístrate</router-link>
-            </p>
         </div>
     </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { API_BASE_URL } from '../constants/index'
-import axios from 'axios'
+import { useRouter } from 'vue-router'
+import api from '../constants/api'
 
 const user = ref('')
 const password = ref('')
+const router = useRouter()
 
 const handleLogin = async () => {
     try {
-        await axios.post(`${API_BASE_URL}/user/login`,
+        await api.post('/user/login',
             {
                 user: user.value,
                 password: password.value
@@ -55,10 +52,11 @@ const handleLogin = async () => {
             { withCredentials: true }
         )
 
-        // Redirigir al dashboard si login es exitoso
-        window.location.href = '/'
+        router.push({ name: 'Home' })
+
     } catch (err) {
         alert(err.message)
     }
+
 }
 </script>

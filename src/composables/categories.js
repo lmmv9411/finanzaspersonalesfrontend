@@ -1,6 +1,5 @@
-import axios from "axios";
 import { onMounted, ref } from "vue";
-import { API_BASE_URL } from "../constants/index";
+import api from "../constants/api";
 
 export function useCategories() {
     const name = ref('');
@@ -10,7 +9,7 @@ export function useCategories() {
 
     const getCategories = async () => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/categories`);
+            const response = await api.get('/categories');
             categories.value = response.data;
         } catch (error) {
             console.error('Error fetching categories:', error);
@@ -25,11 +24,11 @@ export function useCategories() {
         }
 
         try {
-            const response = await axios.post(`${API_BASE_URL}/categories`, {
+            const response = await api.post('/categories', {
                 name: name.value
             });
             console.log('Category created:', response.data);
-            // Optionally, you can reset the form fields after successful creation
+            
             name.value = '';
             getCategories()
         } catch (error) {
@@ -39,7 +38,7 @@ export function useCategories() {
 
     const deleteCategory = async (categoryId) => {
         try {
-            const response = await axios.delete(`${API_BASE_URL}/categories/${categoryId}`);
+            const response = await api.delete(`/categories/${categoryId}`);
             console.log('Category deleted:', response.data);
             getCategories()
         } catch (error) {
@@ -62,7 +61,7 @@ export function useCategories() {
 
     const updateCategory = async (categoryId) => {
         try {
-            const response = await axios.put(`${API_BASE_URL}/categories/${categoryId}`, {
+            const response = await api.put(`/categories/${categoryId}`, {
                 name: name.value
             });
             console.log('Category updated:', response.data);

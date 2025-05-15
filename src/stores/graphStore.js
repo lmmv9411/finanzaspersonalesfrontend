@@ -1,7 +1,6 @@
-import axios from "axios";
+import api from "../constants/api";
 import { defineStore } from "pinia";
 import { ref, watchEffect } from "vue";
-import { API_BASE_URL } from "../constants";
 import { useBalanceStore } from "./balanceStore";
 
 export const useGraphStore = defineStore("graph", () => {
@@ -28,7 +27,7 @@ export const useGraphStore = defineStore("graph", () => {
         const ed = balanceStore.endDate
 
         try {
-            const resp = await axios(`${API_BASE_URL}/stats/totalByCategory?startDate=${sd}&endDate=${ed}`)
+            const resp = await api.get(`/stats/totalByCategory?startDate=${sd}&endDate=${ed}`)
             const { data } = resp
 
             chartData.value.labels = data.map(d => d.Category.name)

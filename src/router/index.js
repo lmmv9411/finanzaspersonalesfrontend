@@ -1,8 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import axios from 'axios'
-import { API_BASE_URL } from '../constants'
-import DefaultLayout from '../components/DefaultLayout.vue'
 import AuthLayout from '../components/AuthLayout.vue'
+import DefaultLayout from '../components/DefaultLayout.vue'
+import api from '../constants/api'
 
 const routes = [
     {
@@ -56,11 +55,10 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
     if (to.meta.requiresAuth) {
         try {
-            // intenta validar la sesión en el backend
-            await axios.get(`${API_BASE_URL}/auth/check`, { withCredentials: true })
-            next() // sesión válida
+            await api.get('/auth/check', { withCredentials: true })
+            next()
         } catch (err) {
-            next({ name: 'Login' }) // redirige al login
+            next({ name: 'Login' })
         }
     } else {
         next()

@@ -1,9 +1,7 @@
-// src/stores/movementStore.js
-import axios from 'axios'
+import api from "../constants/api";
 import { defineStore } from 'pinia'
 import Swal from 'sweetalert2'
 import { onMounted, ref } from 'vue'
-import { API_BASE_URL } from '../constants'
 import { useBalanceStore } from './balanceStore'
 import { useGraphStore } from './graphStore'
 
@@ -27,7 +25,7 @@ export const useMovementStore = defineStore('movement', () => {
 
         try {
 
-            await axios.post(`${API_BASE_URL}/movements`, movement)
+            await api.post('/movements', movement)
 
             Swal.fire({
                 title: "Movimiento registrado",
@@ -60,7 +58,7 @@ export const useMovementStore = defineStore('movement', () => {
 
     const fetchCategories = async () => {
         try {
-            const response = await fetch(`${API_BASE_URL}/categories`)
+            const response = await api.get('/categories')
             const data = await response.json()
             categories.value = data
         } catch (error) {

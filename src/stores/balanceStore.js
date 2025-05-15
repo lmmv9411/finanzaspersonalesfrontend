@@ -1,7 +1,6 @@
-import axios from "axios"
+import api from '../constants/api'
 import { defineStore } from "pinia"
 import { ref, watch } from "vue"
-import { API_BASE_URL } from "../constants"
 import Swal from "sweetalert2"
 
 export const useBalanceStore = defineStore("balance", () => {
@@ -43,7 +42,7 @@ export const useBalanceStore = defineStore("balance", () => {
     const fetchBalance = async () => {
 
         try {
-            const resp = await axios.get(`${API_BASE_URL}/movements/balance?startDate=${startDate.value}&endDate=${endDate.value}`)
+            const resp = await api.get(`/movements/balance?startDate=${startDate.value}&endDate=${endDate.value}`)
             balance.value = resp.data
         } catch (error) {
             console.error('Error al obtener el balance:', error)

@@ -1,6 +1,5 @@
-import axios from "axios";
+import api from "../constants/api";
 import { onMounted, ref, watch } from "vue";
-import { API_BASE_URL } from "../constants";
 import Swal from "sweetalert2";
 
 export const useMovements = () => {
@@ -13,7 +12,7 @@ export const useMovements = () => {
     const fetchMovements = async () => {
 
         try {
-            const resp = await axios.get(`${API_BASE_URL}/movements/date?startDate=${startDate.value}&endDate=${endDate.value}`);
+            const resp = await api.get(`/movements/date?startDate=${startDate.value}&endDate=${endDate.value}`);
             movements.value = resp.data
         } catch (error) {
             console.error('Error al cargar movimientos', error)
@@ -55,7 +54,7 @@ export const useMovements = () => {
 
         try {
 
-            await axios.delete(`${API_BASE_URL}/movements/${id}`);
+            await api.delete(`/movements/${id}`);
             movements.value = movements.value.filter(movement => movement.id !== id)
             Swal.fire({
                 title: "Movimiento Eliminado",

@@ -13,7 +13,7 @@
                                 v-for="item in menu"
                                 :key="item.name"
                                 :to="item.to"
-                                activeClass="bg-blue-400 text-white"
+                                :class="{ 'bg-blue-400 text-white': $route.path === item.to }"
                                 class="flex gap-4 px-4 py-2 dark:text-white rounded hover:bg-gray-600 hover:text-white text-gray-700 transition-colors duration-300"
                                 @click="emits('toggleSidebar')">
                         <component
@@ -23,27 +23,43 @@
                         <span>{{ item.name }}</span>
                     </RouterLink>
                 </div>
-                <ToggleTheme class="px-4 py-2 dark:text-white rounded" />
+                <div class="flex gap-2 flex-col">
+                    <button
+                            @click="logout"
+                            class="flex gap-4 w-full cursor-pointer px-4 py-2 dark:text-white rounded hover:bg-gray-600 hover:text-white text-gray-700 transition-colors duration-300">
+                        <ArrowRightStartOnRectangleIcon class="w-5 h-5 inline-block" />
+                        <span>Cerrar Sesión</span>
+                    </button>
+
+                    <ToggleTheme class="px-4 py-2 dark:text-white rounded" />
+                </div>
             </nav>
         </div>
     </aside>
 </template>
 
 <script setup>
-import { AdjustmentsVerticalIcon, ChartBarIcon, HomeIcon, TagIcon } from '@heroicons/vue/24/solid';
+import { AdjustmentsVerticalIcon, ArrowRightStartOnRectangleIcon, ChartBarIcon, HomeIcon, TagIcon } from '@heroicons/vue/24/solid';
+import { useRouter } from 'vue-router';
+import api from '../constants/api';
 import ToggleTheme from './ToggleTheme.vue';
 
-const props = defineProps({
-    isOpen: Boolean
-})
+const props = defineProps({ isOpen: Boolean })
 
 const emits = defineEmits(['toggleSidebar']);
 
 const menu = [
-    { name: 'Inicio', to: '/', icon: HomeIcon },
+    { name: 'Home', to: '/', icon: HomeIcon },
     { name: 'Movimientos', to: '/movements', icon: ChartBarIcon },
     { name: 'Categorias', to: '/categories', icon: TagIcon },
     { name: 'Configuraciones', to: '/configs', icon: AdjustmentsVerticalIcon },
 ];
+
+const router = useRouter();
+
+const logout = async () => {
+    await api.post('/user/logout')
+    router.push({ name: 'Login' })
+}
 
 </script>
