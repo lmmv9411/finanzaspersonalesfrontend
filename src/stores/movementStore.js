@@ -1,16 +1,15 @@
+import { defineStore } from 'pinia';
+import Swal from 'sweetalert2';
+import { useCategories } from '../composables/categories';
 import api from "../constants/api";
-import { defineStore } from 'pinia'
-import Swal from 'sweetalert2'
-import { onMounted, ref } from 'vue'
-import { useBalanceStore } from './balanceStore'
-import { useGraphStore } from './graphStore'
+import { useBalanceStore } from './balanceStore';
+import { useGraphStore } from './graphStore';
 
 export const useMovementStore = defineStore('movement', () => {
 
     const balanceStore = useBalanceStore();
     const graphStore = useGraphStore();
-
-    const categories = ref([])
+    const { categories } = useCategories()
 
     const addMovement = async (movement) => {
 
@@ -56,17 +55,5 @@ export const useMovementStore = defineStore('movement', () => {
         }
     }
 
-    const fetchCategories = async () => {
-        try {
-            const response = await api.get('/categories')
-            const data = await response.json()
-            categories.value = data
-        } catch (error) {
-            console.error('Error al cargar categorías')
-        }
-    }
-
-    onMounted(async () => await fetchCategories())
-
-    return { addMovement, fetchCategories, categories }
+    return { addMovement, categories }
 })

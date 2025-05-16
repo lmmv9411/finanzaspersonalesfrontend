@@ -53,7 +53,7 @@ const router = createRouter({
 
 
 router.beforeEach(async (to, from, next) => {
-    if (to.meta.requiresAuth) {
+    /*if (to.meta.requiresAuth) {
         try {
             await api.get('/auth/check', { withCredentials: true })
             next()
@@ -62,7 +62,8 @@ router.beforeEach(async (to, from, next) => {
         }
     } else {
         next()
-    }
+    }*/
+    next()
 })
 
 export default router
