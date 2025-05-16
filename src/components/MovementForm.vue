@@ -53,7 +53,8 @@
             <button type="submit" class="w-full sm:w-auto p-2 bg-blue-500 text-white rounded cursor-pointer">
                 Registrar Movimiento
             </button>
-            <button @click="emit('close')" type="button" class="w-full sm:w-auto p-2 bg-red-500 text-white rounded cursor-pointer">
+            <button @click="modalStore.isRendered = false" type="button"
+                    class="w-full sm:w-auto p-2 bg-red-500 text-white rounded cursor-pointer">
                 Cerrar
             </button>
         </form>
@@ -66,15 +67,14 @@ import { useMovementform } from '../composables/movementForm';
 
 const { isEdit = false, data } = defineProps(['isEdit', 'data']);
 
-const emit = defineEmits(['close'])
-
 const {
     formatearComoMoneda,
     movement,
     submitForm,
     valor,
-    movementStore
-} = useMovementform(emit);
+    movementStore,
+    modalStore
+} = useMovementform();
 
 watchEffect(() => {
     if (isEdit && data) {

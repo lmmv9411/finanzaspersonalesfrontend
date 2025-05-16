@@ -27,5 +27,5 @@ export const useMovementStore = defineStore('movement', () => {
         }
     }
 
-    return { addMovement, categories }
+    return { addMovement, categories, }
 })

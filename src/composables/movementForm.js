@@ -1,10 +1,12 @@
 import Swal from 'sweetalert2'
 import { ref } from 'vue'
 import { useMovementStore } from '../stores/movementStore'
+import { useModalStore } from '../components/modal/store/modalStore'
 
-export const useMovementform = (emit) => {
+export const useMovementform = () => {
 
     const movementStore = useMovementStore()
+    const modalStore = useModalStore();
 
     const movement = ref({
         type: 'ingreso',
@@ -12,8 +14,6 @@ export const useMovementform = (emit) => {
         description: '',
         CategoryId: ''
     })
-
-    const close = () => emit('close');
 
     const submitForm = async () => {
 
@@ -32,7 +32,7 @@ export const useMovementform = (emit) => {
 
         Swal.close()
 
-        close()
+        modalStore.isRendered = false;
         resetForm()
 
         if (resp) {
@@ -106,6 +106,6 @@ export const useMovementform = (emit) => {
         valor.value = formatoCOP.format(numero);
     }
 
-    return { movement, submitForm, formatearComoMoneda, valor, movementStore }
+    return { movement, submitForm, formatearComoMoneda, valor, movementStore, modalStore }
 
 }

@@ -1,11 +1,11 @@
 <template>
     <div
-         v-if="visible"
+         v-if="modalStore.showModal"
          class="fixed inset-0 z-50 flex items-center justify-center bg-black/30"
          @click.self="close">
         <Transition name="slide-down">
             <div
-                 v-show="modelValue"
+                 v-show="modalStore.isRendered"
                  class="bg-slate-100 dark:bg-gray-900 p-4 rounded-lg shadow-xl w-90">
                 <slot></slot>
             </div>
@@ -14,12 +14,11 @@
 </template>
 
 <script setup>
+import { useModalStore } from './store/modalStore';
 
-defineProps(['visible', 'modelValue'])
+const modalStore = useModalStore();
 
-const emit = defineEmits(['close', 'update:modelValue'])
-
-const close = () => emit('update:modelValue', false)
+const close = () => modalStore.isRendered = false
 
 </script>
 
