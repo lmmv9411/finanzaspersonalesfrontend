@@ -4,7 +4,9 @@
          class="fixed inset-0 z-50 flex items-center justify-center bg-black/30"
          @click.self="close">
         <Transition name="slide-down">
-            <div v-show="isRendered" class="bg-slate-100 dark:bg-gray-900 p-4 rounded-lg shadow-xl w-90">
+            <div
+                 v-show="modelValue"
+                 class="bg-slate-100 dark:bg-gray-900 p-4 rounded-lg shadow-xl w-90">
                 <slot></slot>
             </div>
         </Transition>
@@ -12,27 +14,12 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
 
-const props = defineProps({ visible: Boolean })
+defineProps(['visible', 'modelValue'])
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close', 'update:modelValue'])
 
-const close = () => {
-    isRendered.value = false
-    setTimeout(() => {
-        emit('close')
-    }, 300)
-}
-
-const isRendered = ref(false)
-
-watch(() => props.visible, (newVal) => {
-    if (newVal) {
-        setTimeout(() => isRendered.value = true, 150)
-    }
-})
-
+const close = () => emit('update:modelValue', false)
 
 </script>
 

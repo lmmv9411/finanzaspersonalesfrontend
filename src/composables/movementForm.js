@@ -1,7 +1,8 @@
+import Swal from 'sweetalert2'
 import { ref } from 'vue'
 import { useMovementStore } from '../stores/movementStore'
 
-export const useMovementform = () => {
+export const useMovementform = (emit) => {
 
     const movementStore = useMovementStore()
 
@@ -12,12 +13,51 @@ export const useMovementform = () => {
         CategoryId: ''
     })
 
+    const close = () => emit('close');
+
     const submitForm = async () => {
 
         movement.value.amount = valor.value.replace(/\D/g, ''); // Limpiar el valor antes de enviarlo
 
-        await movementStore.addMovement(movement.value)
+        Swal.fire({
+            title: 'Guardando...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading()
+            },
+            theme: 'auto'
+        })
+
+        const resp = await movementStore.addMovement(movement.value)
+
+        Swal.close()
+
+        close()
         resetForm()
+
+        if (resp) {
+            Swal.fire({
+                title: "Movimiento registrado",
+                icon: "success",
+                toast: true,
+                position: "top",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                theme: 'auto'
+            });
+        } else {
+            Swal.fire({
+                title: "Error al registrar movimiento",
+                icon: "error",
+                toast: true,
+                position: "top",
+                timer: 3000,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                theme: 'auto'
+            });
+        }
 
     }
 
@@ -36,7 +76,7 @@ export const useMovementform = () => {
     function formatearComoMoneda(event, isDom = true) {
         // Remover caracteres que no sean números
         let numeroLimpio = event;
-        
+
         if (isDom) {
             numeroLimpio = event.target.value.replace(/\D/g, '');
         }
