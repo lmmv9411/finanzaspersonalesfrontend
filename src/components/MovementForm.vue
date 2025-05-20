@@ -57,11 +57,11 @@
 
             <div class="flex gap-2">
                 <button type="submit"
-                        class="w-full sm:w-auto p-2 bg-blue-500 hover:bg-blue-600 text-white rounded cursor-pointer">
+                        class="sm:w-auto p-2 bg-blue-500 hover:bg-blue-600 text-white rounded cursor-pointer">
                     {{ isEdit ? 'Editar' : 'Registrar' }} Movimiento
                 </button>
                 <button @click="modalStore.isRendered = false" type="button"
-                        class="w-full sm:w-auto p-2 bg-red-500 hover:bg-red-600 text-white rounded cursor-pointer">
+                        class="sm:w-auto p-2 bg-red-500 hover:bg-red-600 text-white rounded cursor-pointer">
                     Cerrar
                 </button>
             </div>

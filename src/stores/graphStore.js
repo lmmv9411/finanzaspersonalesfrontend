@@ -1,6 +1,6 @@
 import api from "../constants/api";
 import { defineStore } from "pinia";
-import { ref, watchEffect } from "vue";
+import { ref, watch, watchEffect } from "vue";
 import { useBalanceStore } from "./balanceStore";
 
 export const useGraphStore = defineStore("graph", () => {
@@ -40,11 +40,10 @@ export const useGraphStore = defineStore("graph", () => {
         }
     }
 
-    watchEffect(() => {
-        if (balanceStore.startDate && balanceStore.endDate) {
-            getTotalByCategory();
-        }
-    })
+    watch(
+        () => [balanceStore.startDate, balanceStore.endDate],
+        () => getTotalByCategory()
+    )
 
     return { chartData, getTotalByCategory, chartKey };
 

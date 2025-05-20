@@ -5,8 +5,7 @@
             <input
                    type="month"
                    class="dark:text-gray-300 p-2 w-fit border border-gray-300 dark:bg-gray-900 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded"
-                   v-model="balanceStore.selectedMonth"
-                   @change="balanceStore.pick" />
+                   v-model="balanceStore.selectedMonth" />
             <p class="text-green-600">Ingresos: {{ balanceStore.formatCurrency(balanceStore.balance.totalIngreso) }}
             </p>
             <p class="text-red-500">Gastos: {{ balanceStore.formatCurrency(balanceStore.balance.totalGasto) }}</p>
