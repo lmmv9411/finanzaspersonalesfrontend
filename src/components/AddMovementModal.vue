@@ -6,8 +6,8 @@
             <PlusIcon class="w-8 h-8 inline-block" stroke-width="2.5" />
         </button>
 
-        <Modal @close="modalStore.showModal = false">
-            <MovementForm @close="modalStore.isRendered = false" />
+        <Modal>
+            <MovementForm />
         </Modal>
     </div>
 </template>

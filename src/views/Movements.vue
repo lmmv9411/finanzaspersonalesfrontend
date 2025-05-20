@@ -63,25 +63,26 @@
     </div>
 
 
-    <Modal :visible="showModal" @close="showModal = false">
+    <Modal>
         <MovementForm isEdit="true" :data="movement" />
     </Modal>
 
 </template>
 
 <script setup>
+import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/16/solid';
 import { ref } from 'vue';
-import { useMovements } from '../composables/movements';
-import { TrashIcon, PencilSquareIcon } from '@heroicons/vue/16/solid';
-import Modal from '../components/Modal.vue';
+import Modal from '../components/modal/Modal.vue';
+import { useModalStore } from '../components/modal/store/modalStore';
 import MovementForm from '../components/MovementForm.vue';
+import { useMovements } from '../composables/movements';
 
-const showModal = ref(false);
+const modalStore = useModalStore();
 const movement = ref({});
 
 const edit = (data) => {
-    showModal.value = true
     movement.value = data
+    modalStore.showModal = true
 }
 
 const { selectedMonth, movements, deleteMovement } = useMovements()

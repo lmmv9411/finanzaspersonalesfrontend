@@ -2,9 +2,14 @@
     <div
          class="mx-auto p-4 border border-gray-300 rounded-lg shadow-lg bg-slate-100  dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700">
 
-        <h2 class="text-2xl font-semibold mb-4">Registrar Movimiento</h2>
+        <h2 class="text-2xl font-semibold mb-4">{{ isEdit ? 'Editar' : 'Registrar' }} Movimiento</h2>
 
-        <form @submit.prevent="submitForm" class="flex flex-col gap-4 items-end" autocomplete="off">
+        <form @submit.prevent="submitForm(isEdit)" class="flex flex-col gap-4 items-end" autocomplete="off">
+
+            <div v-show="isEdit" class="flex flex-col w-full">
+                <label for="createdAt">Fecha</label>
+                <input id="createdAt" type="datetime-local" v-model="movement.updatedAt" class="p-2 border border-gray-300 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded w-full">
+            </div>
 
             <div class="w-full">
                 <label for="type" class="block text-gray-700 dark:text-gray-300">Tipo de Movimiento</label>
@@ -50,13 +55,16 @@
                 </select>
             </div>
 
-            <button type="submit" class="w-full sm:w-auto p-2 bg-blue-500 text-white rounded cursor-pointer">
-                Registrar Movimiento
-            </button>
-            <button @click="modalStore.isRendered = false" type="button"
-                    class="w-full sm:w-auto p-2 bg-red-500 text-white rounded cursor-pointer">
-                Cerrar
-            </button>
+            <div class="flex gap-2">
+                <button type="submit"
+                        class="w-full sm:w-auto p-2 bg-blue-500 hover:bg-blue-600 text-white rounded cursor-pointer">
+                    {{ isEdit ? 'Editar' : 'Registrar' }} Movimiento
+                </button>
+                <button @click="modalStore.isRendered = false" type="button"
+                        class="w-full sm:w-auto p-2 bg-red-500 hover:bg-red-600 text-white rounded cursor-pointer">
+                    Cerrar
+                </button>
+            </div>
         </form>
     </div>
 </template>
@@ -79,15 +87,22 @@ const {
 watchEffect(() => {
     if (isEdit && data) {
 
+        const isoDate = data.updatedAt;
+        const date = new Date(isoDate);
+
+        const pad = n => n.toString().padStart(2, '0');
+        const localDateTime = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+
         movement.value = {
             type: data.type,
             CategoryId: data.CategoryId,
             amount: data.amount,
-            description: data.description
+            description: data.description,
+            id: data.id,
+            updatedAt: localDateTime
         }
 
         formatearComoMoneda(data.amount, false)
-
     }
 })
 

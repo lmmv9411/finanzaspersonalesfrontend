@@ -1,7 +1,7 @@
 import Swal from 'sweetalert2'
 import { ref } from 'vue'
-import { useMovementStore } from '../stores/movementStore'
 import { useModalStore } from '../components/modal/store/modalStore'
+import { useMovementStore } from '../stores/movementStore'
 
 export const useMovementform = () => {
 
@@ -15,12 +15,12 @@ export const useMovementform = () => {
         CategoryId: ''
     })
 
-    const submitForm = async () => {
+    const submitForm = async (isEdit) => {
 
         movement.value.amount = valor.value.replace(/\D/g, ''); // Limpiar el valor antes de enviarlo
 
         Swal.fire({
-            title: 'Guardando...',
+            title: isEdit ? 'Editando' : 'Guardando...',
             allowOutsideClick: false,
             didOpen: () => {
                 Swal.showLoading()
@@ -28,16 +28,15 @@ export const useMovementform = () => {
             theme: 'auto'
         })
 
-        const resp = await movementStore.addMovement(movement.value)
+        const isSaved = await movementStore.saveMovement(movement.value, isEdit)
 
         Swal.close()
 
         modalStore.isRendered = false;
-        resetForm()
 
-        if (resp) {
+        if (isSaved) {
             Swal.fire({
-                title: "Movimiento registrado",
+                title: `Movimiento ${isEdit ? 'Editado' : 'Registrado'}`,
                 icon: "success",
                 toast: true,
                 position: "top",
@@ -48,7 +47,7 @@ export const useMovementform = () => {
             });
         } else {
             Swal.fire({
-                title: "Error al registrar movimiento",
+                title: `Error al ${isEdit ? 'Editar' : 'Registrar'} movimiento`,
                 icon: "error",
                 toast: true,
                 position: "top",
@@ -59,6 +58,8 @@ export const useMovementform = () => {
             });
         }
 
+        resetForm()
+
     }
 
     // reiniciar formulario
@@ -67,7 +68,8 @@ export const useMovementform = () => {
             type: 'ingreso',
             amount: '',
             description: '',
-            categoryId: ''
+            categoryId: '',
+            id: ''
         }
     }
 

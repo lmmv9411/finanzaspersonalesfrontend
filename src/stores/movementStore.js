@@ -10,11 +10,15 @@ export const useMovementStore = defineStore('movement', () => {
     const graphStore = useGraphStore();
     const { categories } = useCategories()
 
-    const addMovement = async (movement) => {
+    const saveMovement = async (movement, isEdit) => {
 
         try {
 
-            await api.post('/movements', movement)
+            if (!isEdit) {
+                await api.post('/movements', movement)
+            } else {
+                await api.put('/movements', movement)
+            }
 
             balanceStore.fetchBalance()
             graphStore.getTotalByCategory(balanceStore.startDate, balanceStore.endDate)
@@ -27,5 +31,5 @@ export const useMovementStore = defineStore('movement', () => {
         }
     }
 
-    return { addMovement, categories, }
+    return { saveMovement, categories }
 })
