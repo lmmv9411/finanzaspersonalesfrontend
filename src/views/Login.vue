@@ -44,13 +44,15 @@ const router = useRouter()
 
 const handleLogin = async () => {
     try {
-        await api.post('/user/login',
+        const resp = await api.post('/user/login',
             {
                 user: user.value,
                 password: password.value
             },
-            { withCredentials: true }
+            
         )
+
+        localStorage.setItem('jwt_token', resp.data.token)
 
         router.push({ name: 'Home' })
 
