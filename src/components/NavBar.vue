@@ -12,11 +12,16 @@
                 </span>
             </button>
         </div>
+
+        <div>
+            
+        </div>
     </header>
 </template>
 
 <script setup>
 import 'hamburgers/dist/hamburgers.min.css';
+import { onMounted } from 'vue';
 import { ref, watch } from 'vue';
 
 const isActive = ref(false)
@@ -31,6 +36,10 @@ const toggleSidebar = () => {
     isActive.value = !isActive.value;
     emits('toggleSidebar');
 }
+
+onMounted(() => {
+
+})
 
 </script>
 

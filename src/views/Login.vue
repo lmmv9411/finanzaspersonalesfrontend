@@ -48,10 +48,9 @@ const handleLogin = async () => {
             {
                 user: user.value,
                 password: password.value
-            },
-            
+            }
         )
-
+        
         localStorage.setItem('jwt_token', resp.data.token)
 
         router.push({ name: 'Home' })

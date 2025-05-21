@@ -53,11 +53,25 @@ const router = createRouter({
 
 
 router.beforeEach(async (to, from, next) => {
+
+    if (to.name === 'Login' && localStorage.getItem('jwt_token')) {
+        try {
+            await api.get('/auth/check', { withCredentials: true })
+            next({ name: 'Home' })
+        } catch (error) {
+            localStorage.removeItem('jwt_token')
+            next({ name: 'Login' })
+        }
+
+        return;
+    }
+
     if (to.meta.requiresAuth) {
         try {
             await api.get('/auth/check', { withCredentials: true })
             next()
         } catch (err) {
+            localStorage.removeItem('jwt_token')
             next({ name: 'Login' })
         }
     } else {
@@ -65,5 +79,6 @@ router.beforeEach(async (to, from, next) => {
     }
 
 })
+
 
 export default router

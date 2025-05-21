@@ -41,7 +41,6 @@
 <script setup>
 import { AdjustmentsVerticalIcon, ArrowRightStartOnRectangleIcon, ChartBarIcon, HomeIcon, TagIcon } from '@heroicons/vue/24/solid';
 import { useRouter } from 'vue-router';
-import api from '../constants/api';
 import ToggleTheme from './ToggleTheme.vue';
 
 const props = defineProps({ isOpen: Boolean })
