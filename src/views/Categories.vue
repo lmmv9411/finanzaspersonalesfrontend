@@ -27,7 +27,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="categorie in categories" class="border-b text-center" :key="categorie.id">
+                <tr v-for="categorie in categoriesStore.categories" class="border-b text-center" :key="categorie.id">
                     <td class="px-4 py-2">{{ categorie.id }}</td>
                     <td class="px-4 py-2">{{ categorie.name }}</td>
                     <td class="px-4 py-2 flex gap-2">
@@ -43,12 +43,12 @@
 </template>
 
 <script setup>
-
 import { useCategories } from '../composables/categories';
+import { useCategorieStore } from '../stores/categoriesStore';
 
+const categoriesStore = useCategorieStore()
 
 const {
-    categories,
     name,
     createCategory,
     deleteCategory,

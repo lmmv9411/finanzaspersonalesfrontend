@@ -97,10 +97,7 @@ export const useMovements = () => {
         fetchMovements()
     })
 
-    onMounted(() => {
-        getCurrentMonth()
-        fetchMovements()
-    })
+    onMounted(() => getCurrentMonth())
 
     return { movements, fetchMovements, selectedMonth, deleteMovement }
 }

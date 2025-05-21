@@ -1,20 +1,12 @@
 import { onMounted, ref } from "vue";
 import api from "../constants/api";
+import { useCategorieStore } from "../stores/categoriesStore";
 
 export function useCategories() {
     const name = ref('');
-    const categories = ref([]);
     const isUpdate = ref(false);
     let idUpdate = null;
-
-    const getCategories = async () => {
-        try {
-            const response = await api.get('/categories');
-            categories.value = response.data;
-        } catch (error) {
-            console.error('Error fetching categories:', error);
-        }
-    }
+    const categoriesStore = useCategorieStore()
 
     const createCategory = async () => {
 
@@ -28,9 +20,9 @@ export function useCategories() {
                 name: name.value
             });
             console.log('Category created:', response.data);
-            
+
             name.value = '';
-            getCategories()
+            categoriesStore.getCategories()
         } catch (error) {
             console.error('Error creating category:', error);
         }
@@ -40,7 +32,7 @@ export function useCategories() {
         try {
             const response = await api.delete(`/categories/${categoryId}`);
             console.log('Category deleted:', response.data);
-            getCategories()
+            categoriesStore.getCategories()
         } catch (error) {
             console.error('Error deleting category:', error);
         }
@@ -48,12 +40,12 @@ export function useCategories() {
 
     const onUpdateCategory = (categoryId) => {
 
-        const idx = categories.value.findIndex(categorie => categorie.id === categoryId);
+        const idx = categoriesStore.categories.value.findIndex(categorie => categorie.id === categoryId);
 
         if (idx === -1) return
 
-        name.value = categories.value[idx].name;
-        categories.value.splice(idx, 1);
+        name.value = categoriesStore.categories.value[idx].name;
+        categoriesStore.categories.value.splice(idx, 1);
         isUpdate.value = true;
         idUpdate = categoryId;
 
@@ -65,7 +57,7 @@ export function useCategories() {
                 name: name.value
             });
             console.log('Category updated:', response.data);
-            getCategories()
+            categoriesStore.getCategories()
             isUpdate.value = false;
             idUpdate = null;
             name.value = '';
@@ -74,8 +66,8 @@ export function useCategories() {
         }
     };
 
-    onMounted(async () => getCategories());
+    onMounted(async () => categoriesStore.getCategories());
 
-    return { name, categories, createCategory, deleteCategory, updateCategory, onUpdateCategory, isUpdate, getCategories };
+    return { name, createCategory, deleteCategory, updateCategory, onUpdateCategory, isUpdate };
 
 }

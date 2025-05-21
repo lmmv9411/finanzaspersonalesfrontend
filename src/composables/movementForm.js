@@ -108,6 +108,6 @@ export const useMovementform = () => {
         valor.value = formatoCOP.format(numero);
     }
 
-    return { movement, submitForm, formatearComoMoneda, valor, movementStore, modalStore }
+    return { movement, submitForm, formatearComoMoneda, valor, modalStore }
 
 }

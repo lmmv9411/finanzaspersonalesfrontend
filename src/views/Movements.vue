@@ -3,10 +3,10 @@
     <h2 class="mx-auto dark:text-white w-fit text-2xl font-semibold mt-4">Movimientos Registrados</h2>
 
     <div
-         class="shadow-md p-2 rounded dark:bg-gray-800 bg-slate-100 flex gap-2 dark:text-gray-300 items-start sm:flex-row
-        sm:items-end sm:w-fit m-auto flex-wrap">
+         class="shadow-md p-4 rounded dark:bg-gray-800 bg-slate-100 flex gap-2 dark:text-gray-300 items-start sm:flex-row
+        sm:items-end w-fit m-auto flex-wrap">
 
-        <div class="flex-1">
+        <div class="flex flex-row items-center gap-4">
             <label for="selectedMonth" class="block text-gray-700 dark:text-gray-300">Filtrar Mes</label>
             <input v-model="selectedMonth" type="month" id="selectedMonth"
                    class="p-2 border border-gray-300 dark:bg-gray-900 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded" />

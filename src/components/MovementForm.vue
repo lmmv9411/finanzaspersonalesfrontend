@@ -8,7 +8,8 @@
 
             <div v-show="isEdit" class="flex flex-col w-full">
                 <label for="createdAt">Fecha</label>
-                <input id="createdAt" type="datetime-local" v-model="movement.updatedAt" class="p-2 border border-gray-300 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded w-full">
+                <input id="createdAt" type="datetime-local" v-model="movement.updatedAt"
+                       class="p-2 border border-gray-300 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded w-full">
             </div>
 
             <div class="w-full">
@@ -49,7 +50,7 @@
                         v-model="movement.CategoryId"
                         class="p-2 border border-gray-300 dark:bg-gray-900 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded w-full">
                     <option value="" disabled>Selecciona una categoría</option>
-                    <option v-for="category in movementStore.categories" :key="category.id" :value="category.id">
+                    <option v-for="category in categoriesStore.categories" :key="category.id" :value="category.id">
                         {{ category.name }}
                     </option>
                 </select>
@@ -71,6 +72,7 @@
 
 <script setup>
 import { watchEffect } from 'vue';
+import { useCategorieStore } from '../stores/categoriesStore'
 import { useMovementform } from '../composables/movementForm';
 
 const { isEdit = false, data } = defineProps(['isEdit', 'data']);
@@ -80,11 +82,13 @@ const {
     movement,
     submitForm,
     valor,
-    movementStore,
     modalStore
 } = useMovementform();
 
+const categoriesStore = useCategorieStore()
+
 watchEffect(() => {
+
     if (isEdit && data) {
 
         const isoDate = data.updatedAt;
@@ -104,6 +108,7 @@ watchEffect(() => {
 
         formatearComoMoneda(data.amount, false)
     }
+
 })
 
 </script>

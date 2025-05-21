@@ -1,7 +1,12 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import AddMovementModal from '../components/AddMovementModal.vue';
 import Balance from '../components/Balance.vue';
 import HomeGraphics from '../components/HomeGraphics.vue';
+import { useCategorieStore } from '../stores/categoriesStore';
+
+const categoriesStore = useCategorieStore()
+onMounted(async () => await categoriesStore.getCategories())
 
 </script>
 

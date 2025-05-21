@@ -6,9 +6,8 @@
             'md:translate-x-0'
         ]">
         <div class="p-2 h-full flex flex-col">
-            <!--<h2 class="text-lg font-bold mb-6 dark:text-gray-100">Menú</h2>-->
-            <div class="pb-4">
-                <span class="text-sm dark:text-gray-100">{{ user.name }} {{ user.lastName }}</span>
+            <div class="p-4">
+                <span class="text-sm text-semibold dark:text-gray-100">{{ user.name }} {{ user.lastName }}</span>
             </div>
             <nav class="flex flex-col flex-1 justify-between gap-2">
                 <div class="flex flex-col gap-2">
