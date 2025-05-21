@@ -6,7 +6,10 @@
             'md:translate-x-0'
         ]">
         <div class="p-2 h-full flex flex-col">
-            <h2 class="text-lg font-bold mb-6 dark:text-gray-100">Menú</h2>
+            <!--<h2 class="text-lg font-bold mb-6 dark:text-gray-100">Menú</h2>-->
+            <div class="pb-4">
+                <span class="text-sm dark:text-gray-100">{{ user.name }} {{ user.lastName }}</span>
+            </div>
             <nav class="flex flex-col flex-1 justify-between gap-2">
                 <div class="flex flex-col gap-2">
                     <RouterLink
@@ -40,8 +43,10 @@
 
 <script setup>
 import { AdjustmentsVerticalIcon, ArrowRightStartOnRectangleIcon, ChartBarIcon, HomeIcon, TagIcon } from '@heroicons/vue/24/solid';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import ToggleTheme from './ToggleTheme.vue';
+import api from '../constants/api';
 
 const props = defineProps({ isOpen: Boolean })
 
@@ -62,5 +67,13 @@ const logout = async () => {
     localStorage.removeItem('jwt_token')
     router.push({ name: 'Login' })
 }
+
+const user = ref({});
+
+onMounted(async () => {
+    const res = await api.get('/user')
+    user.value = res.data;
+})
+
 
 </script>
