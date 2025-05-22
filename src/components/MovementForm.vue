@@ -24,6 +24,19 @@
             </div>
 
             <div class="w-full">
+                <label for="category" class="block text-gray-700 dark:text-gray-300">Categoría</label>
+                <select
+                        id="category"
+                        v-model="movement.CategoryId"
+                        class="p-2 border border-gray-300 dark:bg-gray-900 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded w-full">
+                    <option value="" disabled>Selecciona una categoría</option>
+                    <option v-for="category in categoriesStore.categories" :key="category.id" :value="category.id">
+                        {{ category.name }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="w-full">
                 <label for="amount" class="block text-gray-700 dark:text-gray-300">Monto</label>
                 <input
                        type="tel"
@@ -41,19 +54,6 @@
                        id="description"
                        v-model="movement.description"
                        class="p-2 border border-gray-300 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded w-full" />
-            </div>
-
-            <div class="w-full">
-                <label for="category" class="block text-gray-700 dark:text-gray-300">Categoría</label>
-                <select
-                        id="category"
-                        v-model="movement.CategoryId"
-                        class="p-2 border border-gray-300 dark:bg-gray-900 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded w-full">
-                    <option value="" disabled>Selecciona una categoría</option>
-                    <option v-for="category in categoriesStore.categories" :key="category.id" :value="category.id">
-                        {{ category.name }}
-                    </option>
-                </select>
             </div>
 
             <div class="flex gap-2">

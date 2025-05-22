@@ -7,7 +7,7 @@
         ]">
         <div class="p-2 h-full flex flex-col">
             <div class="p-4">
-                <span class="text-sm text-semibold dark:text-gray-100">{{ user.name }} {{ user.lastName }}</span>
+                <span class="text-sm text-bold dark:text-gray-100">{{ user.name }} {{ user.lastName }}</span>
             </div>
             <nav class="flex flex-col flex-1 justify-between gap-2">
                 <div class="flex flex-col gap-2">

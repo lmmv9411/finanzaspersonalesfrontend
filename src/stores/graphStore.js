@@ -7,7 +7,7 @@ export const useGraphStore = defineStore("graph", () => {
 
     const balanceStore = useBalanceStore();
 
-    const chartData = ref({
+    const chartDataIngreso = ref({
         labels: [],
         datasets: [{
             label: 'total',
@@ -19,7 +19,20 @@ export const useGraphStore = defineStore("graph", () => {
         }]
     })
 
-    const chartKey = ref(0);
+    const chartDataGasto = ref({
+        labels: [],
+        datasets: [{
+            label: 'total',
+            data: [],
+            backgroundColor: [
+                '#60a5fa', '#f87171', '#34d399', '#fbbf24',
+                '#a78bfa', '#fb7185', '#facc15', '#38bdf8'
+            ]
+        }]
+    })
+
+    const chartKeyA = ref(0)
+    const chartKeyB = ref(1)
 
     const getTotalByCategory = async () => {
 
@@ -30,10 +43,14 @@ export const useGraphStore = defineStore("graph", () => {
             const resp = await api.get(`/stats/totalByCategory?startDate=${sd}&endDate=${ed}`)
             const { data } = resp
 
-            chartData.value.labels = data.map(d => d.Category.name)
-            chartData.value.datasets[0].data = data.map(d => Number(d.total))
+            chartDataGasto.value.labels = data.totalGastoByCategory.map(d => d.Category.name)
+            chartDataGasto.value.datasets[0].data = data.totalGastoByCategory.map(d => Number(d.total))
 
-            chartKey.value += 1;
+            chartDataIngreso.value.labels = data.totalIngresoByCategory.map(d => d.Category.name)
+            chartDataIngreso.value.datasets[0].data = data.totalIngresoByCategory.map(d => Number(d.total))
+
+            chartKeyA.value += 1
+            chartKeyB.value += 1
 
         } catch (e) {
             console.error('Error al cargar datos del gráfico:', e)
@@ -45,6 +62,6 @@ export const useGraphStore = defineStore("graph", () => {
         () => getTotalByCategory()
     )
 
-    return { chartData, getTotalByCategory, chartKey };
+    return { chartDataIngreso, chartDataGasto, getTotalByCategory, chartKeyA, chartKeyB };
 
 })
