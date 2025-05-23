@@ -25,6 +25,7 @@ export const useMovements = () => {
         const result = await Swal.fire({
             title: "Eliminar Movimiento?",
             icon: 'question',
+            showCancelButton: true,
             confirmButtonText: "Eliminar",
             cancelButtonText: "Cancelar",
             theme: 'auto'
