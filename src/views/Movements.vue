@@ -46,7 +46,7 @@
                     </td>
                     <td class="px-4 py-2">{{ movement.description }}</td>
                     <td class="px-4 py-2">{{ movement.Category.name }}</td>
-                    <td class="px-4 py-2">{{ new Date(movement.createdAt).toLocaleString() }}</td>
+                    <td class="px-4 py-2">{{ new Date(movement.date).toLocaleString() }}</td>
                     <td class="px-4 py-2 flex gap-2 justify-center">
                         <button @click="edit(movement)"
                                 class="text-blue-500 hover:text-blue-700 cursor-pointer" title="Editar movimiento">

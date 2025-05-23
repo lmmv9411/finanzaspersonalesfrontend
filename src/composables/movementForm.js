@@ -19,6 +19,34 @@ export const useMovementform = () => {
 
         movement.value.amount = valor.value.replace(/\D/g, ''); // Limpiar el valor antes de enviarlo
 
+        if (isEdit) {
+            const confirm = await Swal.fire({
+                title: '¿Desea Editar Registro?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, Editar',
+                cancelButtonText: 'Cancelar',
+                theme: 'auto'
+            })
+            if (!confirm.isConfirmed) {
+                
+                modalStore.showModal = false
+                resetForm()
+
+                Swal.fire({
+                    title: `Edicion Cancelada`,
+                    icon: "success",
+                    toast: true,
+                    position: "top",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    theme: 'auto'
+                });
+                return;
+            }
+        }
+
         Swal.fire({
             title: isEdit ? 'Editando' : 'Guardando...',
             allowOutsideClick: false,
@@ -57,6 +85,8 @@ export const useMovementform = () => {
                 theme: 'auto'
             });
         }
+
+        modalStore.showModal = false
 
         resetForm()
 

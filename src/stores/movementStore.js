@@ -15,7 +15,7 @@ export const useMovementStore = defineStore('movement', () => {
             if (!isEdit) {
                 await api.post('/movements', movement)
             } else {
-                await api.put('/movements', movement)
+                await api.put(`/movements/${movement.id}`, movement)
             }
 
             balanceStore.fetchBalance()

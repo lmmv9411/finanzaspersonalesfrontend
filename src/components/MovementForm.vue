@@ -8,7 +8,7 @@
 
             <div v-show="isEdit" class="flex flex-col w-full">
                 <label for="createdAt">Fecha</label>
-                <input id="createdAt" type="datetime-local" v-model="movement.updatedAt"
+                <input id="createdAt" type="datetime-local" v-model="movement.date"
                        class="p-2 border border-gray-300 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded w-full">
             </div>
 
@@ -87,11 +87,11 @@ const {
 
 const categoriesStore = useCategorieStore()
 
-watchEffect(() => {
+watchEffect(async () => {
 
     if (isEdit && data) {
 
-        const isoDate = data.updatedAt;
+        const isoDate = data.date;
         const date = new Date(isoDate);
 
         const pad = n => n.toString().padStart(2, '0');
@@ -103,10 +103,12 @@ watchEffect(() => {
             amount: data.amount,
             description: data.description,
             id: data.id,
-            updatedAt: localDateTime
+            date: localDateTime
         }
 
         formatearComoMoneda(data.amount, false)
+
+        await useCategorieStore().getCategories()
     }
 
 })
