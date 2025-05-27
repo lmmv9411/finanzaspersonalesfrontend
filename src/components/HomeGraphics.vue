@@ -1,11 +1,11 @@
 <template>
     <div class="w-full max-w-md mx-auto dark:bg-slate-800 bg-slate-100 rounded shadow-2xl p-4">
         <h4 class="text-xl font-semibold dark:text-gray-300">Gasto Por Categoria</h4>
-        <Pie :key="graphStore.chartKeyA" :data="graphStore.chartDataGasto" :options="chartOptions" />
+        <Doughnut :key="graphStore.chartKeyA" :data="graphStore.chartDataGasto" :options="chartOptions" />
     </div>
     <div class="w-full max-w-md mx-auto dark:bg-slate-800 bg-slate-100 rounded shadow-2xl p-4">
         <h4 class="text-xl font-semibold dark:text-gray-300">Ingreso Por Categoria</h4>
-        <Pie :key="graphStore.chartKeyB" :data="graphStore.chartDataIngreso" :options="chartOptions" />
+        <Doughnut :key="graphStore.chartKeyB" :data="graphStore.chartDataIngreso" :options="chartOptions" />
     </div>
 </template>
 
@@ -13,7 +13,7 @@
 import { ArcElement, Chart as ChartJS, Legend, Title, Tooltip } from 'chart.js'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { onMounted } from 'vue'
-import { Pie } from 'vue-chartjs'
+import { Doughnut } from 'vue-chartjs'
 import { useGraphStore } from '../stores/graphStore'
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement, ChartDataLabels)
