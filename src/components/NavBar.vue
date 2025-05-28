@@ -1,5 +1,5 @@
 <template>
-    <header class="flex items-center justify-between bg-slate-800 text-white p-2 shadow-xl">
+    <header class="flex items-center justify-between dark:bg-indigo-800 bg-indigo-500 text-gray-100 dark:text-gray-200 p-2 shadow-xl">
         <div class="text-xl font-bold">Mis Finanzas</div>
 
         <div class="md:hidden bg-slate-700 rounded-lg">

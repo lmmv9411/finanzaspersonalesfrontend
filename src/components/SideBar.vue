@@ -1,13 +1,14 @@
 <template>
     <aside
            :class="[
-            'fixed md:static top-0 left-0 w-64 h-full dark:bg-gray-900 bg-slate-100 transform transition-transform duration-300 z-50 shadow-xl bg-gray-200',
+            'fixed md:static top-0 left-0 w-64 h-full dark:bg-indigo-900 bg-indigo-700 transform transition-transform duration-300 z-50 shadow-xl bg-gray-200',
             isOpen ? 'translate-x-0' : '-translate-x-full',
             'md:translate-x-0'
         ]">
         <div class="p-2 h-full flex flex-col">
             <div class="p-4">
-                <span class="text-sm text-bold dark:text-gray-100">{{ user.name }} {{ user.lastName }}</span>
+                <span class="text-sm text-bold dark:text-gray-200 text-gray-100">{{ user.name }} {{ user.lastName
+                }}</span>
             </div>
             <nav class="flex flex-col flex-1 justify-between gap-2">
                 <div class="flex flex-col gap-2">
@@ -15,8 +16,8 @@
                                 v-for="item in menu"
                                 :key="item.name"
                                 :to="item.to"
-                                :class="{ 'bg-blue-400 text-white': $route.path === item.to }"
-                                class="flex gap-4 px-4 py-2 dark:text-white rounded hover:bg-gray-600 hover:text-white text-gray-700 transition-colors duration-300"
+                                :class="{ 'bg-indigo-500 text-white': $route.path === item.to }"
+                                class="flex gap-4 p-4 dark:text-gray-100 rounded hover:bg-indigo-900 dark:hover:bg-indigo-700 hover:text-white text-gray-200 transition-colors duration-300"
                                 @click="emits('toggleSidebar')">
                         <component
                                    v-if="item.icon"
@@ -28,12 +29,12 @@
                 <div class="flex gap-2 flex-col">
                     <button
                             @click="logout"
-                            class="flex gap-4 w-full cursor-pointer px-4 py-2 dark:text-white rounded hover:bg-gray-600 hover:text-white text-gray-700 transition-colors duration-300">
+                            class="dark:hover:bg-indigo-700 flex gap-4 w-full cursor-pointer px-4 py-2 dark:text-gray-200 text-gray-100 rounded hover:bg-indigo-900 hover:text-white transition-colors duration-300">
                         <ArrowRightStartOnRectangleIcon class="w-5 h-5 inline-block" />
                         <span>Cerrar Sesión</span>
                     </button>
 
-                    <ToggleTheme class="px-4 py-2 dark:text-white rounded" />
+                    <ToggleTheme class="px-4 py-2 dark:text-gray-100 text-gray-200 rounded" />
                 </div>
             </nav>
         </div>

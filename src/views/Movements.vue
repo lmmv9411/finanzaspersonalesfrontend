@@ -28,7 +28,7 @@
             </thead>
             <tbody>
                 <tr v-for="movement in movements" :key="movement.id" class="border-b border-gray-300">
-                    <td class="px-4 py-2">
+                    <td class="p-4">
                         <span class="font-bold" :class="{
                             'text-green-600': movement.type === 'ingreso',
                             'text-red-600': movement.type !== 'ingreso'
