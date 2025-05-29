@@ -24,11 +24,13 @@ export const useBalanceStore = defineStore("balance", () => {
 
     const selectedMonth = ref(getCurrentMonth())
 
-    watch(selectedMonth, (newVal) => {
+    watch(selectedMonth, async (newVal) => {
+
         const [year, month] = newVal.split('-');
 
         startDate.value = `${year}-${month}-01 00:00:00`;
         endDate.value = new Date(year, month, 0).toISOString().split('T')[0] + ' 23:59:59';
+        await fetchBalance()
     })
 
     const formatCurrency = (value) => {

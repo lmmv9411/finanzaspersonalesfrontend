@@ -8,7 +8,7 @@
         <div class="p-2 h-full flex flex-col">
             <div class="p-4">
                 <span class="text-sm text-bold dark:text-gray-200 text-gray-100">{{ user.name }} {{ user.lastName
-                }}</span>
+                    }}</span>
             </div>
             <nav class="flex flex-col flex-1 justify-between gap-2">
                 <div class="flex flex-col gap-2">
@@ -25,17 +25,16 @@
                                    class="w-5 h-5 inline-block" />
                         <span>{{ item.name }}</span>
                     </RouterLink>
-                </div>
-                <div class="flex gap-2 flex-col">
                     <button
                             @click="logout"
                             class="dark:hover:bg-indigo-700 flex gap-4 w-full cursor-pointer px-4 py-2 dark:text-gray-200 text-gray-100 rounded hover:bg-indigo-900 hover:text-white transition-colors duration-300">
                         <ArrowRightStartOnRectangleIcon class="w-5 h-5 inline-block" />
                         <span>Cerrar Sesión</span>
                     </button>
-
-                    <ToggleTheme class="px-4 py-2 dark:text-gray-100 text-gray-200 rounded" />
                 </div>
+
+                <ToggleTheme class="px-4 py-2 dark:text-gray-100 text-gray-200 rounded" />
+
             </nav>
         </div>
     </aside>

@@ -1,15 +1,17 @@
 <template>
-    <input
-           :id="id"
-           :value="modelValue"
-           :type="type"
-           :placeholder="placeholder"
-           :disabled="disabled"
-           :class="[
-            baseClasses,
-            colorClasses,
-            disabled ? 'opacity-50 cursor-not-allowed' : '']"
-           @input="$emit('update:modelValue', $event.target.value)" />
+    <select
+            :id="id"
+            :value="modelValue"
+            :type="type"
+            :placeholder="placeholder"
+            :disabled="disabled"
+            :class="[
+                baseClasses,
+                colorClasses,
+                disabled ? 'opacity-50 cursor-not-allowed' : '']"
+            @input="$emit('update:modelValue', $event.target.value)">
+        <slot />
+    </select>
 </template>
 
 <script setup>

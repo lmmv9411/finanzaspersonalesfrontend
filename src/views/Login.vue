@@ -17,7 +17,7 @@
                     <BaseInput v-model="password" type="password" required id="password" />
                 </div>
 
-                <BaseButton type="submit" class="w-full">Iniciar Sesión</BaseButton>
+                <BaseButton type="submit" color="success" class="w-full">Iniciar Sesión</BaseButton>
             </form>
 
         </div>

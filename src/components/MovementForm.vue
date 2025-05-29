@@ -8,63 +8,46 @@
 
             <div v-show="isEdit" class="flex flex-col w-full">
                 <label for="createdAt">Fecha</label>
-                <input id="createdAt" type="datetime-local" v-model="movement.date"
-                       class="p-2 border border-gray-300 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded w-full">
+                <BaseInput id="createdAt" type="datetime-local" v-model="movement.date" />
             </div>
 
             <div class="w-full">
                 <label for="type" class="block text-gray-700 dark:text-gray-300">Tipo de Movimiento</label>
-                <select
-                        id="type"
-                        v-model="movement.type"
-                        class="p-2 w-full border border-gray-300 dark:bg-gray-900 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded">
+                <BaseSelect id="type" v-model="movement.type">
                     <option value="ingreso">Ingreso</option>
                     <option value="gasto">Gasto</option>
-                </select>
+                </BaseSelect>
             </div>
 
             <div class="w-full">
                 <label for="category" class="block text-gray-700 dark:text-gray-300">Categoría</label>
-                <select
-                        id="category"
-                        v-model="movement.CategoryId"
-                        class="p-2 border border-gray-300 dark:bg-gray-900 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded w-full">
+                <BaseSelect id="category" v-model="movement.CategoryId">
                     <option value="" disabled>Selecciona una categoría</option>
                     <option v-for="category in categoriesStore.categories" :key="category.id" :value="category.id">
                         {{ category.name }}
                     </option>
-                </select>
+                </BaseSelect>
             </div>
 
             <div class="w-full">
                 <label for="amount" class="block text-gray-700 dark:text-gray-300">Monto</label>
-                <input
-                       type="tel"
-                       id="amount"
-                       v-model="valor"
-                       @input="formatearComoMoneda"
-                       class="p-2 border border-gray-300 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded w-full"
-                       required />
+                <BaseInput type="tel"
+                           id="amount"
+                           v-model="valor"
+                           required
+                           @input="formatearComoMoneda" />
             </div>
 
             <div class="w-full">
                 <label for="description" class="block text-gray-700 dark:text-gray-300">Descripción</label>
-                <input
-                       type="text"
-                       id="description"
-                       v-model="movement.description"
-                       class="p-2 border border-gray-300 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded w-full" />
+                <BaseInput id="description" v-model="movement.description" />
             </div>
 
             <div class="flex gap-2">
-                <button type="submit"
-                        class="sm:w-auto p-2 bg-emerald-500 hover:bg-emerald-400 text-white rounded cursor-pointer">
-                    {{ isEdit ? 'Editar' : 'Registrar' }} Movimiento
-                </button>
-                <button @click="modalStore.isRendered = false" type="button"
-                        class="sm:w-auto p-2 bg-red-500 hover:bg-red-600 text-white rounded cursor-pointer">
-                    Cerrar
-                </button>
+                <BaseButton type="submit">{{ isEdit ? 'Editar' : 'Registrar' }} Movimiento</BaseButton>
+                <BaseButton
+                            color="danger"
+                            @click="modalStore.isRendered = false">Cerrar</BaseButton>
             </div>
         </form>
     </div>
@@ -72,8 +55,11 @@
 
 <script setup>
 import { watchEffect } from 'vue';
-import { useCategorieStore } from '../stores/categoriesStore'
 import { useMovementform } from '../composables/movementForm';
+import { useCategorieStore } from '../stores/categoriesStore';
+import BaseButton from './ui/BaseButton.vue';
+import BaseInput from './ui/BaseInput.vue';
+import BaseSelect from './ui/BaseSelect.vue';
 
 const { isEdit = false, data } = defineProps(['isEdit', 'data']);
 
