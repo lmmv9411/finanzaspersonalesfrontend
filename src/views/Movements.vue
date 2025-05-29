@@ -9,7 +9,7 @@
         <div class="flex flex-row items-center gap-4">
             <label for="selectedMonth" class="block text-gray-700 dark:text-gray-300">Filtrar Mes</label>
             <input v-model="selectedMonth" type="month" id="selectedMonth"
-                   class="p-2 border border-gray-300 dark:bg-gray-900 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 transition-colors duration-300 rounded" />
+                   class="p-2 border border-gray-300 dark:bg-gray-900 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 rounded transition-colors duration-300" />
         </div>
     </div>
 
