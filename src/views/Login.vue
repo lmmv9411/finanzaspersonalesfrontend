@@ -30,6 +30,7 @@ import { useRouter } from 'vue-router'
 import api from '../constants/api'
 import BaseButton from '../components/ui/BaseButton.vue'
 import BaseInput from '../components/ui/BaseInput.vue'
+import Swal from 'sweetalert2'
 
 const user = ref('')
 const password = ref('')
@@ -37,6 +38,16 @@ const router = useRouter()
 
 const handleLogin = async () => {
     try {
+        
+        Swal.fire({
+            title: 'Iniciando Sesión...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading()
+            },
+            theme: 'auto'
+        })
+
         const resp = await api.post('/user/login',
             {
                 user: user.value,
@@ -44,13 +55,21 @@ const handleLogin = async () => {
             }
         )
 
+        Swal.close()
+
         localStorage.setItem('jwt_token', resp.data.token)
 
         router.push({ name: 'Home' })
 
     } catch (err) {
-        debugger
-        alert(err.message)
+        console.error(err)
+        Swal.fire({
+            title: err.response.data.error,
+            icon: "error",
+            timer: 3000,
+            showConfirmButton: false,
+            theme: 'auto'
+        });
     }
 
 }

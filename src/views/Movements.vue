@@ -15,7 +15,7 @@
 
     <div class="w-full max-w-4xl mx-auto p-4 overflow-x-auto">
 
-        <table class="dark:text-white w-full table-auto border-collapse whitespace-nowrap">
+        <table class="dark:text-white w-full table-auto border-collapse whitespace-nowrap text-lg">
             <thead>
                 <tr class="border-b border-gray-400">
                     <th class="px-4 py-2">Tipo</th>

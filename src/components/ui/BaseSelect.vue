@@ -2,7 +2,6 @@
     <select
             :id="id"
             :value="modelValue"
-            :type="type"
             :placeholder="placeholder"
             :disabled="disabled"
             :class="[
@@ -21,10 +20,6 @@ const props = defineProps({
     modelValue: String,
     placeholder: String,
     id: String,
-    type: {
-        type: String,
-        default: 'text'
-    },
     color: {
         type: String,
         default: 'primary' // 'primary', 'danger', etc.

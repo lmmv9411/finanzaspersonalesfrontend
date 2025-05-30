@@ -11,12 +11,29 @@
                 <BaseInput id="createdAt" type="datetime-local" v-model="movement.date" />
             </div>
 
-            <div class="w-full">
-                <label for="type" class="block text-gray-700 dark:text-gray-300">Tipo de Movimiento</label>
-                <BaseSelect id="type" v-model="movement.type">
-                    <option value="ingreso">Ingreso</option>
-                    <option value="gasto">Gasto</option>
-                </BaseSelect>
+            <div class="w-full flex gap-4">
+
+                <label class="inline-flex items-center gap-2 cursor-pointer">
+                    <input
+                           type="radio"
+                           value="ingreso"
+                           v-model="movement.type"
+                           class="form-radio h-5 w-5" />
+
+                    <span class="">Ingreso</span>
+
+                </label>
+                <label class="inline-flex items-center gap-2 cursor-pointer">
+                    <input
+                           type="radio"
+                           value="gasto"
+                           v-model="movement.type"
+                           class="form-radio h-5 w-5" />
+
+                    <span class="">Gasto</span>
+
+                </label>
+
             </div>
 
             <div class="w-full">
@@ -44,10 +61,13 @@
             </div>
 
             <div class="flex gap-2">
-                <BaseButton type="submit">{{ isEdit ? 'Editar' : 'Registrar' }} Movimiento</BaseButton>
-                <BaseButton
-                            color="danger"
-                            @click="modalStore.isRendered = false">Cerrar</BaseButton>
+                <BaseButton type="submit" class="flex gap-2 items-center">
+                    <span>{{ isEdit ? 'Editar' : 'Crear' }} Movimiento</span>
+                    <ArrowsRightLeftIcon class="w-5 inline" />
+                </BaseButton>
+                <BaseButton color="danger" @click="modalStore.isRendered = false">
+                    <span>Cerrar</span>
+                </BaseButton>
             </div>
         </form>
     </div>
@@ -60,6 +80,7 @@ import { useCategorieStore } from '../stores/categoriesStore';
 import BaseButton from './ui/BaseButton.vue';
 import BaseInput from './ui/BaseInput.vue';
 import BaseSelect from './ui/BaseSelect.vue';
+import { ArrowsRightLeftIcon, XMarkIcon } from '@heroicons/vue/16/solid';
 
 const { isEdit = false, data } = defineProps(['isEdit', 'data']);
 

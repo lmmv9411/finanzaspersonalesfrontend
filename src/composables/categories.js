@@ -17,15 +17,55 @@ export function useCategories() {
         }
 
         try {
-            const response = await api.post('/categories', {
-                name: name.value
+
+            if (name.value === '') {
+                Swal.fire({
+                    title: "Nombre Vacío",
+                    icon: "error",
+                    toast: true,
+                    position: "top",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    theme: 'auto'
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: 'Creando...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading()
+                },
+                theme: 'auto'
+            })
+
+            await api.post('/categories', { name: name.value });
+
+            Swal.fire({
+                title: "Categoria Creada",
+                icon: "success",
+                toast: true,
+                position: "top",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                theme: 'auto'
             });
-            console.log('Category created:', response.data);
 
             name.value = '';
             categoriesStore.getCategories()
         } catch (error) {
             console.error('Error creating category:', error);
+            Swal.fire({
+                title: "Error al crear categoria",
+                text: error.response.data.error,
+                icon: "error",
+                timer: 3000,
+                showConfirmButton: false,
+                theme: 'auto'
+            });
         }
     };
 
@@ -60,7 +100,8 @@ export function useCategories() {
                 allowOutsideClick: false,
                 didOpen: () => {
                     Swal.showLoading()
-                }
+                },
+                theme: 'auto'
             })
 
             await api.delete(`/categories/${categoryId}`);
@@ -92,7 +133,7 @@ export function useCategories() {
     };
 
     const onUpdateCategory = (categoryId) => {
-        
+
         const idx = categoriesStore.categories.findIndex(categorie => categorie.id === categoryId);
 
         if (idx === -1) return
