@@ -1,6 +1,6 @@
 import api from '../constants/api'
 import { defineStore } from "pinia"
-import { ref, watch } from "vue"
+import { ref, watch, watchEffect } from "vue"
 import Swal from "sweetalert2"
 
 export const useBalanceStore = defineStore("balance", () => {
@@ -24,14 +24,13 @@ export const useBalanceStore = defineStore("balance", () => {
 
     const selectedMonth = ref(getCurrentMonth())
 
-    watch(selectedMonth, async (newVal) => {
-
+    watch(selectedMonth, (newVal) => {
         const [year, month] = newVal.split('-');
-
         startDate.value = `${year}-${month}-01 00:00:00`;
         endDate.value = new Date(year, month, 0).toISOString().split('T')[0] + ' 23:59:59';
-        await fetchBalance()
     })
+
+    watch([startDate, endDate], async () => await fetchBalance())
 
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('es-CO', {
