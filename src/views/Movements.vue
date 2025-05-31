@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <div class="w-full max-w-4xl mx-auto p-4 overflow-x-auto">
+    <div class="w-full mx-auto p-4 overflow-x-auto">
 
         <table class="dark:text-white w-full table-auto border-collapse whitespace-nowrap text-lg">
             <thead>
@@ -34,7 +34,7 @@
                             'text-red-600': movement.type !== 'ingreso'
                         }">{{ movement.type }}</span>
                     </td>
-                    <td class="px-4 py-2"
+                    <td class="p-4"
                         :class="{ 'text-green-600': movement.type === 'ingreso', 'text-red-600': movement.type !== 'ingreso' }">
                         {{
                             new Intl.NumberFormat('es-CO', {
@@ -44,23 +44,32 @@
                             }).format(movement.type === 'gasto' ? movement.amount * -1 : movement.amount)
                         }}
                     </td>
-                    <td class="px-4 py-2">{{ movement.description }}</td>
-                    <td class="px-4 py-2">{{ movement.Category.name }}</td>
-                    <td class="px-4 py-2">{{ new Date(movement.date).toLocaleString() }}</td>
-                    <td class="px-4 py-2 flex gap-2 justify-center">
-                        <button @click="edit(movement)"
-                                class="text-blue-500 hover:text-blue-700 cursor-pointer" title="Editar movimiento">
-                            <PencilSquareIcon class="h-5 w-5" />
-                        </button>
-                        <button @click="deleteMovement(movement.id)"
-                                class="text-red-500 hover:text-red-700 ml-2 cursor-pointer" title="Eliminar movimiento">
-                            <TrashIcon class="h-5 w-5" />
-                        </button>
+                    <td class="p-4">{{ movement.description }}</td>
+                    <td class="p-4">{{ movement.Category.name }}</td>
+                    <td class="p-4">{{ new Date(movement.date).toLocaleString() }}</td>
+                    <td>
+                        <div class="flex gap-2 justify-center items-center">
+                            <button @click="edit(movement)"
+                                    class="text-blue-500 hover:text-blue-700 cursor-pointer" title="Editar movimiento">
+                                <PencilSquareIcon class="h-5 w-5" />
+                            </button>
+                            <button @click="deleteMovement(movement.id)"
+                                    class="text-red-500 hover:text-red-700 ml-2 cursor-pointer"
+                                    title="Eliminar movimiento">
+                                <TrashIcon class="h-5 w-5" />
+                            </button>
+                        </div>
                     </td>
                 </tr>
             </tbody>
         </table>
+
     </div>
+
+    <Pagination
+                :currentPage="currentPage"
+                :totalPages="totalPages"
+                @page-changed="fetchMovements" />
 
 
     <Modal>
@@ -76,6 +85,7 @@ import Modal from '../components/modal/Modal.vue';
 import { useModalStore } from '../components/modal/store/modalStore';
 import MovementForm from '../components/MovementForm.vue';
 import { useMovements } from '../composables/movements';
+import Pagination from '../components/Pagination.vue';
 
 const modalStore = useModalStore();
 const movement = ref({});
@@ -85,6 +95,13 @@ const edit = (data) => {
     modalStore.showModal = true
 }
 
-const { selectedMonth, movements, deleteMovement } = useMovements()
+const {
+    selectedMonth,
+    movements,
+    deleteMovement,
+    currentPage,
+    totalPages,
+    fetchMovements
+} = useMovements()
 
 </script>

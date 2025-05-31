@@ -9,13 +9,32 @@ export const useMovements = () => {
     const startDate = ref('')
     const endDate = ref('')
 
-    const fetchMovements = async () => {
+    const totalPages = ref(1);
+    const pageSize = 10;
+    const currentPage = ref(1);
+
+    const fetchMovements = async (page = 1) => {
+        
+        currentPage.value = page
 
         try {
-            const resp = await api.get(`/movements/date?startDate=${startDate.value}&endDate=${endDate.value}`);
-            movements.value = resp.data
+            const resp = await api.get(`/movements/date?startDate=${startDate.value}&endDate=${endDate.value}&page=${currentPage.value}&pageSize=${pageSize}`);
+            movements.value = resp.data.data
+            totalPages.value = resp.data.totalPages
         } catch (error) {
             console.error('Error al cargar movimientos', error)
+            Swal.fire({
+                title: 'Ocurrió un error ' + error.status,
+                text: error.response.data.error,
+                icon: 'error',
+                theme: 'auto',
+                timer: 3500,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                toast: true,
+                position: 'top'
+
+            })
         }
     }
 
@@ -100,5 +119,13 @@ export const useMovements = () => {
 
     onMounted(() => getCurrentMonth())
 
-    return { movements, fetchMovements, selectedMonth, deleteMovement }
+    return {
+        movements,
+        fetchMovements,
+        selectedMonth,
+        deleteMovement,
+        currentPage,
+        totalPages,
+        fetchMovements
+    }
 }
