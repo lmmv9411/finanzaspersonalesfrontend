@@ -34,8 +34,9 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import api from '../constants/api'
+import { BASE_URL } from '../constants';
 
-const profileUrl = ref('http://192.168.1.66:3000/uploads/default.jpg');
+const profileUrl = ref(`${BASE_URL}/uploads/default.jpg`);
 const fileInput = ref(null);
 const selectedFile = ref(null);
 const preview = ref(null);
@@ -67,7 +68,7 @@ async function uploadImage() {
         )
 
         if (data.url) {
-            profileUrl.value = 'http://192.168.1.66:3000' + data.url;
+            profileUrl.value = `${BASE_URL}${data.url}`;
             preview.value = null;
             selectedFile.value = null;
         } else {
@@ -83,7 +84,7 @@ async function uploadImage() {
 
 onMounted(async () => {
     const { data } = await api.get('/user')
-    profileUrl.value = 'http://192.168.1.66:3000' + data.profilePicture
+    profileUrl.value = `${BASE_URL}${data.profilePicture}`
 })
 
 </script>

@@ -51,6 +51,7 @@ import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import ToggleTheme from './ToggleTheme.vue';
 import api from '../constants/api';
+import { BASE_URL } from '../constants';
 
 const props = defineProps({ isOpen: Boolean })
 
@@ -73,13 +74,13 @@ const logout = async () => {
 }
 
 const user = ref({});
-const preview = ref('http://192.168.1.66:3000/uploads/default.jpg');
+const preview = ref(`${BASE_URL}/uploads/default.jpg`);
 const profileUrl = ref(null);
 
 onMounted(async () => {
     const { data } = await api.get('/user')
     user.value = data;
-    profileUrl.value = 'http://192.168.1.66:3000' + data.profilePicture
+    profileUrl.value = `${BASE_URL}${data.profilePicture}`
 })
 
 
