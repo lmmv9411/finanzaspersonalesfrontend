@@ -72,11 +72,24 @@ async function uploadImage() {
             preview.value = null;
             selectedFile.value = null;
         } else {
-            alert('Error al subir la imagen');
+            Swal.fire({
+                title: "Error al subir foto",
+                icon: "error",
+                timer: 3000,
+                showConfirmButton: false,
+                theme: 'auto'
+            });
         }
     } catch (err) {
         console.error(err);
-        alert('Ocurrió un error');
+        Swal.fire({
+            title: "Error al subir foto",
+            text: err.response.data.error,
+            icon: "error",
+            timer: 3000,
+            showConfirmButton: false,
+            theme: 'auto'
+        });
     } finally {
         uploading.value = false;
     }
@@ -88,5 +101,3 @@ onMounted(async () => {
 })
 
 </script>
-
-<style scoped></style>

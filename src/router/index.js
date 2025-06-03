@@ -1,12 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import AuthLayout from '../components/AuthLayout.vue'
-import DefaultLayout from '../components/DefaultLayout.vue'
 import api from '../constants/api'
 
 const routes = [
     {
         path: '/',
-        component: DefaultLayout,
+        component: () => import('../components/DefaultLayout.vue'),
         meta: { requiresAuth: true },
         children: [
             {
@@ -18,7 +16,19 @@ const routes = [
             {
                 path: '/configs',
                 name: 'Configs',
-                component: () => import('../views/Configs.vue')
+                component: () => import('../views/Configs.vue'),
+                children: [
+                    {
+                        path: '',
+                        name: 'ProfilePicture',
+                        component: () => import('../views/configs/ProfilePicture.vue')
+                    },
+                    {
+                        path: 'password',
+                        name: 'Password',
+                        component: () => import('../views/configs/Password.vue')
+                    }
+                ]
             },
             {
                 path: '/movements',
@@ -34,7 +44,7 @@ const routes = [
     },
     {
         path: '/login',
-        component: AuthLayout,
+        component: () => import('../components/AuthLayout.vue'),
         children: [
             {
                 path: '',
