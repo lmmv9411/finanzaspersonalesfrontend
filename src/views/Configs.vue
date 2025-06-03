@@ -1,6 +1,7 @@
 <template>
-    <h1>Configuraciones</h1>
+    <ProfilePictureUploader />
 </template>
 
 <script setup>
+import ProfilePictureUploader from '../components/ProfilePictureUploader.vue';
 </script>

@@ -6,9 +6,14 @@
             'md:translate-x-0'
         ]">
         <div class="p-2 h-full flex flex-col">
-            <div class="p-4">
-                <span class="text-sm text-bold dark:text-gray-200 text-gray-100">{{ user.name }} {{ user.lastName
-                    }}</span>
+            <div class="flex items-center py-4 px-2 gap-2">
+                <img
+                     :src="profileUrl || preview"
+                     alt="Foto de perfil"
+                     class="w-20 h-20 rounded-full object-cover border-1 border-gray-300 dark:border-gray-600 shadow" />
+                <span class="text-lg font-bold dark:text-gray-200 text-gray-100">
+                    {{ user.name }} {{ user.lastName }}
+                </span>
             </div>
             <nav class="flex flex-col flex-1 justify-between gap-2">
                 <div class="flex flex-col gap-2">
@@ -68,10 +73,13 @@ const logout = async () => {
 }
 
 const user = ref({});
+const preview = ref('http://192.168.1.66:3000/uploads/default.jpg');
+const profileUrl = ref(null);
 
 onMounted(async () => {
-    const res = await api.get('/user')
-    user.value = res.data;
+    const { data } = await api.get('/user')
+    user.value = data;
+    profileUrl.value = 'http://192.168.1.66:3000' + data.profilePicture
 })
 
 
