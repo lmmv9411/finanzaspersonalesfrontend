@@ -15,16 +15,8 @@ export const useMovements = () => {
     const totalGasto = ref(0)
     const totalIngreso = ref(0)
     const balance = ref(0)
-
-    const meses = [
-        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-    ];
-
-    const diasSemana = [
-        'Lunes', 'Martes', 'Miércoles',
-        'Jueves', 'Viernes', 'Sábado', 'Domingo'
-    ];
+    const formatoDia = new Intl.DateTimeFormat(navigator.language, { weekday: 'long' })
+    const formatoMes = new Intl.DateTimeFormat(navigator.language, { month: 'long' })
 
     const fetchMovements = async (page = 1) => {
 
@@ -35,10 +27,13 @@ export const useMovements = () => {
             const { dias } = resp.data
 
             movements.value = dias.map(mov => {
+
                 const objDate = new Date(mov.fecha)
+
                 mov.dia = objDate.getDate()
-                mov.nombreDia = diasSemana[objDate.getDay()]
-                mov.mes = meses[objDate.getMonth()]
+                mov.nombreDia = formatoDia.format(objDate)
+                mov.mes = formatoMes.format(objDate)
+
                 const { ingresos, gastos } = mov.detalles.reduce((totales, movimiento) => {
                     if (movimiento.type === 'ingreso') {
                         totales.ingresos += Number(movimiento.amount);
@@ -47,8 +42,10 @@ export const useMovements = () => {
                     }
                     return totales;
                 }, { ingresos: 0, gastos: 0 })
+                
                 mov.ingresos = ingresos
                 mov.gastos = gastos
+                
                 return mov
             })
 
