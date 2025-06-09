@@ -22,8 +22,8 @@ export const useMovements = () => {
     ];
 
     const diasSemana = [
-        'Domingo', 'Lunes', 'Martes', 'Miércoles',
-        'Jueves', 'Viernes', 'Sábado'
+        'Lunes', 'Martes', 'Miércoles',
+        'Jueves', 'Viernes', 'Sábado', 'Domingo'
     ];
 
     const fetchMovements = async (page = 1) => {

@@ -32,7 +32,7 @@
                     </RouterLink>
                     <button
                             @click="logout"
-                            class="dark:hover:bg-indigo-700 flex gap-4 w-full cursor-pointer px-4 py-2 dark:text-gray-200 text-gray-100 rounded hover:bg-indigo-900 hover:text-white transition-colors duration-300">
+                            class="dark:hover:bg-indigo-700 flex gap-4 w-full cursor-pointer p-4 dark:text-gray-200 text-gray-100 rounded hover:bg-indigo-900 hover:text-white transition-colors duration-300">
                         <ArrowRightStartOnRectangleIcon class="w-5 h-5 inline-block" />
                         <span>Cerrar Sesión</span>
                     </button>
