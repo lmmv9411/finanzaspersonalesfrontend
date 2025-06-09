@@ -28,7 +28,7 @@ export const useMovements = () => {
 
             movements.value = dias.map(mov => {
 
-                const objDate = new Date(mov.fecha)
+                const objDate = new Date(mov.fecha_server)
 
                 mov.dia = objDate.getDate()
                 mov.nombreDia = formatoDia.format(objDate)

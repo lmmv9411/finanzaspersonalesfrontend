@@ -8,19 +8,21 @@
         </div>
 
         <!-- Resumen Mensual -->
-        <div class="flex flex-col justify-between items-center mb-6 p-4 dark:bg-gray-800 bg-blue-50 rounded-lg">
+        <div class="flex gap-4 justify-between mb-6 p-4 dark:bg-gray-800 bg-blue-50 rounded-lg">
 
-            <div class="flex gap-4">
-                <div class="text-green-600 font-bold">
-                    Ingresos: {{ formatoMoneda(totalIngreso) }}
-                </div>
-                <div class="text-red-600 font-bold">
-                    Gastos: {{ formatoMoneda(totalGasto) }}
-                </div>
-                <div class="font-bold dark:text-blue-200 text-blue-700">
-                    Saldo: {{ formatoMoneda(balance) }}
-                </div>
+            <div class="dark:text-green-400 dark:text-green-400 text-green-600 font-bold flex gap-1">
+                <ArrowTrendingUpIcon class="w-6" />
+                <span>Ingresos: {{ formatoMoneda(totalIngreso) }}</span>
             </div>
+            <div class="dark:text-red-400 dark:text-red-400 text-red-600 font-bold flex gap-1">
+                <ArrowTrendingDownIcon class="w-6" />
+                <span>Gastos: {{ formatoMoneda(totalGasto) }}</span>
+            </div>
+            <div class="font-bold dark:text-indigo-200 text-indigo-700 flex gap-1">
+                <CurrencyDollarIcon class="w-6" />
+                <span>Saldo: {{ formatoMoneda(balance) }}</span>
+            </div>
+
         </div>
         <!-- Mensaje si no hay datos -->
         <div v-if="movements.length === 0" class="text-center py-8 text-gray-500">
@@ -38,10 +40,10 @@
                     </h2>
 
                     <div class="flex gap-4">
-                        <span class="text-green-600 text-xs sm:text-base" v-if="dia.ingresos > 0">
+                        <span class="dark:text-green-400 text-green-600 text-xs sm:text-base" v-if="dia.ingresos > 0">
                             Ingresos: +{{ formatoMoneda(dia.ingresos) }}
                         </span>
-                        <span class="text-red-600 text-xs sm:text-base" v-if="dia.gastos > 0">
+                        <span class="dark:text-red-400 text-red-600 text-xs sm:text-base" v-if="dia.gastos > 0">
                             Gastos: -{{ formatoMoneda(dia.gastos) }}
                         </span>
                     </div>
@@ -55,10 +57,8 @@
                         <div class="flex justify-between items-start">
                             <div>
                                 <div class="font-medium flex items-center gap-2 dark:text-gray-200">
-                                    <span class="w-6 h-6 rounded-full flex items-center justify-center"
-                                          :class="mov.type === 'ingreso' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'">
-                                        {{ mov.type === 'ingreso' ? '↑' : '↓' }}
-                                    </span>
+                                    <ArrowTrendingUpIcon v-if="mov.type === 'ingreso'" class="w-6 text-green-500" />
+                                    <ArrowTrendingDownIcon v-else class="w-6 text-red-500" />
                                     {{ mov.description }}
                                 </div>
                                 <div class="text-sm text-gray-500 mt-1 ml-8">
@@ -68,17 +68,17 @@
                             </div>
                             <div class="flex flex-col gap-2">
                                 <span class="font-medium whitespace-nowrap"
-                                      :class="mov.type === 'ingreso' ? 'text-green-600' : 'text-red-600'">
+                                      :class="mov.type === 'ingreso' ? 'dark:text-green-400 text-green-600' : 'dark:text-red-400 text-red-600'">
                                     {{ (mov.type === 'gasto' ? '-' : '') + formatoMoneda(mov.amount) }}
                                 </span>
                                 <div class="flex gap-2 justify-center items-center">
                                     <button @click="edit(mov)"
-                                            class="text-blue-500 hover:text-blue-700 cursor-pointer"
+                                            class="dark:text-blue-400 text-blue-500 hover:text-blue-700 cursor-pointer"
                                             title="Editar movimiento">
                                         <PencilSquareIcon class="h-5 w-5" />
                                     </button>
                                     <button @click="deleteMovement(mov.id)"
-                                            class="text-red-500 hover:text-red-700 ml-2 cursor-pointer"
+                                            class="dark:text-red-400 text-red-500 hover:text-red-700 ml-2 cursor-pointer"
                                             title="Eliminar movimiento">
                                         <TrashIcon class="h-5 w-5" />
                                     </button>
@@ -103,10 +103,10 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useMovements } from '../composables/movements';
 import BaseInput from '../components/ui/BaseInput.vue'
-import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/16/solid'
+import { PencilSquareIcon, TrashIcon, ArrowTrendingUpIcon, ArrowTrendingDownIcon, CurrencyDollarIcon } from '@heroicons/vue/24/solid'
 import { useModalStore } from '../components/modal/store/modalStore';
 import Modal from '../components/modal/Modal.vue';
 import MovementForm from '../components/MovementForm.vue';
