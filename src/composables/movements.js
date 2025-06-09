@@ -9,17 +9,52 @@ export const useMovements = () => {
     const startDate = ref('')
     const endDate = ref('')
 
-    const totalPages = ref(1);
-    const pageSize = 10;
-    const currentPage = ref(1);
+    const totalPages = ref(1)
+    const pageSize = 10
+    const currentPage = ref(1)
+    const totalGasto = ref(0)
+    const totalIngreso = ref(0)
+    const balance = ref(0)
+
+    const meses = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+
+    const diasSemana = [
+        'Domingo', 'Lunes', 'Martes', 'Miércoles',
+        'Jueves', 'Viernes', 'Sábado'
+    ];
 
     const fetchMovements = async (page = 1) => {
-        
+
         currentPage.value = page
 
         try {
-            const resp = await api.get(`/movements/date?startDate=${startDate.value}&endDate=${endDate.value}&page=${currentPage.value}&pageSize=${pageSize}`);
-            movements.value = resp.data.data
+            const resp = await api.get(`/movements/day?startDate=${startDate.value}&endDate=${endDate.value}&page=${currentPage.value}&pageSize=${pageSize}`);
+            const { dias } = resp.data
+
+            movements.value = dias.map(mov => {
+                const objDate = new Date(mov.fecha)
+                mov.dia = objDate.getDate()
+                mov.nombreDia = diasSemana[objDate.getDay()]
+                mov.mes = meses[objDate.getMonth()]
+                const { ingresos, gastos } = mov.detalles.reduce((totales, movimiento) => {
+                    if (movimiento.type === 'ingreso') {
+                        totales.ingresos += Number(movimiento.amount);
+                    } else {
+                        totales.gastos += Number(movimiento.amount);
+                    }
+                    return totales;
+                }, { ingresos: 0, gastos: 0 })
+                mov.ingresos = ingresos
+                mov.gastos = gastos
+                return mov
+            })
+
+            totalGasto.value = resp.data.totalGasto
+            totalIngreso.value = resp.data.totalIngreso
+            balance.value = resp.data.balance
             totalPages.value = resp.data.totalPages
         } catch (error) {
             console.error('Error al cargar movimientos', error)
@@ -69,7 +104,8 @@ export const useMovements = () => {
             allowOutsideClick: false,
             didOpen: () => {
                 Swal.showLoading()
-            }
+            },
+            theme: 'auto'
         })
 
         try {
@@ -126,6 +162,10 @@ export const useMovements = () => {
         deleteMovement,
         currentPage,
         totalPages,
-        fetchMovements
+        fetchMovements,
+        totalGasto,
+        totalIngreso,
+        balance,
+        meses
     }
 }

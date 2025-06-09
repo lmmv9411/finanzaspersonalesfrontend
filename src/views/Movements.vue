@@ -1,93 +1,123 @@
 <template>
+    <div class="container mx-auto max-w-3xl">
 
-    <h2 class="mx-auto dark:text-white w-fit text-2xl font-semibold mt-4">Movimientos Registrados</h2>
-
-    <div
-         class="shadow-md p-4 rounded dark:bg-gray-800 bg-slate-100 flex gap-2 dark:text-gray-300 items-start sm:flex-row
-        sm:items-end w-fit m-auto flex-wrap">
-
-        <div class="flex flex-row items-center gap-4">
-            <label for="selectedMonth" class="block text-gray-700 dark:text-gray-300">Filtrar Mes</label>
-            <input v-model="selectedMonth" type="month" id="selectedMonth"
-                   class="p-2 border border-gray-300 dark:bg-gray-900 dark:border-gray-700 border-2 focus:border-gray-300 focus:outline-none focus:border-gray-500 rounded transition-colors duration-300" />
+        <!-- Selector de Mes -->
+        <div class="mb-6 flex items-center gap-4">
+            <label for="month-selector" class="font-medium text-gray-700">Mes:</label>
+            <BaseInput type="month" v-model="selectedMonth" id="month-selector" />
         </div>
-    </div>
 
-    <div class="w-full mx-auto p-4 overflow-x-auto">
+        <!-- Resumen Mensual -->
+        <div class="flex flex-col justify-between items-center mb-6 p-4 dark:bg-gray-800 bg-blue-50 rounded-lg">
+            <h1 class="text-2xl font-bold text-blue-800 dark:text-gray-200">
+                Resumen de {{ nombreMes }} {{ año }}
+            </h1>
+            <div class="flex gap-4">
+                <div class="text-green-600 font-bold">
+                    Ingresos: {{ formatoMoneda(totalIngreso) }}
+                </div>
+                <div class="text-red-600 font-bold">
+                    Gastos: {{ formatoMoneda(totalGasto) }}
+                </div>
+                <div class="font-bold dark:text-gray-200">
+                    Balance: {{ formatoMoneda(balance) }}
+                </div>
+            </div>
+        </div>
+        <!-- Mensaje si no hay datos -->
+        <div v-if="movements.length === 0" class="text-center py-8 text-gray-500">
+            No hay movimientos para este período
+        </div>
 
-        <table class="dark:text-white w-full table-auto border-collapse whitespace-nowrap text-lg">
-            <thead>
-                <tr class="border-b border-gray-400">
-                    <th class="px-4 py-2">Tipo</th>
-                    <th class="px-4 py-2">Monto</th>
-                    <th class="px-4 py-2">Descripción</th>
-                    <th class="px-4 py-2">Categoría</th>
-                    <th class="px-4 py-2">Fecha</th>
-                    <th class="px-4 py-2">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="movement in movements" :key="movement.id" class="border-b border-gray-300">
-                    <td class="p-4">
-                        <span class="font-bold" :class="{
-                            'text-green-600': movement.type === 'ingreso',
-                            'text-red-600': movement.type !== 'ingreso'
-                        }">{{ movement.type }}</span>
-                    </td>
-                    <td class="p-4"
-                        :class="{ 'text-green-600': movement.type === 'ingreso', 'text-red-600': movement.type !== 'ingreso' }">
-                        {{
-                            new Intl.NumberFormat('es-CO', {
-                                style: 'currency',
-                                currency: 'COP',
-                                maximumFractionDigits: 0
-                            }).format(movement.type === 'gasto' ? movement.amount * -1 : movement.amount)
-                        }}
-                    </td>
-                    <td class="p-4">{{ movement.description }}</td>
-                    <td class="p-4">{{ movement.Category.name }}</td>
-                    <td class="p-4">{{ new Date(movement.date).toLocaleString() }}</td>
-                    <td>
-                        <div class="flex gap-2 justify-center items-center">
-                            <button @click="edit(movement)"
-                                    class="text-blue-500 hover:text-blue-700 cursor-pointer" title="Editar movimiento">
-                                <PencilSquareIcon class="h-5 w-5" />
-                            </button>
-                            <button @click="deleteMovement(movement.id)"
-                                    class="text-red-500 hover:text-red-700 ml-2 cursor-pointer"
-                                    title="Eliminar movimiento">
-                                <TrashIcon class="h-5 w-5" />
-                            </button>
+        <!-- Listado por días -->
+        <div v-else>
+            <div v-for="dia in movements" :key="dia.fecha" class="mb-8">
+                <!-- Encabezado del día -->
+                <div class="flex gap-4 justify-between items-center p-3 dark:bg-gray-800 bg-gray-100 rounded-t-lg">
+                    <h2 class=" text-gray-800 dark:text-gray-200">
+                        {{ dia.nombreDia }}, {{ dia.dia }} de {{ dia.mes }}
+                    </h2>
+
+                    <span class="text-green-600 font-medium" v-if="dia.ingresos > dia.gastos">
+                        +{{ formatoMoneda(dia.ingresos) }}
+                    </span>
+                    <span class="text-red-600 font-medium" v-else>
+                        -{{ formatoMoneda(dia.gastos) }}
+                    </span>
+                    <span class="dark:text-gray-200">
+                        Saldo: {{ formatoMoneda(dia.ingresos - dia.gastos) }}
+                    </span>
+
+                </div>
+
+                <!-- Movimientos del día -->
+                <div
+                     class="border border-gray-200 dark:border-gray-700 rounded-b-lg divide-y divide-gray-200 dark:divide-gray-700">
+                    <div v-for="mov in dia.detalles" :key="mov.id"
+                         class="p-3 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors duration-300">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-medium flex items-center gap-2 dark:text-gray-200">
+                                    <span class="w-6 h-6 rounded-full flex items-center justify-center"
+                                          :class="mov.type === 'ingreso' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'">
+                                        {{ mov.type === 'ingreso' ? '↑' : '↓' }}
+                                    </span>
+                                    {{ mov.description }}
+                                </div>
+                                <div class="text-sm text-gray-500 mt-1 ml-8">
+                                    {{ mov.Category?.name }} •
+                                    {{ mov.type }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <span class="font-medium whitespace-nowrap"
+                                      :class="mov.type === 'ingreso' ? 'text-green-600' : 'text-red-600'">
+                                    {{ (mov.type === 'gasto' ? '-' : '') + formatoMoneda(mov.amount) }}
+                                </span>
+                                <div class="flex gap-2 justify-center items-center">
+                                    <button @click="edit(mov)"
+                                            class="text-blue-500 hover:text-blue-700 cursor-pointer"
+                                            title="Editar movimiento">
+                                        <PencilSquareIcon class="h-5 w-5" />
+                                    </button>
+                                    <button @click="deleteMovement(mov.id)"
+                                            class="text-red-500 hover:text-red-700 ml-2 cursor-pointer"
+                                            title="Eliminar movimiento">
+                                        <TrashIcon class="h-5 w-5" />
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+
+        <Pagination
+                    :currentPage="currentPage"
+                    :totalPages="totalPages"
+                    @page-changed="fetchMovements" />
     </div>
-
-    <Pagination
-                :currentPage="currentPage"
-                :totalPages="totalPages"
-                @page-changed="fetchMovements" />
-
 
     <Modal>
         <MovementForm isEdit="true" :data="movement" />
     </Modal>
-
 </template>
 
 <script setup>
-import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/16/solid';
-import { ref } from 'vue';
-import Modal from '../components/modal/Modal.vue';
-import { useModalStore } from '../components/modal/store/modalStore';
-import MovementForm from '../components/MovementForm.vue';
+import { computed, ref } from 'vue';
 import { useMovements } from '../composables/movements';
+import BaseInput from '../components/ui/BaseInput.vue'
+import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/16/solid'
+import { useModalStore } from '../components/modal/store/modalStore';
+import Modal from '../components/modal/Modal.vue';
+import MovementForm from '../components/MovementForm.vue';
 import Pagination from '../components/Pagination.vue';
 
+
 const modalStore = useModalStore();
+
 const movement = ref({});
 
 const edit = (data) => {
@@ -96,12 +126,32 @@ const edit = (data) => {
 }
 
 const {
-    selectedMonth,
-    movements,
     deleteMovement,
     currentPage,
     totalPages,
-    fetchMovements
-} = useMovements()
+    fetchMovements,
+    selectedMonth,
+    movements,
+    totalGasto,
+    totalIngreso,
+    balance,
+    meses } = useMovements()
+
+// Formateadores
+const formatoMoneda = (valor) => {
+    return new Intl.NumberFormat('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        maximumFractionDigits: 0
+    }).format(valor);
+};
+
+// Computados
+const nombreMes = computed(() => {
+    const mesIndex = parseInt(selectedMonth.value.split('-')[1]) - 1;
+    return meses[mesIndex];
+});
+
+const año = computed(() => selectedMonth.value.split('-')[0]);
 
 </script>
