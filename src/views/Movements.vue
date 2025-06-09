@@ -9,9 +9,7 @@
 
         <!-- Resumen Mensual -->
         <div class="flex flex-col justify-between items-center mb-6 p-4 dark:bg-gray-800 bg-blue-50 rounded-lg">
-            <h1 class="text-2xl font-bold text-blue-800 dark:text-gray-200">
-                Resumen de {{ nombreMes }} {{ año }}
-            </h1>
+
             <div class="flex gap-4">
                 <div class="text-green-600 font-bold">
                     Ingresos: {{ formatoMoneda(totalIngreso) }}
@@ -19,8 +17,8 @@
                 <div class="text-red-600 font-bold">
                     Gastos: {{ formatoMoneda(totalGasto) }}
                 </div>
-                <div class="font-bold dark:text-gray-200">
-                    Balance: {{ formatoMoneda(balance) }}
+                <div class="font-bold dark:text-blue-200 text-blue-700">
+                    Saldo: {{ formatoMoneda(balance) }}
                 </div>
             </div>
         </div>
@@ -33,21 +31,20 @@
         <div v-else>
             <div v-for="dia in movements" :key="dia.fecha" class="mb-8">
                 <!-- Encabezado del día -->
-                <div class="flex gap-4 justify-between items-center p-3 dark:bg-gray-800 bg-gray-100 rounded-t-lg">
-                    <h2 class=" text-gray-800 dark:text-gray-200">
+                <div
+                     class="flex flex-col gap-1 justify-between items-end p-3 dark:bg-gray-800 bg-gray-100 rounded-t-lg">
+                    <h2 class="text-sm text-gray-800 dark:text-gray-200">
                         {{ dia.nombreDia }}, {{ dia.dia }} de {{ dia.mes }}
                     </h2>
 
-                    <span class="text-green-600 font-medium" v-if="dia.ingresos > dia.gastos">
-                        +{{ formatoMoneda(dia.ingresos) }}
-                    </span>
-                    <span class="text-red-600 font-medium" v-else>
-                        -{{ formatoMoneda(dia.gastos) }}
-                    </span>
-                    <span class="dark:text-gray-200">
-                        Saldo: {{ formatoMoneda(dia.ingresos - dia.gastos) }}
-                    </span>
-
+                    <div class="flex gap-4">
+                        <span class="text-green-600 text-xs sm:text-base" v-if="dia.ingresos > 0">
+                            Ingresos: +{{ formatoMoneda(dia.ingresos) }}
+                        </span>
+                        <span class="text-red-600 text-xs sm:text-base" v-if="dia.gastos > 0">
+                            Gastos: -{{ formatoMoneda(dia.gastos) }}
+                        </span>
+                    </div>
                 </div>
 
                 <!-- Movimientos del día -->
@@ -134,8 +131,7 @@ const {
     movements,
     totalGasto,
     totalIngreso,
-    balance,
-    meses } = useMovements()
+    balance } = useMovements()
 
 // Formateadores
 const formatoMoneda = (valor) => {
@@ -145,13 +141,5 @@ const formatoMoneda = (valor) => {
         maximumFractionDigits: 0
     }).format(valor);
 };
-
-// Computados
-const nombreMes = computed(() => {
-    const mesIndex = parseInt(selectedMonth.value.split('-')[1]) - 1;
-    return meses[mesIndex];
-});
-
-const año = computed(() => selectedMonth.value.split('-')[0]);
 
 </script>
