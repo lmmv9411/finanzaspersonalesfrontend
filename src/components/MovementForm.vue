@@ -116,6 +116,7 @@ watchEffect(async () => {
         formatearComoMoneda(data.amount, false)
 
         await useCategorieStore().getCategories()
+
     }
 
 })

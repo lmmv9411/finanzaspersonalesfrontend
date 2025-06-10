@@ -17,7 +17,7 @@
 import { computed } from 'vue'
 
 const props = defineProps({
-    modelValue: String,
+    modelValue: { required: true },
     placeholder: String,
     id: String,
     color: {
