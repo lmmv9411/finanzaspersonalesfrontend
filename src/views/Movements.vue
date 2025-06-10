@@ -112,7 +112,7 @@ import Modal from '../components/modal/Modal.vue';
 import MovementForm from '../components/MovementForm.vue';
 import Pagination from '../components/Pagination.vue';
 import { useMovementStore } from '../stores/movementStore';
-
+import { formatoMoneda } from '../constants';
 
 const modalStore = useModalStore();
 const movementStore = useMovementStore();
@@ -140,14 +140,5 @@ watch(() => movementStore.isSaved, async (newVal) => {
         await fetchMovements()
     }
 })
-
-// Formateadores
-const formatoMoneda = (valor) => {
-    return new Intl.NumberFormat('es-CO', {
-        style: 'currency',
-        currency: 'COP',
-        maximumFractionDigits: 0
-    }).format(valor);
-};
 
 </script>

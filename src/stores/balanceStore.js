@@ -32,14 +32,6 @@ export const useBalanceStore = defineStore("balance", () => {
 
     watch([startDate, endDate], async () => await fetchBalance())
 
-    const formatCurrency = (value) => {
-        return new Intl.NumberFormat('es-CO', {
-            style: 'currency',
-            currency: 'COP',
-            maximumFractionDigits: 0
-        }).format(value)
-    }
-
     const fetchBalance = async () => {
 
         try {
@@ -61,7 +53,6 @@ export const useBalanceStore = defineStore("balance", () => {
 
     return {
         selectedMonth,
-        formatCurrency,
         startDate,
         endDate,
         balance,

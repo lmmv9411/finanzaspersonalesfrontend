@@ -54,7 +54,7 @@
                            id="amount"
                            v-model="valor"
                            required
-                           @input="formatearComoMoneda" />
+                           @input="handleInput" />
             </div>
 
             <div class="w-full">
@@ -76,18 +76,19 @@
 </template>
 
 <script setup>
+import { ArrowsRightLeftIcon } from '@heroicons/vue/16/solid';
 import { watchEffect } from 'vue';
 import { useMovementform } from '../composables/movementForm';
 import { useCategorieStore } from '../stores/categoriesStore';
 import BaseButton from './ui/BaseButton.vue';
 import BaseInput from './ui/BaseInput.vue';
 import BaseSelect from './ui/BaseSelect.vue';
-import { ArrowsRightLeftIcon, XMarkIcon } from '@heroicons/vue/16/solid';
 
 const { isEdit = false, data } = defineProps(['isEdit', 'data']);
 
 const {
-    formatearComoMoneda,
+    handleInput,
+    formatoMoneda,
     movement,
     submitForm,
     valor,
@@ -107,7 +108,7 @@ watchEffect(async () => {
 
         movement.value = { ...data, date: localDateTime }
 
-        formatearComoMoneda(data.amount, false)
+        valor.value = formatoMoneda(data.amount)
 
         await useCategorieStore().getCategories()
 

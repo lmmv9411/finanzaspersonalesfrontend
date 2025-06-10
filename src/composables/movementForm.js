@@ -1,6 +1,7 @@
 import Swal from 'sweetalert2'
 import { ref } from 'vue'
 import { useModalStore } from '../components/modal/store/modalStore'
+import { formatoMoneda } from '../constants'
 import { useMovementStore } from '../stores/movementStore'
 
 export const useMovementform = () => {
@@ -106,13 +107,9 @@ export const useMovementform = () => {
 
     const valor = ref('');
 
-    function formatearComoMoneda(event, isDom = true) {
-        // Remover caracteres que no sean números
-        let numeroLimpio = event;
+    function handleInput(event) {
 
-        if (isDom) {
-            numeroLimpio = event.target.value.replace(/\D/g, '');
-        }
+        const numeroLimpio = event.target.value.replace(/\D/g, '');
 
         // Si está vacío, limpiar el input
         if (numeroLimpio === '') {
@@ -129,16 +126,9 @@ export const useMovementform = () => {
             return;
         }
 
-        const formatoCOP = new Intl.NumberFormat('es-CO', {
-            style: 'currency',
-            currency: 'COP',
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0,
-        });
-
-        valor.value = formatoCOP.format(numero);
+        valor.value = formatoMoneda(numero)
     }
 
-    return { movement, submitForm, formatearComoMoneda, valor, modalStore }
+    return { movement, submitForm, handleInput, valor, modalStore, formatoMoneda }
 
 }

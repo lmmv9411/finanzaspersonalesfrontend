@@ -6,20 +6,21 @@
             <p class="dark:text-green-400 text-green-500 flex gap-2 text-xl">
                 <ArrowTrendingUpIcon class="w-5 inline-block" />
                 <span>Ingresos</span>
-                <span>{{ balanceStore.formatCurrency(balanceStore.balance.totalIngreso) }}</span>
+                <span>{{ formatoMoneda(balanceStore.balance.totalIngreso) }}</span>
             </p>
             <p class="dark:text-red-400 text-red-500 flex gap-2 text-xl">
                 <ArrowTrendingDownIcon class="w-5 inline-block" />
                 <span>Gastos</span>
-                <span>{{ balanceStore.formatCurrency(balanceStore.balance.totalGasto) }}</span>
+                <span>{{ formatoMoneda(balanceStore.balance.totalGasto) }}</span>
             </p>
             <p class="dark:text-indigo-300 text-indigo-500 flex gap-2 text-xl">
-                
+
                 <CurrencyDollarIcon class="w-6 dark:text-indigo-300 text-indigo-500" />
-                
+
                 <span>Saldo</span>
-                <span :class="balanceStore.balance.balance >= 0 ? 'text-indigo-500 dark:text-indigo-300' : 'text-red-500 dark:text-red-300'">
-                    {{ balanceStore.formatCurrency(balanceStore.balance.balance) }}
+                <span
+                      :class="balanceStore.balance.balance >= 0 ? 'text-indigo-500 dark:text-indigo-300' : 'text-red-500 dark:text-red-300'">
+                    {{ formatoMoneda(balanceStore.balance.balance) }}
                 </span>
             </p>
         </div>
@@ -27,10 +28,11 @@
 </template>
 
 <script setup>
+import { ArrowTrendingDownIcon, ArrowTrendingUpIcon, CurrencyDollarIcon } from '@heroicons/vue/24/solid';
 import { onMounted } from 'vue';
 import { useBalanceStore } from '../stores/balanceStore';
-import { ArrowTrendingUpIcon, ArrowTrendingDownIcon, ScaleIcon, CurrencyDollarIcon, WalletIcon } from '@heroicons/vue/24/solid'
 import BaseInput from './ui/BaseInput.vue';
+import { formatoMoneda } from '../constants';
 
 const balanceStore = useBalanceStore();
 
