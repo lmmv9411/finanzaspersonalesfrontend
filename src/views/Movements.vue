@@ -103,7 +103,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useMovements } from '../composables/movements';
 import BaseInput from '../components/ui/BaseInput.vue'
 import { PencilSquareIcon, TrashIcon, ArrowTrendingUpIcon, ArrowTrendingDownIcon, CurrencyDollarIcon } from '@heroicons/vue/24/solid'
@@ -111,9 +111,11 @@ import { useModalStore } from '../components/modal/store/modalStore';
 import Modal from '../components/modal/Modal.vue';
 import MovementForm from '../components/MovementForm.vue';
 import Pagination from '../components/Pagination.vue';
+import { useMovementStore } from '../stores/movementStore';
 
 
 const modalStore = useModalStore();
+const movementStore = useMovementStore();
 
 const movement = ref({});
 
@@ -132,6 +134,18 @@ const {
     totalGasto,
     totalIngreso,
     balance } = useMovements()
+
+watch(() => movementStore.isSaved, async (newVal) => {
+    if (newVal) {
+        for (const dia of movements.value) {
+            const idx = dia.detalles.findIndex(mov => mov.id === movement.value.id)
+            if (idx !== -1) {
+                dia.detalles.splice(idx, 1, { ...movementStore.mov })
+                break
+            }
+        }
+    }
+})
 
 // Formateadores
 const formatoMoneda = (valor) => {

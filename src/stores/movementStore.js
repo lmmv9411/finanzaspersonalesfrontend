@@ -2,11 +2,14 @@ import { defineStore } from 'pinia';
 import api from "../constants/api";
 import { useBalanceStore } from './balanceStore';
 import { useGraphStore } from './graphStore';
+import { ref } from 'vue';
 
 export const useMovementStore = defineStore('movement', () => {
 
     const balanceStore = useBalanceStore();
     const graphStore = useGraphStore();
+    const isSaved = ref(false)
+    const mov = ref({})
 
     const saveMovement = async (movement, isEdit) => {
 
@@ -21,13 +24,14 @@ export const useMovementStore = defineStore('movement', () => {
             balanceStore.fetchBalance()
             graphStore.getTotalByCategory(balanceStore.startDate, balanceStore.endDate)
 
-            return true
+            isSaved.value = true
+            mov.value = movement
 
         } catch (error) {
+            isSaved.value = false
             console.error('Error al registrar movimiento', error)
-            return false
         }
     }
 
-    return { saveMovement }
+    return { saveMovement, isSaved, mov }
 })

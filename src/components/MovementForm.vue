@@ -15,22 +15,24 @@
 
                 <label class="inline-flex items-center gap-2 cursor-pointer">
                     <input
+                           id="ingreso"
                            type="radio"
                            value="ingreso"
                            v-model="movement.type"
                            class="form-radio h-5 w-5" />
 
-                    <span class="">Ingreso</span>
+                    <span>Ingreso</span>
 
                 </label>
                 <label class="inline-flex items-center gap-2 cursor-pointer">
                     <input
+                           id="gasto"
                            type="radio"
                            value="gasto"
                            v-model="movement.type"
                            class="form-radio h-5 w-5" />
 
-                    <span class="">Gasto</span>
+                    <span>Gasto</span>
 
                 </label>
 
@@ -57,7 +59,7 @@
 
             <div class="w-full">
                 <label for="description" class="block text-gray-700 dark:text-gray-300">Descripción</label>
-                <BaseInput id="description" v-model="movement.description" />
+                <BaseInput id="description" v-model.trim="movement.description" />
             </div>
 
             <div class="flex gap-2">
@@ -98,20 +100,12 @@ watchEffect(async () => {
 
     if (isEdit && data) {
 
-        const isoDate = data.date;
-        const date = new Date(isoDate);
+        const date = new Date(data.date);
 
         const pad = n => n.toString().padStart(2, '0');
         const localDateTime = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 
-        movement.value = {
-            type: data.type,
-            CategoryId: data.CategoryId,
-            amount: data.amount,
-            description: data.description,
-            id: data.id,
-            date: localDateTime
-        }
+        movement.value = { ...data, date: localDateTime }
 
         formatearComoMoneda(data.amount, false)
 

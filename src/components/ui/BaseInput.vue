@@ -16,7 +16,7 @@
 import { computed } from 'vue'
 
 const props = defineProps({
-    modelValue: String,
+    modelValue: { required: true },
     placeholder: String,
     id: String,
     type: {
@@ -35,7 +35,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue'])
 
-const baseClasses = 'w-full dark:text-gray-200 text-gray-600 px-3 py-2 border rounded-sm focus:outline-none transition duration-300 focus:ring-2'
+const baseClasses = 'w-full dark:text-gray-200 text-gray-600 px-3 py-2 border-2 dark:border-gray-700 rounded-sm focus:outline-none transition duration-300 focus:ring-2'
 
 const colorMap = {
     primary: 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500',

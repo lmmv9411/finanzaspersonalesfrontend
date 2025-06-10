@@ -29,7 +29,7 @@ export const useMovementform = () => {
                 theme: 'auto'
             })
             if (!confirm.isConfirmed) {
-                
+
                 modalStore.showModal = false
                 resetForm()
 
@@ -56,13 +56,13 @@ export const useMovementform = () => {
             theme: 'auto'
         })
 
-        const isSaved = await movementStore.saveMovement(movement.value, isEdit)
+        await movementStore.saveMovement(movement.value, isEdit)
 
         Swal.close()
 
         modalStore.isRendered = false;
 
-        if (isSaved) {
+        if (movementStore.isSaved) {
             Swal.fire({
                 title: `Movimiento ${isEdit ? 'Editado' : 'Registrado'}`,
                 icon: "success",
@@ -101,6 +101,7 @@ export const useMovementform = () => {
             categoryId: '',
             id: ''
         }
+        movementStore.isSaved = false
     }
 
     const valor = ref('');
