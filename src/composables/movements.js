@@ -42,10 +42,10 @@ export const useMovements = () => {
                     }
                     return totales;
                 }, { ingresos: 0, gastos: 0 })
-                
+
                 mov.ingresos = ingresos
                 mov.gastos = gastos
-                
+
                 return mov
             })
 
@@ -109,6 +109,15 @@ export const useMovements = () => {
 
             await api.delete(`/movements/${id}`);
             movements.value = movements.value.filter(movement => movement.id !== id)
+
+            for (const dia of movements.value) {
+                const idx = dia.detalles.findIndex(mov => mov.id === id)
+                if (idx !== -1) {
+                    dia.detalles.splice(idx, 1)
+                    break
+                }
+            }
+
             Swal.fire({
                 title: "Movimiento Eliminado",
                 icon: "success",
