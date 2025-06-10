@@ -137,13 +137,7 @@ const {
 
 watch(() => movementStore.isSaved, async (newVal) => {
     if (newVal) {
-        for (const dia of movements.value) {
-            const idx = dia.detalles.findIndex(mov => mov.id === movement.value.id)
-            if (idx !== -1) {
-                dia.detalles.splice(idx, 1, { ...movementStore.mov })
-                break
-            }
-        }
+        await fetchMovements()
     }
 })
 
