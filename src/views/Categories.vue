@@ -15,18 +15,12 @@
             </div>
         </form>
 
-        <table class="dark:text-white w-fit table-auto border-collapse whitespace-nowrap m-auto overflow-auto text-xl">
-            <thead>
-                <tr class="border-b border-gray-400">
-                    <th>Nombre</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="categorie in categoriesStore.categories" class="border-b border-gray-300"
-                    :key="categorie.id">
-                    <td class="p-4 ">{{ categorie.name }}</td>
-                    <td class="p-4 flex gap-4">
+        <div class="container max-w-xs mx-auto flex gap-4 flex-col">
+            <div v-for="categorie in categoriesStore.categories" :key="categorie.id">
+                <div
+                     class="text-xl border gap-4 border-gray-200 dark:border-gray-600 rounded-lg flex justify-between p-4 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors duration-300 shadow-sm">
+                    <span>{{ categorie.name }}</span>
+                    <div class="flex gap-2">
                         <button @click="deleteCategory(categorie.id)"
                                 class="text-red-500 hover:text-red-700 cursor-pointer"
                                 title="Eliminar categoria">
@@ -37,10 +31,11 @@
                                 title="Editar categoria">
                             <PencilSquareIcon class="h-5 w-5" />
                         </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 
