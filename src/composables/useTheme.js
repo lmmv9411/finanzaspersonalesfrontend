@@ -22,10 +22,6 @@ export function useTheme() {
         }
     }
 
-    const toggleTheme = () => {
-        theme.value = theme.value === 'dark' ? 'light' : 'dark'
-    }
-
     onMounted(() => {
         // Leer de localStorage si existe
         const saved = localStorage.getItem('theme')
@@ -44,9 +40,5 @@ export function useTheme() {
         applyTheme()
     })
 
-    return {
-        theme,
-        toggleTheme,
-        setTheme: (t) => (theme.value = t),
-    }
+    return { theme }
 }
