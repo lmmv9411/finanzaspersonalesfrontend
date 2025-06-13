@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="pb-16">
         <RouterView /> 
         <SettingsNav />
     </div>
