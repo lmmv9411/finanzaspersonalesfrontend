@@ -26,7 +26,7 @@
                          :key="icon.name"
                          class="group flex flex-col items-center">
                         <div
-                             class="rounded-full p-2 w-10 h-10 flex items-center justify-center transition-all group-hover:scale-110 cursor-pointer shadow-xl"
+                             class="rounded-full p-2 w-10 h-10 flex items-center justify-center transition-all duration-300 group-hover:scale-110 cursor-pointer shadow-xl"
                              :class="[
                                 selectedIcon?.name === icon.name
                                     ? 'ring-2 ring-indigo-500 scale-110 bg-indigo-100 dark:bg-indigo-900'
@@ -58,10 +58,11 @@ const selectIcon = (icon) => {
     selectedIcon.value = icon;
 };
 
-const emit = defineEmits(['selected']);
+const emit = defineEmits(['selected', 'close']);
 const confirmSelection = () => {
     if (selectedIcon.value) {
         emit('selected', { ...selectedIcon.value });
+        emit('close')
     }
 };
 

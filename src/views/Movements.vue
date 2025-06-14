@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto max-w-3xl">
+    <div class="container mx-auto max-w-3xl p-2">
 
         <!-- Selector de Mes -->
         <div class="mb-6 flex items-center gap-4">

@@ -7,7 +7,7 @@
 
             <NavBar :isOpen="isSidebarOpen" @toggleSidebar="isSidebarOpen = true" />
 
-            <main class="overflow-y-auto flex-1 p-2">
+            <main class="overflow-y-auto">
                 <RouterView />
             </main>
 
