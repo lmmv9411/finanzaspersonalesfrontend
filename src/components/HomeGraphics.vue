@@ -1,11 +1,13 @@
 <template>
-    <div class="w-full max-w-md mx-auto dark:bg-gray-800 bg-slate-100 rounded shadow-2xl p-4">
-        <h4 class="text-xl font-semibold dark:text-gray-300">Gasto Por Categoria</h4>
-        <Doughnut :key="graphStore.chartKeyA" :data="graphStore.chartDataGasto" :options="chartOptions" />
-    </div>
-    <div class="w-full max-w-md mx-auto dark:bg-gray-800 bg-slate-100 rounded shadow-2xl p-4">
-        <h4 class="text-xl font-semibold dark:text-gray-300">Ingreso Por Categoria</h4>
-        <Doughnut :key="graphStore.chartKeyB" :data="graphStore.chartDataIngreso" :options="chartOptions" />
+    <div class="flex flex-col sm:flex-row gap-4">
+        <div class="w-full max-w-md mx-auto dark:bg-gray-800 bg-slate-100 rounded shadow-2xl p-4">
+            <h4 class="text-xl font-semibold dark:text-gray-300">Gasto Por Categoria</h4>
+            <Doughnut :key="graphStore.chartKeyA" :data="graphStore.chartDataGasto" :options="chartOptions" />
+        </div>
+        <div class="w-full max-w-md mx-auto dark:bg-gray-800 bg-slate-100 rounded shadow-2xl p-4">
+            <h4 class="text-xl font-semibold dark:text-gray-300">Ingreso Por Categoria</h4>
+            <Doughnut :key="graphStore.chartKeyB" :data="graphStore.chartDataIngreso" :options="chartOptions" />
+        </div>
     </div>
 </template>
 

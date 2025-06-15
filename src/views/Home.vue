@@ -13,9 +13,7 @@ onMounted(async () => await categoriesStore.getCategories())
 <template>
     <div class="dark:bg-gray-900 p-3 flex flex-col gap-4">
         <Balance />
-        <div class="flex flex-col sm:flex-row gap-4">
-            <HomeGraphics/>
-        </div>
+        <HomeGraphics />
         <AddMovementModal />
     </div>
 </template>
