@@ -1,8 +1,6 @@
 <template>
 
-    <h1 class="dark:text-white font-bold text-xl">Categorias</h1>
-
-    <div class="flex flex-col gap-8">
+    <div class="pt-4 flex flex-col gap-8">
         <form
               @submit.prevent="createCategory"
               class="shadow-md p-2 rounded dark:bg-gray-800 bg-slate-100 flex gap-2 dark:text-gray-300 items-start w-fit m-auto">

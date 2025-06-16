@@ -1,5 +1,5 @@
 <template>
-    <div class="max-w-sm mx-auto mt-10 p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg">
+    <div class="min-w-xs mx-auto mt-10 p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-lg">
         <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100 text-center">Subir Foto de Perfil</h2>
 
         <div class="flex flex-col items-center gap-4">

@@ -1,5 +1,5 @@
 <template>
-    <nav class="fixed bottom-16 left-0 md:left-64 right-0 bg-gray-200 dark:bg-gray-800 shadow-lg">
+    <nav class="fixed bottom-0 left-0 right-0 bg-gray-200 dark:bg-gray-800 shadow-lg">
         <div class="flex justify-around py-2">
             <router-link
                          v-for="item in navItems"
@@ -18,10 +18,18 @@
 </template>
 
 <script setup>
-import { LockClosedIcon, UserCircleIcon } from '@heroicons/vue/24/outline';
+import { ChartBarIcon, HomeIcon, TagIcon, UserIcon } from '@heroicons/vue/24/outline';
 
-const navItems = [
+/*const navItems = [
     { to: '/configs', label: 'Foto De Perfil', icon: UserCircleIcon },
     { to: '/configs/password', label: 'Contraseña', icon: LockClosedIcon }
+];*/
+
+const navItems = [
+    { to: '/', icon: HomeIcon, label: 'Home' },
+    { to: '/movements', icon: ChartBarIcon, label: 'Movimientos' },
+    { to: '/categories', icon: TagIcon, label: 'Categorias' },
+    { to: '/configs', icon: UserIcon, label: 'Yo' },
 ];
+
 </script>

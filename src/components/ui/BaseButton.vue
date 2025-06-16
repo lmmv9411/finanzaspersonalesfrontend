@@ -29,7 +29,7 @@ const props = defineProps({
     }
 })
 
-const baseClasses = 'text-white px-4 py-2 rounded-md transition duration-300 focus:outline-none focus:ring-2 cursor-pointer'
+const baseClasses = 'w-fit text-white px-4 py-2 rounded-md transition duration-300 focus:outline-none focus:ring-2 cursor-pointer'
 
 const colorMap = {
     primary: 'bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-400',

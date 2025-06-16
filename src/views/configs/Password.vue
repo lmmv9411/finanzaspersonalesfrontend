@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="">
         <BaseButton
                     color="blue"
                     @click="showIconPicker = true"

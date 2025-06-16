@@ -1,9 +1,11 @@
 // src/composables/useTheme.js
 import { ref, onMounted, watch } from 'vue'
 
-const theme = ref('light') // 'light', 'dark', o 'system'
 
 export function useTheme() {
+
+    const theme = ref('light') // 'light', 'dark', o 'system'
+
     const setThemeClass = (value) => {
         const root = document.documentElement
         if (value === 'dark') {

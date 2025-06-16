@@ -1,7 +1,7 @@
 <template>
     <aside
            :class="[
-            'fixed md:static top-0 left-0 w-64 h-full dark:bg-indigo-900 bg-indigo-700 transform transition-transform duration-300 z-50 shadow-xl bg-gray-200',
+            'fixed md:static top-0 left-0 w-64 h-full dark:bg-gray-900 bg-gray-700 transform transition-transform duration-300 z-50 shadow-xl bg-gray-200',
             isOpen ? 'translate-x-0' : '-translate-x-full',
             'md:translate-x-0'
         ]">
@@ -38,7 +38,7 @@
                     </button>
                 </div>
 
-                <ToggleTheme class="px-4 py-2 dark:text-gray-100 text-gray-200 rounded" />
+                <ToggleTheme class="w-fit self-center" />
 
             </nav>
         </div>

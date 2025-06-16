@@ -1,11 +1,13 @@
 <template>
-    <div class="pb-16">
-        <RouterView /> 
-        <SettingsNav />
+    <div class="">
+        <SettingsTab />
+        <RouterView />
+        <!--<SettingsNav />-->
     </div>
 </template>
 
 <script setup>
-import SettingsNav from '../components/SettingsNav.vue'
+//import SettingsNav from '../components/SettingsNav.vue'
 import { RouterView } from 'vue-router';
+import SettingsTab from './configs/SettingsTab.vue';
 </script>
