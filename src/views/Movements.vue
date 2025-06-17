@@ -61,8 +61,12 @@
                                     <ArrowTrendingDownIcon v-else class="w-6 text-red-500" />
                                     {{ mov.description }}
                                 </div>
-                                <div class="text-sm text-gray-500 mt-1 ml-8">
-                                    {{ mov.Category?.name }} •
+                                <div class="text-sm text-gray-500 mt-1 flex gap-2 items-center">
+                                    <div :class=[getRandomBgColor(mov.Category.icon)]
+                                         class="rounded-full p-1 text-white text-lg">
+                                        <Icon :icon="mov.Category.icon" />
+                                    </div>
+                                    {{ mov.Category.name }} •
                                     {{ mov.type }}
                                 </div>
                             </div>
@@ -113,6 +117,8 @@ import MovementForm from '../components/MovementForm.vue';
 import Pagination from '../components/Pagination.vue';
 import { useMovementStore } from '../stores/movementStore';
 import { formatoMoneda } from '../constants';
+import { Icon } from '@iconify/vue';
+import { getRandomBgColor } from './configs/icons';
 
 const modalStore = useModalStore();
 const movementStore = useMovementStore();

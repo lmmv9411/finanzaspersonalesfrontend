@@ -2,7 +2,7 @@
     <div class="">
         <BaseButton
                     color="blue"
-                    @click="showIconPicker = true"
+                    @click="showIconPicker = !showIconPicker"
                     class="flex items-center gap-2 p-2 border rounded dark:border-gray-500">
 
             <div

@@ -8,7 +8,7 @@
             <span>Cerrar Sesión</span>
         </BaseButton>
 
-        <ToggleTheme />
+        <ToggleTheme class="sm:hidden" />
     </div>
 </template>
 
@@ -17,4 +17,12 @@ import { ArrowRightStartOnRectangleIcon } from '@heroicons/vue/24/outline';
 import ProfilePictureUploader from '../../components/ProfilePictureUploader.vue'
 import BaseButton from '../../components/ui/BaseButton.vue';
 import ToggleTheme from '../../components/ToggleTheme.vue';
+
+const logout = () => {
+    /*await api.post('/user/logout')
+    router.push({ name: 'Login' })*/
+    localStorage.removeItem('jwt_token')
+    router.push({ name: 'Login' })
+}
+
 </script>

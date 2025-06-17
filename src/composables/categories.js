@@ -6,13 +6,16 @@ import { useCategorieStore } from "../stores/categoriesStore";
 export function useCategories() {
     const name = ref('');
     const isUpdate = ref(false);
-    let idUpdate = null;
+    const categoryUpdate = ref(null);
     const categoriesStore = useCategorieStore()
+    const selectedIcon = ref({});
+    const handleIconSelected = (icon) => selectedIcon.value = icon;
+    const showIconPicker = ref(false)
 
     const createCategory = async () => {
 
         if (isUpdate.value) {
-            updateCategory(idUpdate)
+            updateCategory()
             return
         }
 
@@ -21,6 +24,20 @@ export function useCategories() {
             if (name.value === '') {
                 Swal.fire({
                     title: "Nombre Vacío",
+                    icon: "error",
+                    toast: true,
+                    position: "top",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    theme: 'auto'
+                });
+                return;
+            }
+
+            if(!selectedIcon.value.icon){
+                 Swal.fire({
+                    title: "Ícono Vacío",
                     icon: "error",
                     toast: true,
                     position: "top",
@@ -41,7 +58,7 @@ export function useCategories() {
                 theme: 'auto'
             })
 
-            await api.post('/categories', { name: name.value });
+            await api.post('/categories', { name: name.value, icon: selectedIcon.value.icon })
 
             Swal.fire({
                 title: "Categoria Creada",
@@ -54,8 +71,8 @@ export function useCategories() {
                 theme: 'auto'
             });
 
-            name.value = '';
-            categoriesStore.getCategories()
+            reset()
+
         } catch (error) {
             console.error('Error creating category:', error);
             Swal.fire({
@@ -67,6 +84,7 @@ export function useCategories() {
                 theme: 'auto'
             });
         }
+
     };
 
     const deleteCategory = async (categoryId) => {
@@ -132,36 +150,42 @@ export function useCategories() {
         }
     };
 
-    const onUpdateCategory = (categoryId) => {
+    const reset = () => {
+        categoriesStore.getCategories()
+        isUpdate.value = false;
+        categoryUpdate.value = null;
+        name.value = '';
+        selectedIcon.value.icon = null
+        showIconPicker.value = false
+    }
 
-        const idx = categoriesStore.categories.findIndex(categorie => categorie.id === categoryId);
+    const onUpdateCategory = (category) => {
+
+        const idx = categoriesStore.categories.findIndex(categorie => categorie.id === category.id);
 
         if (idx === -1) return
 
         name.value = categoriesStore.categories[idx].name;
         categoriesStore.categories.splice(idx, 1);
         isUpdate.value = true;
-        idUpdate = categoryId;
-
+        categoryUpdate.value = category;
+        selectedIcon.value.icon = category.icon
     }
 
-    const updateCategory = async (categoryId) => {
+    const updateCategory = async () => {
         try {
-            const response = await api.put(`/categories/${categoryId}`, {
-                name: name.value
+            await api.put(`/categories/${categoryUpdate.value.id}`, {
+                name: name.value,
+                icon: selectedIcon.value.icon
             });
-            console.log('Category updated:', response.data);
-            categoriesStore.getCategories()
-            isUpdate.value = false;
-            idUpdate = null;
-            name.value = '';
         } catch (error) {
             console.error('Error updating category:', error);
         }
+        reset()
     };
 
     onMounted(async () => categoriesStore.getCategories());
 
-    return { name, createCategory, deleteCategory, updateCategory, onUpdateCategory, isUpdate };
+    return { name, createCategory, deleteCategory, updateCategory, onUpdateCategory, isUpdate, selectedIcon, handleIconSelected, reset, showIconPicker };
 
 }

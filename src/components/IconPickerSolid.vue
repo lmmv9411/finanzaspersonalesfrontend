@@ -1,11 +1,11 @@
 <template>
-    <div class="max-w-4xl mx-auto p-4">
+    <div class="max-w-4xl mx-auto">
         <!-- Panel de icono seleccionado -->
         <div v-if="selectedIcon"
              class="sticky top-0 flex gap-3 mb-4 p-3 bg-blue-50 rounded-lg items-center dark:bg-gray-800">
             <div
                  class="rounded-full p-2 w-10 h-10 flex items-center justify-center transition-all"
-                 :class="getRandomBgColor(selectedIcon.name)">
+                 :class="getRandomBgColor(selectedIcon.icon)">
                 <Icon :icon="selectedIcon.icon" class="text-white w-6 h-6" />
             </div>
             <span class="font-medium dark:text-gray-300">{{ selectedIcon.name }}</span>
@@ -30,7 +30,7 @@
                              :class="[
                                 selectedIcon?.name === icon.name
                                     ? 'ring-2 ring-indigo-500 scale-110 bg-indigo-100 dark:bg-indigo-900'
-                                    : getRandomBgColor(icon.name)
+                                    : getRandomBgColor(icon.icon)
                             ]"
                              :title="icon.name">
                             <Icon

@@ -66,7 +66,7 @@ const menu = [
 
 const router = useRouter();
 
-const logout = async () => {
+const logout = () => {
     /*await api.post('/user/logout')
     router.push({ name: 'Login' })*/
     localStorage.removeItem('jwt_token')

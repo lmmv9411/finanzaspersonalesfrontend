@@ -3,14 +3,14 @@
 
         <SideBar :isOpen="isSidebarOpen" @toggleSidebar="isSidebarOpen = false" />
 
-        <div class="flex flex-col flex-1 overflow-hidden dark:bg-gray-900">
+        <!-- <div class="flex-1 overflow-hidden dark:bg-gray-900">->>
 
             <!---<NavBar :isOpen="isSidebarOpen" @toggleSidebar="isSidebarOpen = true" />-->
 
-            <main class="overflow-y-auto pb-16 sm:pb-0">
-                <RouterView />
-            </main>
-        </div>
+        <main class="flex-1 overflow-y-auto pb-16 sm:pb-0 dark:bg-gray-900">
+            <RouterView />
+        </main>
+        <!-- </div>-->
 
         <BottonNavBar class="sm:hidden" />
 
