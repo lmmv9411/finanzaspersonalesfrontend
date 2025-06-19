@@ -17,6 +17,9 @@ import { ArrowRightStartOnRectangleIcon } from '@heroicons/vue/24/outline';
 import ProfilePictureUploader from '../../components/ProfilePictureUploader.vue'
 import BaseButton from '../../components/ui/BaseButton.vue';
 import ToggleTheme from '../../components/ToggleTheme.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const logout = () => {
     /*await api.post('/user/logout')
