@@ -48,9 +48,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
 import { Icon } from '@iconify/vue';
-import { categoriesIcons, getRandomBgColor } from '../views/configs/icons'
+import { ref } from 'vue';
+import { categoriesIcons, getRandomBgColor } from '../views/configs/icons';
 
 const selectedIcon = ref(null);
 

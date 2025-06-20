@@ -3,7 +3,7 @@
 
         <ProfilePictureUploader />
 
-        <BaseButton @click="logout" class="flex gap-2 items-center sm:hidden">
+        <BaseButton @click="logout" color="secondary" class="flex gap-2 items-center sm:hidden">
             <ArrowRightStartOnRectangleIcon class="w-5 h-5 inline-block" />
             <span>Cerrar Sesión</span>
         </BaseButton>
@@ -14,10 +14,10 @@
 
 <script setup>
 import { ArrowRightStartOnRectangleIcon } from '@heroicons/vue/24/outline';
-import ProfilePictureUploader from '../../components/ProfilePictureUploader.vue'
-import BaseButton from '../../components/ui/BaseButton.vue';
-import ToggleTheme from '../../components/ToggleTheme.vue';
 import { useRouter } from 'vue-router';
+import ProfilePictureUploader from '../../components/ProfilePictureUploader.vue';
+import ToggleTheme from '../../components/ToggleTheme.vue';
+import BaseButton from '../../components/ui/BaseButton.vue';
 
 const router = useRouter();
 

@@ -1,46 +1,49 @@
 <template>
     <div class="min-w-xs mx-auto mt-10 p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-lg">
-        <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100 text-center">Subir Foto de Perfil</h2>
+        <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100 text-center">{{ user?.name + ' ' +
+            user?.lastName }}</h2>
 
         <div class="flex flex-col items-center gap-4">
-            <img
-                 :src="preview || profileUrl"
-                 alt="Foto de perfil"
-                 class="w-32 h-32 rounded-full object-cover border-4 border-gray-300 dark:border-gray-600 shadow" />
+            <div class="relative">
+                <img
+                     :src="preview || profileUrl"
+                     alt="Foto de perfil"
+                     class="w-32 h-32 rounded-full object-cover border-4 border-gray-300 dark:border-gray-600 shadow" />
 
-            <input
-                   ref="fileInput"
-                   type="file"
-                   accept="image/*"
-                   class="hidden"
-                   @change="onFileChange" />
 
-            <button
-                    @click="triggerFileInput"
-                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                Seleccionar imagen
-            </button>
+                <input
+                       ref="fileInput"
+                       type="file"
+                       accept="image/*"
+                       class="hidden"
+                       @change="onFileChange" />
 
-            <button
-                    @click="uploadImage"
-                    :disabled="!selectedFile || uploading"
-                    class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 transition">
+                <Icon icon="mdi:edit"
+                      @click="triggerFileInput"
+                      class="cursor-pointer w-6 h-6 text-gray-500 dark:text-white absolute -top-2 -right-2 hover:text-indigo-500 shadow:lg transition duration-300 " />
+            </div>
+            <BaseButton
+                        @click="uploadImage"
+                        :disabled="!selectedFile || uploading">
                 {{ uploading ? 'Subiendo...' : 'Guardar' }}
-            </button>
+            </BaseButton>
         </div>
     </div>
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue';
 import { onMounted, ref } from 'vue';
-import api from '../constants/api'
 import { BASE_URL } from '../constants';
+import api from '../constants/api';
+import BaseButton from './ui/BaseButton.vue';
 
 const profileUrl = ref(`${BASE_URL}/uploads/default.jpg`);
 const fileInput = ref(null);
 const selectedFile = ref(null);
 const preview = ref(null);
 const uploading = ref(false);
+const user = ref(null);
 
 function triggerFileInput() {
     fileInput.value.click();
@@ -59,7 +62,7 @@ async function uploadImage() {
 
     uploading.value = true;
     const formData = new FormData();
-    formData.append('image', selectedFile.value); // Este nombre debe coincidir con upload.single('image')
+    formData.append('image', selectedFile.value);
 
     try {
         const { data } = await api.post('/user/upload-profile-pic',
@@ -97,6 +100,7 @@ async function uploadImage() {
 
 onMounted(async () => {
     const { data } = await api.get('/user')
+    user.value = data
     profileUrl.value = `${BASE_URL}${data.profilePicture}`
 })
 

@@ -1,6 +1,6 @@
 <template>
 
-    <div class="dark:bg-gray-800 bg-gray-100 flex items-center justify-center p-4 h-dvh">
+    <div class="dark:bg-gray-800 bg-gray-100 flex items-center justify-center p-4 h-full">
 
         <div class="w-full max-w-md p-8 dark:bg-gray-800 bg-white rounded-2xl shadow-xl/30">
 
