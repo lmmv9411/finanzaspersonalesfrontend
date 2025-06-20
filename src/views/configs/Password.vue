@@ -47,9 +47,10 @@
                 <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
                     La contraseña debe contener al menos:
                     <ul class="list-disc list-inside">
-                        <li :class="{ 'text-green-500': hasMinLength }">8 caracteres</li>
-                        <li :class="{ 'text-green-500': hasNumber }">1 número</li>
-                        <li :class="{ 'text-green-500': hasSpecialChar }">1 carácter especial</li>
+                        <li :class="{ 'text-green-500': hasMinLength, 'text-red-500': !hasMinLength }">8 caracteres</li>
+                        <li :class="{ 'text-green-500': hasNumber, 'text-red-500': !hasNumber }">1 número</li>
+                        <li :class="{ 'text-green-500': hasSpecialChar, 'text-red-500': !hasSpecialChar }">1 carácter
+                            especial</li>
                     </ul>
                 </div>
             </div>
@@ -108,6 +109,8 @@
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
 import { computed, ref } from 'vue'
 import BaseInput from '../../components/ui/BaseInput.vue'
+import api from '../../constants/api'
+import Swal from 'sweetalert2'
 
 const currentPassword = ref('')
 const newPassword = ref('')
@@ -147,22 +150,47 @@ const handleSubmit = async () => {
     isSubmitting.value = true
 
     try {
-        // Aquí iría tu llamada API para cambiar la contraseña
-        // await changePassword(currentPassword.value, newPassword.value)
+        const resp = await api.post('/user/password', {
+            oldPassword: currentPassword.value,
+            newPassword: newPassword.value
+        })
 
-        // Simulamos un retraso de red
-        await new Promise(resolve => setTimeout(resolve, 1500))
+        if (resp.status !== 201) {
+            debugger
+            Swal.fire({
+                title: "Ocurrió un error",
+                text: resp.data.error,
+                icon: "error",
+                showConfirmButton: false,
+                timer: 3000,
+                theme: 'auto'
+            });
+            return;
+        }
+
+        Swal.fire({
+            title: "Contraseña Cambiada",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 3000,
+            theme: 'auto'
+        });
 
         // Resetear el formulario después del éxito
         currentPassword.value = ''
         newPassword.value = ''
         confirmPassword.value = ''
 
-        // Mostrar mensaje de éxito (puedes usar un toast o alert)
-        alert('Contraseña cambiada con éxito!')
     } catch (error) {
+        Swal.fire({
+            title: "Ocurrió un error",
+            text: error.response.data.error,
+            icon: "error",
+            showConfirmButton: false,
+            timer: 4000,
+            theme: 'auto'
+        });
         console.error('Error al cambiar contraseña:', error)
-        alert('Hubo un error al cambiar la contraseña. Por favor intenta nuevamente.')
     } finally {
         isSubmitting.value = false
     }
