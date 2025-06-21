@@ -39,13 +39,7 @@
             </div>
 
             <div class="w-full">
-                <label for="category" class="block text-gray-700 dark:text-gray-300">Categoría</label>
-                <BaseSelect id="category" v-model="movement.CategoryId">
-                    <option value="" disabled>Selecciona una categoría</option>
-                    <option v-for="category in categoriesStore.categories" :key="category.id" :value="category.id">
-                        {{ category.name }}
-                    </option>
-                </BaseSelect>
+                <CategorySelect :movement="movement" />
             </div>
 
             <div class="w-full">
@@ -80,9 +74,9 @@ import { ArrowsRightLeftIcon } from '@heroicons/vue/16/solid';
 import { watchEffect } from 'vue';
 import { useMovementform } from '../composables/movementForm';
 import { useCategorieStore } from '../stores/categoriesStore';
+import CategorySelect from './CategorySelect.vue';
 import BaseButton from './ui/BaseButton.vue';
 import BaseInput from './ui/BaseInput.vue';
-import BaseSelect from './ui/BaseSelect.vue';
 
 const { isEdit = false, data } = defineProps(['isEdit', 'data']);
 
@@ -94,8 +88,6 @@ const {
     valor,
     modalStore
 } = useMovementform();
-
-const categoriesStore = useCategorieStore()
 
 watchEffect(async () => {
 
