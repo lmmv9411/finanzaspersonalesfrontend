@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import api from '../constants/api'
+import Swal from 'sweetalert2'
 
 const routes = [
     {
@@ -69,8 +70,20 @@ router.beforeEach(async (to, from, next) => {
             await api.get('/auth/check', { withCredentials: true })
             next({ name: 'Home' })
         } catch (error) {
-            localStorage.removeItem('jwt_token')
-            next({ name: 'Login' })
+            console.error(error)
+            Swal.fire({
+                title: err.message,
+                icon: "error",
+                timer: 3000,
+                showConfirmButton: false,
+                theme: 'auto'
+            });
+            if (err.message !== 'Network Error') {
+                localStorage.removeItem('jwt_token')
+                next({ name: 'Login' })
+            } else {
+                next()
+            }
         }
 
         return;
@@ -81,8 +94,22 @@ router.beforeEach(async (to, from, next) => {
             await api.get('/auth/check', { withCredentials: true })
             next()
         } catch (err) {
-            localStorage.removeItem('jwt_token')
-            next({ name: 'Login' })
+            console.error(err)
+            Swal.fire({
+                title: err.message,
+                icon: "error",
+                timer: 3000,
+                showConfirmButton: false,
+                theme: 'auto'
+            });
+
+            if (err.message !== 'Network Error') {
+                localStorage.removeItem('jwt_token')
+                next({ name: 'Login' })
+            } else {
+                next()
+            }
+
         }
     } else {
         next()

@@ -25,12 +25,12 @@
 </template>
 
 <script setup>
+import Swal from 'sweetalert2'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import api from '../constants/api'
 import BaseButton from '../components/ui/BaseButton.vue'
 import BaseInput from '../components/ui/BaseInput.vue'
-import Swal from 'sweetalert2'
+import api from '../constants/api'
 
 const user = ref('')
 const password = ref('')
@@ -38,7 +38,7 @@ const router = useRouter()
 
 const handleLogin = async () => {
     try {
-        
+
         Swal.fire({
             title: 'Iniciando Sesión...',
             allowOutsideClick: false,
@@ -64,7 +64,7 @@ const handleLogin = async () => {
     } catch (err) {
         console.error(err)
         Swal.fire({
-            title: err.response.data.error,
+            title: err,
             icon: "error",
             timer: 3000,
             showConfirmButton: false,

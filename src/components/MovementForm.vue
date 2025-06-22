@@ -12,30 +12,7 @@
             </div>
 
             <div class="w-full flex gap-4">
-
-                <label class="inline-flex items-center gap-2 cursor-pointer">
-                    <input
-                           id="ingreso"
-                           type="radio"
-                           value="ingreso"
-                           v-model="movement.type"
-                           class="form-radio h-5 w-5" />
-
-                    <span>Ingreso</span>
-
-                </label>
-                <label class="inline-flex items-center gap-2 cursor-pointer">
-                    <input
-                           id="gasto"
-                           type="radio"
-                           value="gasto"
-                           v-model="movement.type"
-                           class="form-radio h-5 w-5" />
-
-                    <span>Gasto</span>
-
-                </label>
-
+                <RadioButton v-model="movement.type" :options="options" />
             </div>
 
             <div class="w-full">
@@ -77,8 +54,25 @@ import { useCategorieStore } from '../stores/categoriesStore';
 import CategorySelect from './CategorySelect.vue';
 import BaseButton from './ui/BaseButton.vue';
 import BaseInput from './ui/BaseInput.vue';
+import RadioButton from './ui/RadioButton.vue';
+import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/vue/24/solid';
 
 const { isEdit = false, data } = defineProps(['isEdit', 'data']);
+
+const options = [
+    {
+        value: 'ingreso',
+        label: 'Ingreso',
+        color: 'green',
+        icon: ArrowDownIcon
+    },
+    {
+        value: 'gasto',
+        label: 'Gasto',
+        color: 'red',
+        icon: ArrowUpIcon
+    }
+];
 
 const {
     handleInput,
