@@ -11,10 +11,10 @@
                    class="absolute opacity-0 w-0 h-0"
                    @change="handleChange" />
             <span
-                  class="inline-flex items-center px-4 py-2 rounded-full border text-sm font-medium cursor-pointer transition-all duration-200"
+                  class="inline-flex items-center px-4 py-2 rounded-xl border text-sm font-medium cursor-pointer transition-all duration-200"
                   :class="[
                     selectedValue === option.value
-                        ? `bg-${option.color}-100 border-${option.color}-300 text-${option.color}-700 dark:bg-${option.color}-900/30 dark:border-${option.color}-700 dark:text-${option.color}-300`
+                        ? `bg-${option.color}-100 border-2 border-${option.color}-300 text-${option.color}-700 dark:bg-${option.color}-900/30 dark:border-${option.color}-700 dark:text-${option.color}-300`
                         : 'border-gray-200 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800'
                 ]">
                 <component

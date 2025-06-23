@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col sm:flex-row gap-4">
+    <div class="flex flex-col sm:flex-row gap-4 sm:max-w-4xl m-auto">
         <div class="w-full max-w-md mx-auto dark:bg-gray-800 bg-slate-100 rounded shadow-2xl p-4">
             <h4 class="text-xl font-semibold dark:text-gray-300">Gasto Por Categoria</h4>
             <Doughnut :key="graphStore.chartKeyA" :data="graphStore.chartDataGasto" :options="chartOptions" />
@@ -17,6 +17,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { onMounted } from 'vue'
 import { Doughnut } from 'vue-chartjs'
 import { useGraphStore } from '../stores/graphStore'
+import { formatoMoneda } from '../constants'
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement, ChartDataLabels)
 
@@ -24,7 +25,7 @@ const chartOptions = {
     responsive: true,
     plugins: {
         legend: {
-            position: 'top',
+            position: 'right',
         },
         datalabels: {
             formatter: (value, context) => {
@@ -34,7 +35,7 @@ const chartOptions = {
             },
             color: '#fff',
             font: {
-                size: 16,
+                size: 12,
                 weight: 'bold'
             }
         }

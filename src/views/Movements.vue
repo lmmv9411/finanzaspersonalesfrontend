@@ -8,7 +8,7 @@
         </div>
 
         <!-- Resumen Mensual -->
-        <div class="flex gap-4 justify-between mb-6 p-4 dark:bg-gray-800 bg-blue-50 rounded-lg">
+        <div class="flex gap-2 justify-between mb-6 p-2 dark:bg-gray-800 bg-blue-50 rounded-lg">
 
             <div class="dark:text-green-400 dark:text-green-400 text-green-600 font-bold flex gap-1">
                 <ArrowTrendingUpIcon class="w-6" />
