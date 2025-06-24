@@ -17,11 +17,10 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { onMounted } from 'vue'
 import { Doughnut } from 'vue-chartjs'
 import { useGraphStore } from '../stores/graphStore'
-import { formatoMoneda } from '../constants'
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement, ChartDataLabels)
 
-const chartOptions = {
+const chartOptions = {  
     responsive: true,
     plugins: {
         legend: {
