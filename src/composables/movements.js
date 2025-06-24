@@ -17,13 +17,19 @@ export const useMovements = () => {
     const balance = ref(0)
     const formatoDia = new Intl.DateTimeFormat(navigator.language, { weekday: 'long' })
     const formatoMes = new Intl.DateTimeFormat(navigator.language, { month: 'long' })
+    const selectedType = ref('');
+    const selectedCategory = ref('');
+    const isLoading = ref(false)
 
     const fetchMovements = async (page = 1) => {
 
         currentPage.value = page
+        movements.value = []
+        isLoading.value = true
 
         try {
-            const resp = await api.get(`/movements/day?startDate=${startDate.value}&endDate=${endDate.value}&page=${currentPage.value}&pageSize=${pageSize}`);
+            const resp = await api.get(`/movements/day?startDate=${startDate.value}&endDate=${endDate.value}&page=${currentPage.value}&pageSize=${pageSize}&type=${selectedType.value}&categoryId=${selectedCategory.value}`);
+            
             const { dias } = resp.data
 
             movements.value = dias.map(mov => {
@@ -67,6 +73,8 @@ export const useMovements = () => {
                 position: 'top'
 
             })
+        }finally{
+            isLoading.value = false
         }
     }
 
@@ -159,6 +167,8 @@ export const useMovements = () => {
         fetchMovements()
     })
 
+    watch([selectedCategory, selectedType], () => fetchMovements())
+
     onMounted(() => getCurrentMonth())
 
     return {
@@ -171,6 +181,9 @@ export const useMovements = () => {
         fetchMovements,
         totalGasto,
         totalIngreso,
-        balance
+        balance,
+        selectedType,
+        selectedCategory,
+        isLoading
     }
 }
