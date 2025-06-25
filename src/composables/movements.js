@@ -18,7 +18,7 @@ export const useMovements = () => {
     const formatoDia = new Intl.DateTimeFormat(navigator.language, { weekday: 'long' })
     const formatoMes = new Intl.DateTimeFormat(navigator.language, { month: 'long' })
     const selectedType = ref('');
-    const selectedCategory = ref('');
+    const selectedCategory = ref({ CategoryId: '' });
     const isLoading = ref(false)
 
     const fetchMovements = async (page = 1) => {
@@ -28,8 +28,8 @@ export const useMovements = () => {
         isLoading.value = true
 
         try {
-            const resp = await api.get(`/movements/day?startDate=${startDate.value}&endDate=${endDate.value}&page=${currentPage.value}&pageSize=${pageSize}&type=${selectedType.value}&categoryId=${selectedCategory.value}`);
-            
+            const resp = await api.get(`/movements/day?startDate=${startDate.value}&endDate=${endDate.value}&page=${currentPage.value}&pageSize=${pageSize}&type=${selectedType.value}&categoryId=${selectedCategory.value.CategoryId}`);
+
             const { dias } = resp.data
 
             movements.value = dias.map(mov => {
@@ -73,7 +73,7 @@ export const useMovements = () => {
                 position: 'top'
 
             })
-        }finally{
+        } finally {
             isLoading.value = false
         }
     }
@@ -160,6 +160,12 @@ export const useMovements = () => {
         selectedMonth.value = `${year}-${month}`
     }
 
+    const handleReset = () => {
+        selectedCategory.value.CategoryId = ''
+        selectedType.value = ''
+        getCurrentMonth()
+    }
+
     watch(selectedMonth, (newValue) => {
         const [year, month] = newValue.split('-')
         startDate.value = `${year}-${month}-01 00:00:00`
@@ -167,7 +173,7 @@ export const useMovements = () => {
         fetchMovements()
     })
 
-    watch([selectedCategory, selectedType], () => fetchMovements())
+    watch([selectedCategory, selectedType], () => fetchMovements(), { deep: true })
 
     onMounted(() => getCurrentMonth())
 
@@ -184,6 +190,7 @@ export const useMovements = () => {
         balance,
         selectedType,
         selectedCategory,
-        isLoading
+        isLoading,
+        handleReset
     }
 }

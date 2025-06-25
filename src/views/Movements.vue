@@ -2,18 +2,26 @@
     <div class="container mx-auto max-w-3xl py-4 px-2">
 
         <!-- Botón para mostrar/ocultar filtros -->
-        <div class="mb-4 flex justify-end">
-            <button
-                    @click="showFilters = !showFilters"
-                    class="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+        <div class="mb-4 flex justify-end gap-2">
+            <div v-if="showFilters">
+                <BaseButton color="danger" @click="handleReset" class="flex gap-2 items-center">
+                    <TrashIcon class="w-5 h-5" />
+                    <span>Borrar Filtros</span>
+                </BaseButton>
+            </div>
+
+            <BaseButton
+                        class="flex items-center gap-2"
+                        @click="showFilters = !showFilters">
                 <FunnelIcon class="h-4 w-4" />
                 <span>{{ showFilters ? 'Ocultar filtros' : 'Mostrar filtros' }}</span>
-            </button>
+            </BaseButton>
+
         </div>
 
         <Transition name="filter-slide">
             <div v-if="showFilters"
-                 class="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                 class="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
                 <!-- Selector de Mes -->
                 <div>
                     <label for="month-selector"
@@ -34,7 +42,7 @@
                 </div>
 
                 <!-- Filtro por Categoría -->
-                <div>
+                <!-- <div>
                     <label for="category-filter"
                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Categoría:</label>
                     <select id="category-filter" v-model="selectedCategory"
@@ -44,9 +52,17 @@
                             {{ category.name }}
                         </option>
                     </select>
+                </div> -->
+
+                <div class="w-full md:col-span-2">
+                    <label for="category-filter"
+                           class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Categoría:</label>
+                    <CategorySelect id="category-filter" :movement="selectedCategory" class=" dark:text-gray-100" />
                 </div>
+
             </div>
         </Transition>
+
         <!-- Resumen Mensual -->
         <div class="flex gap-2 justify-between mb-6 p-2 dark:bg-gray-800 bg-blue-50 rounded-lg">
 
@@ -65,27 +81,25 @@
 
         </div>
 
-        <!-- Área de movimientos con loader local -->
-        <div v-if="isLoading" class="relative min-h-[200px]">
-            <!-- Overlay de carga -->
-            <div v-if="isLoading"
-                 class="absolute inset-0 bg-white/70 dark:bg-gray-800/70 z-10 flex items-center justify-center rounded-lg">
-                <div class="text-center">
-                    <svg class="animate-spin h-8 w-8 text-blue-500 mx-auto mb-2" xmlns="http://www.w3.org/2000/svg"
-                         fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
-                        </circle>
-                        <path class="opacity-75" fill="currentColor"
-                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                        </path>
-                    </svg>
-                    <span class="text-gray-600 dark:text-gray-300">Cargando movimientos...</span>
-                </div>
+        <!-- Overlay de carga -->
+        <div v-if="isLoading"
+             class="min-h-[200px] flex items-center justify-center rounded-lg">
+            <div class="text-center">
+                <svg class="animate-spin h-8 w-8 text-blue-500 mx-auto mb-2" xmlns="http://www.w3.org/2000/svg"
+                     fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                    </circle>
+                    <path class="opacity-75" fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                    </path>
+                </svg>
+                <span class="text-gray-600 dark:text-gray-300">Cargando movimientos...</span>
             </div>
         </div>
 
+
         <!-- Mensaje si no hay datos -->
-        <div v-if="movements.length === 0" class="text-center py-8 text-gray-500">
+        <div v-if="movements.length === 0 && !isLoading" class="text-center py-8 text-gray-500">
             No hay movimientos para este período
         </div>
 
@@ -167,19 +181,21 @@
 </template>
 
 <script setup>
+import { ArrowTrendingDownIcon, ArrowTrendingUpIcon, CurrencyDollarIcon, FunnelIcon, PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/solid';
+import { Icon } from '@iconify/vue';
 import { onMounted, ref, watch } from 'vue';
-import { useMovements } from '../composables/movements';
-import BaseInput from '../components/ui/BaseInput.vue'
-import { FunnelIcon, PencilSquareIcon, TrashIcon, ArrowTrendingUpIcon, ArrowTrendingDownIcon, CurrencyDollarIcon } from '@heroicons/vue/24/solid'
-import { useModalStore } from '../components/modal/store/modalStore';
 import Modal from '../components/modal/Modal.vue';
+import { useModalStore } from '../components/modal/store/modalStore';
 import MovementForm from '../components/MovementForm.vue';
 import Pagination from '../components/Pagination.vue';
-import { useMovementStore } from '../stores/movementStore';
+import BaseButton from '../components/ui/BaseButton.vue';
+import BaseInput from '../components/ui/BaseInput.vue';
+import { useMovements } from '../composables/movements';
 import { formatoMoneda } from '../constants';
-import { Icon } from '@iconify/vue';
-import { getRandomBgColor } from './configs/icons';
 import { useCategorieStore } from '../stores/categoriesStore';
+import { useMovementStore } from '../stores/movementStore';
+import { getRandomBgColor } from './configs/icons';
+import CategorySelect from '../components/CategorySelect.vue';
 
 const modalStore = useModalStore();
 const movementStore = useMovementStore();
@@ -207,6 +223,7 @@ const {
     selectedCategory,
     selectedType,
     isLoading,
+    handleReset,
     balance } = useMovements()
 
 watch(() => movementStore.isSaved, async (newVal) => {

@@ -46,7 +46,7 @@
 <script setup>
 import { ChevronDownIcon } from '@heroicons/vue/24/solid';
 import { Icon } from '@iconify/vue';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useCategorieStore } from '../stores/categoriesStore';
 import { getRandomBgColor } from '../views/configs/icons.js';
 
@@ -65,6 +65,12 @@ const handleCategory = (category) => {
     selectedCategory.value = category
     isOpen.value = false
 }
+
+watch(props.movement, () => {
+    if (!props.movement.CategoryId) {
+        selectedCategory.value = null
+    }
+}, { deep: true })
 
 onMounted(() => {
     const c = categoriesStore.categories.find((c) => c.id === props.movement.CategoryId)
