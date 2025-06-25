@@ -42,18 +42,6 @@
                 </div>
 
                 <!-- Filtro por Categoría -->
-                <!-- <div>
-                    <label for="category-filter"
-                           class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Categoría:</label>
-                    <select id="category-filter" v-model="selectedCategory"
-                            class="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                        <option value="">Todas</option>
-                        <option v-for="category in categoriesStore.categories" :key="category.id" :value="category.id">
-                            {{ category.name }}
-                        </option>
-                    </select>
-                </div> -->
-
                 <div class="w-full md:col-span-2">
                     <label for="category-filter"
                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Categoría:</label>
