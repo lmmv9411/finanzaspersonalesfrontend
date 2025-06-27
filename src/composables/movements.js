@@ -18,7 +18,7 @@ export const useMovements = () => {
     const formatoDia = new Intl.DateTimeFormat(navigator.language, { weekday: 'long' })
     const formatoMes = new Intl.DateTimeFormat(navigator.language, { month: 'long' })
     const selectedType = ref('');
-    const selectedCategory = ref({ CategoryId: '' });
+    const selectedCategory = ref(0);
     const isLoading = ref(false)
 
     const fetchMovements = async (page = 1) => {
@@ -28,7 +28,7 @@ export const useMovements = () => {
         isLoading.value = true
 
         try {
-            const resp = await api.get(`/movements/day?startDate=${startDate.value}&endDate=${endDate.value}&page=${currentPage.value}&pageSize=${pageSize}&type=${selectedType.value}&categoryId=${selectedCategory.value.CategoryId}`);
+            const resp = await api.get(`/movements/day?startDate=${startDate.value}&endDate=${endDate.value}&page=${currentPage.value}&pageSize=${pageSize}&type=${selectedType.value}&categoryId=${selectedCategory.value || ''}`);
 
             const { dias } = resp.data
 
@@ -161,7 +161,7 @@ export const useMovements = () => {
     }
 
     const handleReset = () => {
-        selectedCategory.value.CategoryId = ''
+        selectedCategory.value = 0
         selectedType.value = ''
         getCurrentMonth()
     }
@@ -173,7 +173,7 @@ export const useMovements = () => {
         fetchMovements()
     })
 
-    watch([selectedCategory, selectedType], () => fetchMovements(), { deep: true })
+    watch([selectedCategory, selectedType], () => fetchMovements())
 
     onMounted(() => getCurrentMonth())
 

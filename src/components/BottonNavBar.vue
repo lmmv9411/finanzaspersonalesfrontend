@@ -1,5 +1,5 @@
 <template>
-    <nav class="fixed bottom-0 left-0 right-0 bg-gray-200 dark:bg-gray-800 shadow-lg h-16">
+    <nav class="fixed bottom-0 left-0 right-0 bg-gray-200 dark:bg-gray-800 shadow-lg h-16 shadow-top">
         <div class="flex justify-around py-2 h-full items-center relative">
             <router-link
                          v-for="(item, idx) in navItems"
@@ -41,3 +41,9 @@ const navItems = [
 ];
 
 </script>
+
+<style scoped>
+.shadow-top {
+    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+</style>

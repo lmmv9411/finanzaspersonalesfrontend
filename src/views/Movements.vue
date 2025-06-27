@@ -40,9 +40,9 @@
 
                 <!-- Filtro por Categoría -->
                 <div class="w-full md:col-span-2">
-                    <label for="category-filter"
-                           class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Categoría:</label>
-                    <CategorySelect id="category-filter" :movement="selectedCategory" class=" dark:text-gray-100" />
+                    <span
+                          class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Categoría:</span>
+                    <CategorySelect id="category-filter" v-model="selectedCategory" class=" dark:text-gray-100" />
                 </div>
 
             </div>
