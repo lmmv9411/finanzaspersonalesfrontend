@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import AddMovementModal from '../components/AddMovementModal.vue';
 import Balance from '../components/Balance.vue';
 import HomeGraphics from '../components/HomeGraphics.vue';
 import { useCategorieStore } from '../stores/categoriesStore';
@@ -14,6 +13,5 @@ onMounted(async () => await categoriesStore.getCategories())
     <div class="dark:bg-gray-900 p-3 flex flex-col gap-4">
         <Balance />
         <HomeGraphics />
-        <AddMovementModal />
     </div>
 </template>

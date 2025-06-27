@@ -1,13 +1,11 @@
 import Swal from 'sweetalert2'
 import { ref } from 'vue'
-import { useModalStore } from '../components/modal/store/modalStore'
 import { formatoMoneda } from '../constants'
 import { useMovementStore } from '../stores/movementStore'
 
 export const useMovementform = () => {
 
     const movementStore = useMovementStore()
-    const modalStore = useModalStore();
 
     const movement = ref({
         type: 'ingreso',
@@ -31,7 +29,6 @@ export const useMovementform = () => {
             })
             if (!confirm.isConfirmed) {
 
-                modalStore.showModal = false
                 resetForm()
 
                 Swal.fire({
@@ -61,8 +58,6 @@ export const useMovementform = () => {
 
         Swal.close()
 
-        modalStore.isRendered = false;
-
         if (movementStore.isSaved) {
             Swal.fire({
                 title: `Movimiento ${isEdit ? 'Editado' : 'Registrado'}`,
@@ -87,7 +82,9 @@ export const useMovementform = () => {
             });
         }
 
-        modalStore.showModal = false
+        if (isEdit) {
+            history.back()
+        }
 
         resetForm()
 
@@ -129,6 +126,6 @@ export const useMovementform = () => {
         valor.value = formatoMoneda(numero)
     }
 
-    return { movement, submitForm, handleInput, valor, modalStore, formatoMoneda }
+    return { movement, submitForm, handleInput, valor, formatoMoneda }
 
 }

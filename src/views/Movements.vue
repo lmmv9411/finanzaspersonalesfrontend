@@ -159,18 +159,14 @@
                     @page-changed="fetchMovements" />
     </div>
 
-    <Modal>
-        <MovementForm isEdit="true" :data="movement" />
-    </Modal>
 </template>
 
 <script setup>
 import { ArrowTrendingDownIcon, ArrowTrendingUpIcon, CurrencyDollarIcon, FunnelIcon, PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/solid';
 import { Icon } from '@iconify/vue';
 import { onMounted, ref, watch } from 'vue';
-import Modal from '../components/modal/Modal.vue';
-import { useModalStore } from '../components/modal/store/modalStore';
-import MovementForm from '../components/MovementForm.vue';
+import { useRouter } from 'vue-router';
+import CategorySelect from '../components/CategorySelect.vue';
 import Pagination from '../components/Pagination.vue';
 import BaseButton from '../components/ui/BaseButton.vue';
 import BaseInput from '../components/ui/BaseInput.vue';
@@ -179,20 +175,21 @@ import { formatoMoneda } from '../constants';
 import { useCategorieStore } from '../stores/categoriesStore';
 import { useMovementStore } from '../stores/movementStore';
 import { getRandomBgColor } from './configs/icons';
-import CategorySelect from '../components/CategorySelect.vue';
 
-const modalStore = useModalStore();
 const movementStore = useMovementStore();
 const categoriesStore = useCategorieStore()
 
 // Control de visibilidad de filtros
 const showFilters = ref(false);
 
-const movement = ref({});
+const router = useRouter()
 
 const edit = (data) => {
-    movement.value = data
-    modalStore.showModal = true
+    sessionStorage.setItem('data', JSON.stringify(data))
+    router.push({
+        name: 'Movement',
+        query: { isEdit: true }
+    })
 }
 
 const {

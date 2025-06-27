@@ -1,10 +1,6 @@
 <template>
     <aside
-           :class="[
-            'fixed md:static top-0 left-0 w-64 h-full dark:bg-gray-900 bg-gray-700 transform transition-transform duration-300 z-50 shadow-xl bg-gray-200',
-            isOpen ? 'translate-x-0' : '-translate-x-full',
-            'md:translate-x-0'
-        ]">
+           class="fixed md:static top-0 left-0 w-64 h-full dark:bg-gray-900 bg-gray-700 transform transition-transform duration-300 z-50 shadow-xl bg-gray-200 -translate-x-full md:translate-x-0">
         <div class="p-2 h-full flex flex-col">
             <div class="flex items-center py-4 px-2 gap-2">
                 <img
@@ -22,8 +18,7 @@
                                 :key="item.name"
                                 :to="item.to"
                                 :class="{ 'bg-indigo-500 text-white': $route.path === item.to }"
-                                class="flex gap-4 p-4 dark:text-gray-100 rounded hover:bg-indigo-900 dark:hover:bg-indigo-700 hover:text-white text-gray-200 transition-colors duration-300"
-                                @click="emits('toggleSidebar')">
+                                class="flex gap-4 p-4 dark:text-gray-100 rounded hover:bg-indigo-900 dark:hover:bg-indigo-700 hover:text-white text-gray-200 transition-colors duration-300">
                         <component
                                    v-if="item.icon"
                                    :is="item.icon"
@@ -46,19 +41,16 @@
 </template>
 
 <script setup>
-import { AdjustmentsVerticalIcon, ArrowRightStartOnRectangleIcon, ChartBarIcon, HomeIcon, TagIcon } from '@heroicons/vue/24/solid';
+import { AdjustmentsVerticalIcon, ArrowRightStartOnRectangleIcon, ChartBarIcon, HomeIcon, PlusIcon, TagIcon } from '@heroicons/vue/24/solid';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import ToggleTheme from './ToggleTheme.vue';
-import api from '../constants/api';
 import { BASE_URL } from '../constants';
-
-const props = defineProps({ isOpen: Boolean })
-
-const emits = defineEmits(['toggleSidebar']);
+import api from '../constants/api';
+import ToggleTheme from './ToggleTheme.vue';
 
 const menu = [
     { name: 'Home', to: '/', icon: HomeIcon },
+    { name: 'Nuevo Movimiento', to: '/movement', icon: PlusIcon },
     { name: 'Movimientos', to: '/movements', icon: ChartBarIcon },
     { name: 'Categorias', to: '/categories', icon: TagIcon },
     { name: 'Configuraciones', to: '/configs', icon: AdjustmentsVerticalIcon },

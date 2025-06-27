@@ -6,7 +6,7 @@
 
         <form @submit.prevent="submitForm(isEdit)" class="flex flex-col gap-4 items-end" autocomplete="off">
 
-            <div v-show="loginisEdit" class="flex flex-col w-full">
+            <div v-show="isEdit" class="flex flex-col w-full">
                 <label for="createdAt">Fecha</label>
                 <BaseInput id="createdAt" type="datetime-local" v-model="movement.date" />
             </div>
@@ -38,9 +38,6 @@
                     <span>{{ isEdit ? 'Editar' : 'Crear' }} Movimiento</span>
                     <ArrowsRightLeftIcon class="w-5 inline" />
                 </BaseButton>
-                <BaseButton color="danger" @click="modalStore.isRendered = false">
-                    <span>Cerrar</span>
-                </BaseButton>
             </div>
         </form>
     </div>
@@ -50,6 +47,7 @@
 import { ArrowsRightLeftIcon } from '@heroicons/vue/16/solid';
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/vue/24/solid';
 import { watchEffect } from 'vue';
+import { useRoute } from 'vue-router';
 import CategorySelect from '../components/CategorySelect.vue';
 import BaseButton from '../components/ui/BaseButton.vue';
 import BaseInput from '../components/ui/BaseInput.vue';
@@ -57,7 +55,9 @@ import RadioButton from '../components/ui/RadioButton.vue';
 import { useMovementform } from '../composables/movementForm';
 import { useCategorieStore } from '../stores/categoriesStore';
 
-const { isEdit = false, data } = defineProps(['isEdit', 'data']);
+const route = useRoute()
+
+const { isEdit = false } = route.query
 
 const options = [
     {
@@ -79,13 +79,16 @@ const {
     formatoMoneda,
     movement,
     submitForm,
-    valor,
-    modalStore
+    valor
 } = useMovementform();
 
 watchEffect(async () => {
 
+    const data = JSON.parse(sessionStorage.getItem('data'))
+
     if (isEdit && data) {
+
+        sessionStorage.removeItem('data')
 
         const date = new Date(data.date);
 
