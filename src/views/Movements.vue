@@ -10,13 +10,10 @@
                 </BaseButton>
             </div>
 
-            <BaseButton
-                        class="flex items-center gap-2"
-                        @click="showFilters = !showFilters">
+            <BaseButton class="flex items-center gap-2" @click="showFilters = !showFilters">
                 <FunnelIcon class="h-4 w-4" />
                 <span>{{ showFilters ? 'Ocultar filtros' : 'Mostrar filtros' }}</span>
             </BaseButton>
-
         </div>
 
         <Transition name="filter-slide">
@@ -84,7 +81,6 @@
                 <span class="text-gray-600 dark:text-gray-300">Cargando movimientos...</span>
             </div>
         </div>
-
 
         <!-- Mensaje si no hay datos -->
         <div v-if="movements.length === 0 && !isLoading" class="text-center py-8 text-gray-500">

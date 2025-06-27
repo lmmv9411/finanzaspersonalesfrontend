@@ -37,6 +37,11 @@ const routes = [
                 component: () => import('../views/Movements.vue')
             },
             {
+                path: '/movement',
+                name: 'Movement',
+                component: () => import('../views/Movement.vue')
+            },
+            {
                 path: '/categories',
                 name: 'Categories',
                 component: () => import('../views/Categories.vue')
@@ -70,15 +75,20 @@ router.beforeEach(async (to, from, next) => {
             await api.get('/auth/check', { withCredentials: true })
             next({ name: 'Home' })
         } catch (error) {
+
             console.error(error)
-            Swal.fire({
-                title: err.message,
-                icon: "error",
-                timer: 3000,
-                showConfirmButton: false,
-                theme: 'auto'
-            });
-            if (err.message !== 'Network Error') {
+
+            if (err.status !== 401) {
+                Swal.fire({
+                    title: err.message,
+                    icon: "error",
+                    timer: 3000,
+                    showConfirmButton: false,
+                    theme: 'auto'
+                });
+            }
+
+            if (err.status === 401) {
                 localStorage.removeItem('jwt_token')
                 next({ name: 'Login' })
             } else {
@@ -94,16 +104,20 @@ router.beforeEach(async (to, from, next) => {
             await api.get('/auth/check', { withCredentials: true })
             next()
         } catch (err) {
-            console.error(err)
-            Swal.fire({
-                title: err.message,
-                icon: "error",
-                timer: 3000,
-                showConfirmButton: false,
-                theme: 'auto'
-            });
 
-            if (err.message !== 'Network Error') {
+            console.error(err)
+
+            if (err.status !== 401) {
+                Swal.fire({
+                    title: err.message,
+                    icon: "error",
+                    timer: 3000,
+                    showConfirmButton: false,
+                    theme: 'auto'
+                });
+            }
+
+            if (err.status === 401) {
                 localStorage.removeItem('jwt_token')
                 next({ name: 'Login' })
             } else {

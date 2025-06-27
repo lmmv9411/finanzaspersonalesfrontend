@@ -14,7 +14,7 @@ export const useMovementStore = defineStore('movement', () => {
     const saveMovement = async (movement, isEdit) => {
 
         try {
-
+            
             if (!isEdit) {
                 await api.post('/movements', movement)
             } else {
