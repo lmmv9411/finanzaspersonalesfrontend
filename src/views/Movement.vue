@@ -8,15 +8,15 @@
 
             <div v-show="isEdit" class="flex flex-col w-full">
                 <label for="createdAt">Fecha</label>
-                <BaseInput id="createdAt" type="datetime-local" v-model="movement.date" />
+                <BaseInput id="createdAt" type="datetime-local" v-model="movementStore.movement.date" />
             </div>
 
             <div class="w-full flex gap-4">
-                <RadioButton v-model="movement.type" :options="options" />
+                <RadioButton v-model="movementStore.movement.type" :options="options" />
             </div>
 
             <div class="w-full">
-                <CategorySelect :movement="movement" />
+                <CategorySelect v-model="movementStore.movement.CategoryId" />
             </div>
 
             <div class="w-full">
@@ -30,7 +30,7 @@
 
             <div class="w-full">
                 <label for="description" class="block text-gray-700 dark:text-gray-300">Descripción</label>
-                <BaseInput id="description" v-model="movement.description" />
+                <BaseInput id="description" v-model="movementStore.movement.description" />
             </div>
 
             <div class="flex gap-2">
@@ -38,6 +38,7 @@
                     <span>{{ isEdit ? 'Editar' : 'Crear' }} Movimiento</span>
                     <ArrowsRightLeftIcon class="w-5 inline" />
                 </BaseButton>
+                <BaseButton color="danger" @click="resetForm">Limpiar</BaseButton>
             </div>
         </form>
     </div>
@@ -52,7 +53,7 @@ import CategorySelect from '../components/CategorySelect.vue';
 import BaseButton from '../components/ui/BaseButton.vue';
 import BaseInput from '../components/ui/BaseInput.vue';
 import RadioButton from '../components/ui/RadioButton.vue';
-import { useMovementform } from '../composables/movementForm';
+import { useMovement } from '../composables/movement';
 import { useCategorieStore } from '../stores/categoriesStore';
 
 const route = useRoute()
@@ -77,10 +78,11 @@ const options = [
 const {
     handleInput,
     formatoMoneda,
-    movement,
+    movementStore,
     submitForm,
-    valor
-} = useMovementform();
+    valor,
+    resetForm
+} = useMovement();
 
 watchEffect(async () => {
 
@@ -95,7 +97,7 @@ watchEffect(async () => {
         const pad = n => n.toString().padStart(2, '0');
         const localDateTime = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 
-        movement.value = { ...data, date: localDateTime }
+        movementStore.movement = { ...data, date: localDateTime }
 
         valor.value = formatoMoneda(data.amount)
     }

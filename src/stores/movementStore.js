@@ -1,31 +1,37 @@
 import { defineStore } from 'pinia';
+import { ref } from 'vue';
 import api from "../constants/api";
 import { useBalanceStore } from './balanceStore';
 import { useGraphStore } from './graphStore';
-import { ref } from 'vue';
 
 export const useMovementStore = defineStore('movement', () => {
 
     const balanceStore = useBalanceStore();
     const graphStore = useGraphStore();
     const isSaved = ref(false)
-    const mov = ref({})
 
-    const saveMovement = async (movement, isEdit) => {
+    const movement = ref({
+        type: 'ingreso',
+        amount: '',
+        description: '',
+        CategoryId: 0
+    })
+
+
+    const saveMovement = async (isEdit) => {
 
         try {
-            
+
             if (!isEdit) {
-                await api.post('/movements', movement)
+                await api.post('/movements', movement.value)
             } else {
-                await api.put(`/movements/${movement.id}`, movement)
+                await api.put(`/movements/${movement.value.id}`, movement.value)
             }
 
             balanceStore.fetchBalance()
             graphStore.getTotalByCategory(balanceStore.startDate, balanceStore.endDate)
 
             isSaved.value = true
-            mov.value = movement
 
         } catch (error) {
             isSaved.value = false
@@ -33,5 +39,5 @@ export const useMovementStore = defineStore('movement', () => {
         }
     }
 
-    return { saveMovement, isSaved, mov }
+    return { saveMovement, isSaved, movement }
 })

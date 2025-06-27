@@ -20,16 +20,16 @@
 
         <Transition name="slide-down">
             <div v-show="isOpen"
-                 class="max-h-60 p-2 overflow-y-auto mt-2 rounded-md bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 max-h-60">
+                 class="max-h-60 p-2 overflow-y-auto mt-1 rounded-md bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 max-h-60">
                 <div class="grid grid-cols-4  gap-3">
                     <div
                          v-for="category in categoriesStore.categories"
                          :key="category.id"
-                         @click="handleCategory(category)"
+                         @click="selectCategory(category)"
                          class="flex p-2 flex-col items-center rounded-lg cursor-pointer transition-all"
                          :class="{
-                            'bg-primary-100 dark:bg-primary-900 border-2 border-gray-200 dark:border-gray-500': movement.CategoryId === category.id,
-                            'hover:bg-gray-200 dark:hover:bg-gray-700': movement.CategoryId !== category.id
+                            'bg-primary-100 dark:bg-primary-900 border-2 border-gray-200 dark:border-gray-500': modelValue === category.id,
+                            'hover:bg-gray-200 dark:hover:bg-gray-700': modelValue !== category.id
                         }">
                         <div :class=[getRandomBgColor(category.icon)]
                              class="rounded-full p-1 text-white text-lg hover:scale-110 duration-200">
@@ -46,11 +46,12 @@
 <script setup>
 import { ChevronDownIcon } from '@heroicons/vue/24/solid';
 import { Icon } from '@iconify/vue';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watchEffect } from 'vue';
 import { useCategorieStore } from '../stores/categoriesStore';
 import { getRandomBgColor } from '../views/configs/icons.js';
 
-const props = defineProps({ movement: { required: true, type: Object } })
+const props = defineProps({ modelValue: Number })
+const emit = defineEmits(['update:modelValue'])
 
 const categoriesStore = useCategorieStore();
 
@@ -60,20 +61,20 @@ const toggleDropDown = () => isOpen.value = !isOpen.value
 
 const selectedCategory = ref(null)
 
-const handleCategory = (category) => {
-    props.movement.CategoryId = category.id
+const selectCategory = (category) => {
+    emit('update:modelValue', category.id);
     selectedCategory.value = category
     isOpen.value = false
 }
 
-watch(props.movement, () => {
-    if (!props.movement.CategoryId) {
-        selectedCategory.value = null
+watchEffect(() => {
+    if (props.modelValue === 0) {
+        selectedCategory.value = ''
     }
-}, { deep: true })
+})
 
 onMounted(() => {
-    const c = categoriesStore.categories.find((c) => c.id === props.movement.CategoryId)
+    const c = categoriesStore.categories.find((c) => c.id === props.modelValue)
     if (c) {
         selectedCategory.value = c
     }

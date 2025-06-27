@@ -3,20 +3,13 @@ import { ref } from 'vue'
 import { formatoMoneda } from '../constants'
 import { useMovementStore } from '../stores/movementStore'
 
-export const useMovementform = () => {
+export const useMovement = () => {
 
     const movementStore = useMovementStore()
 
-    const movement = ref({
-        type: 'ingreso',
-        amount: '',
-        description: '',
-        CategoryId: ''
-    })
-
     const submitForm = async (isEdit) => {
 
-        movement.value.amount = valor.value.replace(/\D/g, ''); // Limpiar el valor antes de enviarlo
+        movementStore.movement.amount = valor.value.replace(/\D/g, '');
 
         if (isEdit) {
             const confirm = await Swal.fire({
@@ -54,7 +47,7 @@ export const useMovementform = () => {
             theme: 'auto'
         })
 
-        await movementStore.saveMovement(movement.value, isEdit)
+        await movementStore.saveMovement(isEdit)
 
         Swal.close()
 
@@ -90,15 +83,15 @@ export const useMovementform = () => {
 
     }
 
-    // reiniciar formulario
     const resetForm = () => {
-        movement.value = {
+        movementStore.movement = {
             type: 'ingreso',
             amount: '',
             description: '',
-            categoryId: '',
+            CategoryId: 0,
             id: ''
         }
+        valor.value = ''
         movementStore.isSaved = false
     }
 
@@ -126,6 +119,6 @@ export const useMovementform = () => {
         valor.value = formatoMoneda(numero)
     }
 
-    return { movement, submitForm, handleInput, valor, formatoMoneda }
+    return { movementStore, submitForm, handleInput, valor, formatoMoneda, resetForm }
 
 }
