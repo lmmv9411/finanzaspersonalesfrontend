@@ -32,15 +32,15 @@ export const useMovements = () => {
 
             const { dias } = resp.data
 
-            movements.value = dias.map(mov => {
+            movements.value = dias.map(dia => {
 
-                const objDate = new Date(mov.fecha_server)
+                const objDate = new Date(dia.fecha_server)
 
-                mov.dia = objDate.getDate()
-                mov.nombreDia = formatoDia.format(objDate)
-                mov.mes = formatoMes.format(objDate)
+                dia.dia = objDate.getDate()
+                dia.nombreDia = formatoDia.format(objDate)
+                dia.mes = formatoMes.format(objDate)
 
-                const { ingresos, gastos } = mov.detalles.reduce((totales, movimiento) => {
+                const { ingresos, gastos } = dia.detalles.reduce((totales, movimiento) => {
                     if (movimiento.type === 'ingreso') {
                         totales.ingresos += Number(movimiento.amount);
                     } else {
@@ -49,10 +49,10 @@ export const useMovements = () => {
                     return totales;
                 }, { ingresos: 0, gastos: 0 })
 
-                mov.ingresos = ingresos
-                mov.gastos = gastos
+                dia.ingresos = ingresos
+                dia.gastos = gastos
 
-                return mov
+                return dia
             })
 
             totalGasto.value = resp.data.totalGasto

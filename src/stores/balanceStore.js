@@ -1,7 +1,7 @@
-import api from '../constants/api'
 import { defineStore } from "pinia"
-import { ref, watch, watchEffect } from "vue"
 import Swal from "sweetalert2"
+import { ref, watch } from "vue"
+import api from '../constants/api'
 
 export const useBalanceStore = defineStore("balance", () => {
 

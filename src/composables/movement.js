@@ -89,7 +89,8 @@ export const useMovement = () => {
             amount: '',
             description: '',
             CategoryId: 0,
-            id: ''
+            id: '',
+            date: null
         }
         valor.value = ''
         movementStore.isSaved = false

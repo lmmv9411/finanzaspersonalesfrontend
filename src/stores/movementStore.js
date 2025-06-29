@@ -14,9 +14,9 @@ export const useMovementStore = defineStore('movement', () => {
         type: 'ingreso',
         amount: '',
         description: '',
-        CategoryId: 0
+        CategoryId: 0,
+        date: null
     })
-
 
     const saveMovement = async (isEdit) => {
 
@@ -25,6 +25,7 @@ export const useMovementStore = defineStore('movement', () => {
             if (!isEdit) {
                 await api.post('/movements', movement.value)
             } else {
+                movement.value.date = new Date(movement.value.date).toISOString()
                 await api.put(`/movements/${movement.value.id}`, movement.value)
             }
 
