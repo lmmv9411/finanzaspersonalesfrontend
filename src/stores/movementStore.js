@@ -25,7 +25,8 @@ export const useMovementStore = defineStore('movement', () => {
             if (!isEdit) {
                 await api.post('/movements', movement.value)
             } else {
-                movement.value.date = new Date(movement.value.date).toISOString()
+                const localDate = new Date(movement.value.date)
+                movement.value.date = localDate.toLocaleString('sv-SE')
                 await api.put(`/movements/${movement.value.id}`, movement.value)
             }
 
