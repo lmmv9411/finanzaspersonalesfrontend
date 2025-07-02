@@ -95,7 +95,14 @@ watchEffect(async () => {
         const date = new Date(data.date);
 
         const pad = n => n.toString().padStart(2, '0');
-        const localDateTime = `${date.getUTCFullYear()}-${pad(date.getUTCMonth() + 1)}-${pad(date.getUTCDate())}T${pad(date.getUTCHours())}:${pad(date.getUTCMinutes())}`;
+        
+        const year = date.getFullYear()
+        const month = pad(date.getMonth() + 1)
+        const day = pad(date.getDate())
+        const hours = pad(date.getHours())
+        const minutes = pad(date.getMinutes())
+
+        const localDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
 
         movementStore.movement = { ...data, date: localDateTime }
 
