@@ -99,8 +99,6 @@ export const useMovementsStore = defineStore('movements', () => {
         } catch (error) {
             console.error('Error al eliminar movimiento', error);
             showError('Error al eliminar movimiento');
-        } finally {
-            close();
         }
     };
 

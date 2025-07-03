@@ -8,15 +8,15 @@
 
             <div v-show="isEdit" class="flex flex-col w-full">
                 <label for="createdAt">Fecha</label>
-                <BaseInput id="createdAt" type="datetime-local" v-model="movementStore.movement.date" />
+                <BaseInput id="createdAt" type="datetime-local" v-model="movement.date" />
             </div>
 
             <div class="w-full flex gap-4">
-                <RadioButton v-model="movementStore.movement.type" :options="options" />
+                <RadioButton v-model="movement.type" :options="options" />
             </div>
 
             <div class="w-full">
-                <CategorySelect v-model="movementStore.movement.CategoryId" :type="movementStore.movement.type" />
+                <CategorySelect v-model="movement.CategoryId" :type="movement.type" />
             </div>
 
             <div class="w-full">
@@ -30,7 +30,7 @@
 
             <div class="w-full">
                 <label for="description" class="block text-gray-700 dark:text-gray-300">Descripción</label>
-                <BaseInput id="description" v-model="movementStore.movement.description" />
+                <BaseInput id="description" v-model="movement.description" />
             </div>
 
             <div class="flex gap-2">
@@ -57,6 +57,7 @@ import BaseButton from '../components/ui/BaseButton.vue';
 import BaseInput from '../components/ui/BaseInput.vue';
 import RadioButton from '../components/ui/RadioButton.vue';
 import { useMovement } from '../composables/movement';
+import { storeToRefs } from 'pinia';
 
 const route = useRoute()
 
@@ -86,6 +87,8 @@ const {
     resetForm
 } = useMovement();
 
+const { movement } = storeToRefs(movementStore)
+
 watchEffect(async () => {
 
     const data = JSON.parse(sessionStorage.getItem('data'))
@@ -106,7 +109,7 @@ watchEffect(async () => {
 
         const localDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
 
-        movementStore.movement = { ...data, date: localDateTime }
+        movement.value = { ...data, date: localDateTime }
 
         valor.value = formatoMoneda(data.amount)
     }
