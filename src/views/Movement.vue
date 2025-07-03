@@ -16,7 +16,7 @@
             </div>
 
             <div class="w-full">
-                <CategorySelect v-model="movementStore.movement.CategoryId" />
+                <CategorySelect v-model="movementStore.movement.CategoryId" :type="movementStore.movement.type" />
             </div>
 
             <div class="w-full">
@@ -38,7 +38,9 @@
                     <span>{{ isEdit ? 'Editar' : 'Crear' }} Movimiento</span>
                     <ArrowsRightLeftIcon class="w-5 inline" />
                 </BaseButton>
-                <BaseButton color="danger" @click="resetForm">Limpiar</BaseButton>
+                <BaseButton color="danger" @click="resetForm" title="Limpiar Formulario">
+                    <ArrowPathIcon class="w-5 h-5" />
+                </BaseButton>
             </div>
         </form>
     </div>
@@ -46,6 +48,7 @@
 
 <script setup>
 import { ArrowsRightLeftIcon } from '@heroicons/vue/16/solid';
+import { ArrowPathIcon } from '@heroicons/vue/20/solid';
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/vue/24/solid';
 import { watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
@@ -54,7 +57,6 @@ import BaseButton from '../components/ui/BaseButton.vue';
 import BaseInput from '../components/ui/BaseInput.vue';
 import RadioButton from '../components/ui/RadioButton.vue';
 import { useMovement } from '../composables/movement';
-import { useCategorieStore } from '../stores/categoriesStore';
 
 const route = useRoute()
 
@@ -95,7 +97,7 @@ watchEffect(async () => {
         const date = new Date(data.date);
 
         const pad = n => n.toString().padStart(2, '0');
-        
+
         const year = date.getFullYear()
         const month = pad(date.getMonth() + 1)
         const day = pad(date.getDate())
@@ -108,8 +110,6 @@ watchEffect(async () => {
 
         valor.value = formatoMoneda(data.amount)
     }
-
-    await useCategorieStore().getCategories()
 
 })
 

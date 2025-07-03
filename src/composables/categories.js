@@ -5,6 +5,7 @@ import { useCategorieStore } from "../stores/categoriesStore";
 
 export function useCategories() {
     const name = ref('');
+    const type = ref('ingreso');
     const isUpdate = ref(false);
     const categoryUpdate = ref(null);
     const categoriesStore = useCategorieStore()
@@ -35,8 +36,8 @@ export function useCategories() {
                 return;
             }
 
-            if(!selectedIcon.value.icon){
-                 Swal.fire({
+            if (!selectedIcon.value.icon) {
+                Swal.fire({
                     title: "Ícono Vacío",
                     icon: "error",
                     toast: true,
@@ -58,7 +59,7 @@ export function useCategories() {
                 theme: 'auto'
             })
 
-            await api.post('/categories', { name: name.value, icon: selectedIcon.value.icon })
+            await api.post('/categories', { name: name.value, icon: selectedIcon.value.icon, type: type.value })
 
             Swal.fire({
                 title: "Categoria Creada",
@@ -156,6 +157,7 @@ export function useCategories() {
         categoryUpdate.value = null;
         name.value = '';
         selectedIcon.value.icon = null
+        selectedIcon.value.name = ''
         showIconPicker.value = false
     }
 
@@ -170,13 +172,15 @@ export function useCategories() {
         isUpdate.value = true;
         categoryUpdate.value = category;
         selectedIcon.value.icon = category.icon
+        type.value = category.type
     }
 
     const updateCategory = async () => {
         try {
             await api.put(`/categories/${categoryUpdate.value.id}`, {
                 name: name.value,
-                icon: selectedIcon.value.icon
+                icon: selectedIcon.value.icon,
+                type: type.value
             });
         } catch (error) {
             console.error('Error updating category:', error);
@@ -186,6 +190,6 @@ export function useCategories() {
 
     onMounted(async () => categoriesStore.getCategories());
 
-    return { name, createCategory, deleteCategory, updateCategory, onUpdateCategory, isUpdate, selectedIcon, handleIconSelected, reset, showIconPicker };
+    return { name, type, createCategory, deleteCategory, updateCategory, onUpdateCategory, isUpdate, selectedIcon, handleIconSelected, reset, showIconPicker };
 
 }

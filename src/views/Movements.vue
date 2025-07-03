@@ -5,7 +5,7 @@
         <div class="mb-4 flex justify-end gap-2">
             <div v-if="showFilters">
                 <BaseButton color="danger" @click="handleReset" class="flex gap-2 items-center">
-                    <TrashIcon class="w-5 h-5" />
+                    <ArrowPathIcon class="w-5 h-5" />
                     <span>Borrar Filtros</span>
                 </BaseButton>
             </div>
@@ -42,7 +42,8 @@
                 <div class="w-full md:col-span-2">
                     <span
                           class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Categoría:</span>
-                    <CategorySelect id="category-filter" v-model="selectedCategory" class=" dark:text-gray-100" />
+                    <CategorySelect id="category-filter" :type="selectedType" v-model="selectedCategory"
+                                    class=" dark:text-gray-100" />
                 </div>
 
             </div>
@@ -162,9 +163,9 @@
 </template>
 
 <script setup>
-import { ArrowTrendingDownIcon, ArrowTrendingUpIcon, CurrencyDollarIcon, FunnelIcon, PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/solid';
+import { ArrowPathIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, CurrencyDollarIcon, FunnelIcon, PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/solid';
 import { Icon } from '@iconify/vue';
-import { onMounted, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import CategorySelect from '../components/CategorySelect.vue';
 import Pagination from '../components/Pagination.vue';
@@ -211,10 +212,6 @@ watch(() => movementStore.isSaved, async (newVal) => {
     if (newVal) {
         await fetchMovements()
     }
-})
-
-onMounted(async () => {
-    await categoriesStore.getCategories()
 })
 
 </script>

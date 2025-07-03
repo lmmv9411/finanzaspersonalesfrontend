@@ -1,19 +1,5 @@
 <template>
     <div class="max-w-4xl mx-auto">
-        <!-- Panel de icono seleccionado -->
-        <div v-if="selectedIcon"
-             class="sticky top-0 flex gap-3 mb-4 p-3 bg-blue-50 rounded-lg items-center dark:bg-gray-800">
-            <div
-                 class="rounded-full p-2 w-10 h-10 flex items-center justify-center transition-all"
-                 :class="getRandomBgColor(selectedIcon.icon)">
-                <Icon :icon="selectedIcon.icon" class="text-white w-6 h-6" />
-            </div>
-            <span class="font-medium dark:text-gray-300">{{ selectedIcon.name }}</span>
-            <button @click="confirmSelection"
-                    class="ml-auto px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
-                Usar este icono
-            </button>
-        </div>
 
         <!-- Grid de iconos -->
         <div class="flex gap-4 flex-col">
@@ -56,14 +42,13 @@ const selectedIcon = ref(null);
 
 const selectIcon = (icon) => {
     selectedIcon.value = icon;
-};
-
-const emit = defineEmits(['selected', 'close']);
-const confirmSelection = () => {
     if (selectedIcon.value) {
         emit('selected', { ...selectedIcon.value });
         emit('close')
     }
 };
+
+const emit = defineEmits(['selected', 'close']);
+
 
 </script>

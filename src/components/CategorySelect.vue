@@ -23,7 +23,7 @@
                  class="max-h-60 p-2 overflow-y-auto mt-1 rounded-md bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 max-h-60">
                 <div class="grid grid-cols-4  gap-3">
                     <div
-                         v-for="category in categoriesStore.categories"
+                         v-for="category in categories"
                          :key="category.id"
                          @click="selectCategory(category)"
                          class="flex p-2 flex-col items-center rounded-lg cursor-pointer transition-all"
@@ -46,14 +46,15 @@
 <script setup>
 import { ChevronDownIcon } from '@heroicons/vue/24/solid';
 import { Icon } from '@iconify/vue';
-import { onMounted, ref, watchEffect } from 'vue';
+import { onMounted, ref, watch, watchEffect } from 'vue';
 import { useCategorieStore } from '../stores/categoriesStore';
 import { getRandomBgColor } from '../views/configs/icons.js';
 
-const props = defineProps({ modelValue: Number })
+const props = defineProps({ modelValue: Number, type: String })
 const emit = defineEmits(['update:modelValue'])
 
 const categoriesStore = useCategorieStore();
+const categories = ref([])
 
 const isOpen = ref(false)
 
@@ -73,10 +74,24 @@ watchEffect(() => {
     }
 })
 
-onMounted(() => {
+watch(() => props.type, () => {
+    categories.value = categoriesStore.categories.filter(c => c.type === props.type)
+    selectedCategory.value = ''
+})
+
+onMounted(async () => {
+    await categoriesStore.getCategories();
+
     const c = categoriesStore.categories.find((c) => c.id === props.modelValue)
+
     if (c) {
         selectedCategory.value = c
+    }
+
+    if (!props.type) {
+        categories.value = categoriesStore.categories
+    } else {
+        categories.value = categoriesStore.categories.filter(c => c.type === props.type)
     }
 })
 
