@@ -165,20 +165,34 @@
 <script setup>
 import { ArrowPathIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, CurrencyDollarIcon, FunnelIcon, PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/solid';
 import { Icon } from '@iconify/vue';
-import { ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import CategorySelect from '../components/CategorySelect.vue';
 import Pagination from '../components/Pagination.vue';
 import BaseButton from '../components/ui/BaseButton.vue';
 import BaseInput from '../components/ui/BaseInput.vue';
-import { useMovements } from '../composables/movements';
 import { formatoMoneda } from '../constants';
-import { useCategorieStore } from '../stores/categoriesStore';
 import { useMovementStore } from '../stores/movementStore';
+import { useMovementsStore } from '../stores/movementsStore';
 import { getRandomBgColor } from './configs/icons';
 
 const movementStore = useMovementStore();
-const categoriesStore = useCategorieStore()
+const movementsStore = useMovementsStore()
+
+const { deleteMovement, fetchMovements, handleReset } = movementsStore
+const {
+    movements,
+    selectedMonth,
+    currentPage,
+    totalPages,
+    totalGasto,
+    totalIngreso,
+    balance,
+    selectedType,
+    selectedCategory,
+    isLoading
+} = storeToRefs(movementsStore)
 
 // Control de visibilidad de filtros
 const showFilters = ref(false);
@@ -193,26 +207,13 @@ const edit = (data) => {
     })
 }
 
-const {
-    deleteMovement,
-    currentPage,
-    totalPages,
-    fetchMovements,
-    selectedMonth,
-    movements,
-    totalGasto,
-    totalIngreso,
-    selectedCategory,
-    selectedType,
-    isLoading,
-    handleReset,
-    balance } = useMovements()
-
 watch(() => movementStore.isSaved, async (newVal) => {
     if (newVal) {
         await fetchMovements()
     }
 })
+
+onMounted(async () => await fetchMovements())
 
 </script>
 

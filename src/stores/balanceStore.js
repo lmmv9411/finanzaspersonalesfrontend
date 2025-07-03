@@ -1,55 +1,31 @@
-import { defineStore } from "pinia"
-import Swal from "sweetalert2"
-import { ref, watch } from "vue"
-import api from '../constants/api'
+import { defineStore } from "pinia";
+import { ref, watch } from "vue";
+import { getBalance } from "../api/balance";
+import { useNotifications } from "../composables/useNotifications";
+import { useDateFilters } from "../composables/useDates";
 
 export const useBalanceStore = defineStore("balance", () => {
 
-    const startDate = ref('')
-    const endDate = ref('')
+    const { showError } = useNotifications();
+    const { selectedMonth, startDate, endDate } = useDateFilters();
+
     const balance = ref({
         totalIngreso: 0,
         totalGasto: 0,
         balance: 0
-    })
-
-    const getCurrentMonth = function () {
-        const now = new Date()
-        const year = now.getFullYear()
-        const month = String(now.getMonth() + 1).padStart(2, '0')
-        startDate.value = `${year}-${month}-01 00:00:00`;
-        endDate.value = new Date(year, month, 0).toISOString().split('T')[0] + ' 23:59:59';
-        return `${year}-${month}`
-    }
-
-    const selectedMonth = ref(getCurrentMonth())
-
-    watch(selectedMonth, (newVal) => {
-        const [year, month] = newVal.split('-');
-        startDate.value = `${year}-${month}-01 00:00:00`;
-        endDate.value = new Date(year, month, 0).toISOString().split('T')[0] + ' 23:59:59';
-    })
-
-    watch([startDate, endDate], async () => await fetchBalance())
+    });
 
     const fetchBalance = async () => {
-
         try {
-            const resp = await api.get(`/movements/balance?startDate=${startDate.value}&endDate=${endDate.value}`)
-            balance.value = resp.data
+            const resp = await getBalance({ startDate: startDate.value, endDate: endDate.value });
+            balance.value = resp.data;
         } catch (error) {
-            console.error('Error al obtener el balance:', error)
-            Swal.fire({
-                title: "Error al obtener balance",
-                icon: "error",
-                toast: true,
-                position: "top",
-                timer: 3000,
-                showConfirmButton: false,
-                timerProgressBar: true,
-            });
+            console.error('Error al obtener el balance:', error);
+            showError('Error al obtener balance');
         }
-    }
+    };
+
+    watch([startDate, endDate], fetchBalance, { immediate: true });
 
     return {
         selectedMonth,
@@ -57,5 +33,5 @@ export const useBalanceStore = defineStore("balance", () => {
         endDate,
         balance,
         fetchBalance
-    }
-})
+    };
+});

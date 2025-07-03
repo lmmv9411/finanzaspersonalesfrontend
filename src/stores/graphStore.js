@@ -1,6 +1,6 @@
-import api from "../constants/api";
 import { defineStore } from "pinia";
-import { ref, watch, watchEffect } from "vue";
+import { ref, watch } from "vue";
+import api from "../constants/api";
 import { useBalanceStore } from "./balanceStore";
 
 export const useGraphStore = defineStore("graph", () => {

@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import api from '../constants/api'
-import Swal from 'sweetalert2'
+import { useNotifications } from '../composables/useNotifications'
+import { checkAuth } from '../api/auth';
 
 const routes = [
     {
@@ -70,60 +70,40 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
 
-    if (to.name === 'Login' && localStorage.getItem('jwt_token')) {
-        try {
-            await api.get('/auth/check', { withCredentials: true })
-            next({ name: 'Home' })
-        } catch (error) {
+    const { showError } = useNotifications()
 
-            console.error(error)
+    const handleAuthError = (error) => {
+        console.error(error);
+        const status = error.response?.status;
 
-            if (err.status !== 401) {
-                Swal.fire({
-                    title: err.message,
-                    icon: "error",
-                    timer: 3000,
-                    showConfirmButton: false,
-                    theme: 'auto'
-                });
-            }
-
-            if (err.status === 401) {
-                localStorage.removeItem('jwt_token')
-                next({ name: 'Login' })
-            } else {
-                next()
-            }
+        if (status !== 401) {
+            showError(error.message);
         }
 
+        if (status === 401) {
+            localStorage.removeItem('jwt_token');
+            next({ name: 'Login' });
+        } else {
+            next();
+        }
+    };
+
+    if (to.name === 'Login' && localStorage.getItem('jwt_token')) {
+        try {
+            await checkAuth()
+            next({ name: 'Home' })
+        } catch (error) {
+            handleAuthError(error);
+        }
         return;
     }
 
     if (to.meta.requiresAuth) {
         try {
-            await api.get('/auth/check', { withCredentials: true })
+            await checkAuth()
             next()
-        } catch (err) {
-
-            console.error(err)
-
-            if (err.status !== 401) {
-                Swal.fire({
-                    title: err.message,
-                    icon: "error",
-                    timer: 3000,
-                    showConfirmButton: false,
-                    theme: 'auto'
-                });
-            }
-
-            if (err.status === 401) {
-                localStorage.removeItem('jwt_token')
-                next({ name: 'Login' })
-            } else {
-                next()
-            }
-
+        } catch (error) {
+            handleAuthError(error);
         }
     } else {
         next()
@@ -133,3 +113,4 @@ router.beforeEach(async (to, from, next) => {
 
 
 export default router
+
