@@ -50,6 +50,7 @@
 import { ArrowsRightLeftIcon } from '@heroicons/vue/16/solid';
 import { ArrowPathIcon } from '@heroicons/vue/20/solid';
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/vue/24/solid';
+import { storeToRefs } from 'pinia';
 import { watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import CategorySelect from '../components/CategorySelect.vue';
@@ -57,7 +58,7 @@ import BaseButton from '../components/ui/BaseButton.vue';
 import BaseInput from '../components/ui/BaseInput.vue';
 import RadioButton from '../components/ui/RadioButton.vue';
 import { useMovement } from '../composables/movement';
-import { storeToRefs } from 'pinia';
+import { useDateFilters } from '../composables/useDates';
 
 const route = useRoute()
 
@@ -89,6 +90,8 @@ const {
 
 const { movement } = storeToRefs(movementStore)
 
+const { toLocalDateTime } = useDateFilters()
+
 watchEffect(async () => {
 
     const data = JSON.parse(sessionStorage.getItem('data'))
@@ -97,17 +100,7 @@ watchEffect(async () => {
 
         sessionStorage.removeItem('data')
 
-        const date = new Date(data.date);
-
-        const pad = n => n.toString().padStart(2, '0');
-
-        const year = date.getFullYear()
-        const month = pad(date.getMonth() + 1)
-        const day = pad(date.getDate())
-        const hours = pad(date.getHours())
-        const minutes = pad(date.getMinutes())
-
-        const localDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+        const localDateTime = toLocalDateTime(data.date);
 
         movement.value = { ...data, date: localDateTime }
 

@@ -1,78 +1,46 @@
-import Swal from 'sweetalert2'
 import { ref } from 'vue'
 import { formatoMoneda } from '../constants'
 import { useMovementStore } from '../stores/movementStore'
+import { useNotifications } from './useNotifications'
 
 export const useMovement = () => {
 
+    const valor = ref('');
     const movementStore = useMovementStore()
+    const {
+        showError,
+        showConfirm,
+        showInfo,
+        showLoading,
+        showSuccess,
+        close
+    } = useNotifications()
 
     const submitForm = async (isEdit) => {
 
         movementStore.movement.amount = valor.value.replace(/\D/g, '');
 
         if (isEdit) {
-            const confirm = await Swal.fire({
-                title: '¿Desea Editar Registro?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, Editar',
-                cancelButtonText: 'Cancelar',
-                theme: 'auto'
-            })
+            const confirm = await showConfirm('¿Desea Editar Registro?', 'Sí, Editar', 'Cancelar');
+
             if (!confirm.isConfirmed) {
-
                 resetForm()
-
-                Swal.fire({
-                    title: `Edicion Cancelada`,
-                    icon: "success",
-                    toast: true,
-                    position: "top",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    theme: 'auto'
-                });
+                showInfo('Edición Cancelada');
+                history.back()
                 return;
             }
         }
 
-        Swal.fire({
-            title: isEdit ? 'Editando' : 'Guardando...',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading()
-            },
-            theme: 'auto'
-        })
+        showLoading(isEdit ? 'Editando' : 'Guardando...')
 
         await movementStore.saveMovement(isEdit)
 
-        Swal.close()
+        close()
 
         if (movementStore.isSaved) {
-            Swal.fire({
-                title: `Movimiento ${isEdit ? 'Editado' : 'Registrado'}`,
-                icon: "success",
-                toast: true,
-                position: "top",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                theme: 'auto'
-            });
+            showSuccess(`Movimiento ${isEdit ? 'editado' : 'registrado'} correctamente`, true);
         } else {
-            Swal.fire({
-                title: `Error al ${isEdit ? 'Editar' : 'Registrar'} movimiento`,
-                icon: "error",
-                toast: true,
-                position: "top",
-                timer: 3000,
-                showConfirmButton: false,
-                timerProgressBar: true,
-                theme: 'auto'
-            });
+            showError(`Error al ${isEdit ? 'editar' : 'registrar'} movimiento`, true);
         }
 
         if (isEdit) {
@@ -95,8 +63,6 @@ export const useMovement = () => {
         valor.value = ''
         movementStore.isSaved = false
     }
-
-    const valor = ref('');
 
     function handleInput(event) {
 

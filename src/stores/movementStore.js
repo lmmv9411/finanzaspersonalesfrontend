@@ -1,13 +1,9 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import api from "../constants/api";
-import { useBalanceStore } from './balanceStore';
-import { useGraphStore } from './graphStore';
 
 export const useMovementStore = defineStore('movement', () => {
 
-    const balanceStore = useBalanceStore();
-    const graphStore = useGraphStore();
     const isSaved = ref(false)
 
     const movement = ref({
@@ -29,9 +25,6 @@ export const useMovementStore = defineStore('movement', () => {
                 movement.value.date = localDate.toLocaleString('sv-SE')
                 await api.put(`/movements/${movement.value.id}`, movement.value)
             }
-
-            balanceStore.fetchBalance()
-            graphStore.getTotalByCategory(balanceStore.startDate, balanceStore.endDate)
 
             isSaved.value = true
 

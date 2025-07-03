@@ -6,7 +6,7 @@ import { useDateFilters } from '../composables/useDates';
 
 export const useMovementsStore = defineStore('movements', () => {
 
-    const { showError, showConfirm, showInfo, showLoading, showSuccess, close } = useNotifications();
+    const { showError, showConfirm, showInfo, showLoading, showSuccess } = useNotifications();
     const { selectedMonth, startDate, endDate, resetToCurrentMonth } = useDateFilters();
 
     const movements = ref([]);
