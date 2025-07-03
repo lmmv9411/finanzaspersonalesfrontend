@@ -10,7 +10,7 @@
             </div>
         </div>
 
-        <div class="w-full p-4 dark:bg-gray-800 bg-slate-100 rounded-lg shadow-md max-w-md mx-auto">
+        <router-link :to="{ name: 'MonthlyReport', query: { type: 'ingresos' } }" class="w-full p-4 dark:bg-gray-800 bg-slate-100 rounded-lg shadow-md max-w-md mx-auto">
             <div class="flex flex-col gap-2 items-center dark:text-green-400 text-green-500 text-xl font-semibold">
                 <div class="flex gap-2">
                     <ArrowTrendingUpIcon class="w-8 inline-block" />
@@ -18,9 +18,9 @@
                 </div>
                 <span>{{ formatoMoneda(balanceStore.balance.totalIngreso) }}</span>
             </div>
-        </div>
+        </router-link>
 
-        <div class="w-full p-4 dark:bg-gray-800 bg-slate-100 rounded-lg shadow-md max-w-md mx-auto">
+        <router-link :to="{ name: 'MonthlyReport', query: { type: 'gastos' } }" class="w-full p-4 dark:bg-gray-800 bg-slate-100 rounded-lg shadow-md max-w-md mx-auto">
             <div class="flex flex-col gap-2 items-center dark:text-red-400 text-red-500 text-xl font-semibold">
                 <div class="flex gap-2">
                     <ArrowTrendingDownIcon class="w-8 inline-block" />
@@ -28,10 +28,9 @@
                 </div>
                 <span>{{ formatoMoneda(balanceStore.balance.totalGasto) }}</span>
             </div>
-        </div>
+        </router-link>
 
-        <div
-             class="col-span-full sm:col-span-1 w-full p-4 dark:bg-gray-800 bg-slate-100 rounded-lg shadow-md max-w-md mx-auto">
+        <router-link :to="{ name: 'MonthlyReport', query: { type: 'saldo' } }" class="col-span-full sm:col-span-1 w-full p-4 dark:bg-gray-800 bg-slate-100 rounded-lg shadow-md max-w-md mx-auto">
             <div class="flex flex-col items-center gap-2 dark:text-indigo-300 text-indigo-500 text-xl font-semibold">
                 <div class="flex gap-2">
                     <CurrencyDollarIcon class="w-8 dark:text-indigo-300 text-indigo-500" />
@@ -42,7 +41,7 @@
                     {{ formatoMoneda(balanceStore.balance.balance) }}
                 </span>
             </div>
-        </div>
+        </router-link>
     </div>
 </template>
 
