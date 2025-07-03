@@ -5,7 +5,7 @@
     <div class="pt-4 flex flex-col gap-4 px-4 relative items-center">
 
         <div @click="showForm = !showForm"
-             class="absolute right-5 -top-12 rounded-full bg-indigo-600 p-3 text-white cursor-pointer"
+             class="absolute right-4 -top-10 rounded-full bg-indigo-600 p-3 text-white cursor-pointer"
              :title="!showForm ? 'Crear Nueva Categoria' : 'Cerrar'">
             <template v-if="!showForm">
                 <PlusIcon class="w-7 h-7" />
@@ -20,7 +20,6 @@
         <Transition name="slide-categorie">
             <form v-if="showForm" @submit.prevent="createCategory"
                   class="shadow-lg p-4 rounded-lg dark:bg-gray-800 bg-slate-100 flex flex-wrap gap-2 dark:text-gray-300 items-start m-auto">
-
 
                 <BaseInput v-model.trim="name" placeholder="Nombre de categoria" />
 
@@ -59,16 +58,18 @@
         <IconPickerSolid v-if="showIconPicker" @selected="handleIconSelected" @close="showIconPicker = false" />
 
         <div class="container max-w-lg mx-auto grid grid-cols-4 gap-4">
+
             <div v-for="categorie in categories" :key="categorie.id">
+
                 <div @click.stop="handleClick(categorie.id)"
-                     class="rounded-lg dark:border-gray-600 gap-1 flex flex-col justify-between items-center p-4 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors duration-300 shadow-sm cursor-pointer">
+                     class="p-2 rounded-lg dark:border-gray-600 gap-1 flex flex-col justify-between items-center dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors duration-300 shadow-sm cursor-pointer">
 
                     <div :class=[getRandomBgColor(categorie.icon)]
-                         class="text-xl rounded-full p-2 w-10 h-10 flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-xl">
+                         class="text-xl rounded-full w-10 h-10 flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-xl">
                         <Icon :icon="categorie.icon" class="text-white" />
                     </div>
 
-                    <span class="text-xs">{{ categorie.name }}</span>
+                    <span class="text-xs block w-full text-center break-words text-wrap">{{ categorie.name }}</span>
 
                     <Transition name="slide-categorie">
                         <div class="flex gap-2" v-if="categorie.id === categorieActive">
