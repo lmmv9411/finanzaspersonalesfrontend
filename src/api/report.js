@@ -1,6 +1,10 @@
+import api from "../constants/api";
+
 export const getMonthlyReport = async () => {
-    // Simulación de llamada a la API
-    return new Promise(resolve => {
+    return await api.get('/stats/monthly')
+
+    /*
+       return new Promise(resolve => {
         setTimeout(() => {
             resolve([
                 { month: '2025-01', ingresos: 5000, gastos: 2000, saldo: 3000 },
@@ -12,4 +16,5 @@ export const getMonthlyReport = async () => {
             ]);
         }, 500);
     });
+    */
 };

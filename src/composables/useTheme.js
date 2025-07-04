@@ -1,10 +1,14 @@
-// src/composables/useTheme.js
-import { ref, onMounted, watch } from 'vue'
+import { defineStore, storeToRefs } from 'pinia'
+import { onMounted, ref, watch } from 'vue'
 
+export const useThemeStore = defineStore('theme', () => {
+    const theme = ref('light') // 'light', 'dark', o 'system'   
+    return { theme }
+})
 
-export function useTheme() {
+export const useTheme = function () {
 
-    const theme = ref('light') // 'light', 'dark', o 'system'
+    const { theme } = storeToRefs(useThemeStore())
 
     const setThemeClass = (value) => {
         const root = document.documentElement

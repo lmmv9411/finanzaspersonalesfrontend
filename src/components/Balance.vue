@@ -10,7 +10,7 @@
             </div>
         </div>
 
-        <router-link :to="{ name: 'MonthlyReport', query: { type: 'ingresos' } }" class="w-full p-4 dark:bg-gray-800 bg-slate-100 rounded-lg shadow-md max-w-md mx-auto">
+        <router-link :to="{ name: 'MonthlyReport', query: { type: 'ingreso' } }" class="w-full p-4 dark:bg-gray-800 bg-slate-100 rounded-lg shadow-md max-w-md mx-auto">
             <div class="flex flex-col gap-2 items-center dark:text-green-400 text-green-500 text-xl font-semibold">
                 <div class="flex gap-2">
                     <ArrowTrendingUpIcon class="w-8 inline-block" />
@@ -20,7 +20,7 @@
             </div>
         </router-link>
 
-        <router-link :to="{ name: 'MonthlyReport', query: { type: 'gastos' } }" class="w-full p-4 dark:bg-gray-800 bg-slate-100 rounded-lg shadow-md max-w-md mx-auto">
+        <router-link :to="{ name: 'MonthlyReport', query: { type: 'gasto' } }" class="w-full p-4 dark:bg-gray-800 bg-slate-100 rounded-lg shadow-md max-w-md mx-auto">
             <div class="flex flex-col gap-2 items-center dark:text-red-400 text-red-500 text-xl font-semibold">
                 <div class="flex gap-2">
                     <ArrowTrendingDownIcon class="w-8 inline-block" />
