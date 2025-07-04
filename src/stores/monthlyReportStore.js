@@ -6,7 +6,8 @@ export const useMonthlyReportStore = defineStore('monthlyReport', () => {
     const monthlyData = ref([]);
 
     const fetchMonthlyReport = async () => {
-        monthlyData.value = await getMonthlyReport();
+        const { data } = await getMonthlyReport();
+        monthlyData.value = data
     };
 
     return {
