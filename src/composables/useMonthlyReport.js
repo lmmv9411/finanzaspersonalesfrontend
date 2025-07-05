@@ -18,14 +18,9 @@ export const useMonthlyReport = () => {
 
     const reportType = ref('ingreso');
 
-    const reportTypeDisplay = computed(() => {
-        switch (reportType.value) {
-            case 'ingreso': return 'Ingresos';
-            case 'gasto': return 'Gastos';
-            case 'saldo': return 'Saldo';
-            default: return '';
-        }
-    });
+    const reportTypeDisplay = computed(() =>
+        reportType.value.replace(/^\w/, (c) => c.toUpperCase())
+    );
 
     const formatearMes = (dateString) => {
         const [year, month] = dateString.split('-');
@@ -35,22 +30,32 @@ export const useMonthlyReport = () => {
 
     const chartData = computed(() => {
 
-        let data = [], labels = [];
+        let dataset = [], labels = [];
 
-        if (monthlyData.value) {
+        if (typeof monthlyData.value === 'object' && Object.keys(monthlyData.value).length > 0) {
 
-            data = Object.entries(monthlyData.value).map(([_, v]) => v[reportType.value]);
+            if (reportType.value === 'todo') {
+                for (const type of ['ingreso', 'gasto', 'saldo']) {
+                    dataset.push(createDataSet(type));
+                }
+            } else {
+                dataset = [createDataSet(reportType.value)];
+            }
 
-            labels = Object.keys(monthlyData.value).map((key) => {
-                const [year, month] = key.split('-');
-                const date = new Date(year, month - 1, 1);
-                return formatoMes.format(date).replace(/^\w/, (c) => c.toUpperCase());
-            });
+            labels = Object.keys(monthlyData.value).map((key) => formatearMes(key));
         }
 
+        return { labels, datasets: [...dataset] };
+    });
+
+    const createDataSet = (type) => {
+        let data = [];
         let borderColor, backgroundColor;
 
-        switch (reportType.value) {
+        data = Object.entries(monthlyData.value).map(([_, v]) => v[type]);
+
+
+        switch (type) {
             case 'ingreso':
                 borderColor = '#4CAF50'; // Green
                 backgroundColor = '#81C784'; // Light Green
@@ -69,18 +74,14 @@ export const useMonthlyReport = () => {
         }
 
         return {
-            labels,
-            datasets: [
-                {
-                    label: reportTypeDisplay.value,
-                    backgroundColor: backgroundColor,
-                    borderColor: borderColor,
-                    data: data,
-                    tension: 0.3
-                }
-            ]
-        };
-    });
+            label: type,
+            backgroundColor: backgroundColor,
+            borderColor: borderColor,
+            data: data,
+            tension: 0.3
+        }
+
+    }
 
     const chartOptions = ref({
         responsive: true,

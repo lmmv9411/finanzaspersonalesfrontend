@@ -12,12 +12,18 @@
 
         <div class="mt-8">
 
-            <h2 class="text-center text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Detalle Mensual</h2>
+            <router-link :to="{ name: 'MonthlyReport', query: { type: 'todo' } }">
+                <h2 class="text-center text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4"
+                    title="Ver Todos los Reportes Mensuales">
+                    Detalle Mensual
+                </h2>
+            </router-link>
 
             <div v-for="(item, index) in monthlyData" :key="index" class="mb-4 max-w-xl mx-auto">
-                
-                <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-md mb-2 flex gap-4 items-center justify-between">
-                    
+
+                <div
+                     class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-md mb-2 flex gap-4 items-center justify-between">
+
                     <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">
                         {{ formatearMes(index) }}
                     </h3>
@@ -47,7 +53,7 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, watch } from 'vue';
 import { Line } from 'vue-chartjs';
 import { useRoute } from 'vue-router';
 import { useMonthlyReport } from '../composables/useMonthlyReport';
@@ -68,6 +74,11 @@ const route = useRoute();
 onMounted(() => {
     reportType.value = route.query.type || 'ingreso';
     fetchMonthlyReport()
+});
+
+watch(route, () => {
+    reportType.value = route.query.type || 'ingreso';
+    fetchMonthlyReport();
 });
 
 </script>
