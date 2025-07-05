@@ -108,7 +108,7 @@ export const useMovementsStore = defineStore('movements', () => {
         resetToCurrentMonth();
     };
 
-    watch([startDate, endDate, selectedCategory, selectedType], () => fetchMovements(), { immediate: true });
+    watch([startDate, endDate, selectedCategory, selectedType], () => fetchMovements());
 
     return {
         movements,
