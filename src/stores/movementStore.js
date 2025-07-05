@@ -22,7 +22,7 @@ export const useMovementStore = defineStore('movement', () => {
                 await api.post('/movements', movement.value)
             } else {
                 const localDate = new Date(movement.value.date)
-                movement.value.date = localDate.toLocaleString('sv-SE')
+                movement.value.date = localDate.toISOString()
                 await api.put(`/movements/${movement.value.id}`, movement.value)
             }
 
