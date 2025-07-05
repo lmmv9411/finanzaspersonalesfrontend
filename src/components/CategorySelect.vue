@@ -22,7 +22,7 @@
 
         <Transition name="slide-down">
             <div v-show="isOpen"
-                 class="max-h-60 p-2 overflow-y-auto mt-1 rounded-md bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 max-h-60">
+                 class="max-h-60 p-2 overflow-y-auto mt-1 rounded-md bg-gray-100 dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 max-h-60">
                 <div class="grid grid-cols-4  gap-3">
                     <div
                          v-for="category in categories"

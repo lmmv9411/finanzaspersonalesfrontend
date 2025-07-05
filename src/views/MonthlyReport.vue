@@ -1,52 +1,46 @@
 <template>
+
     <div class="p-2">
-        <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Reporte Mensual de {{ reportTypeDisplay
-            }}</h1>
+
+        <h1 class="text-center text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
+            Reporte Mensual de {{ reportTypeDisplay }}
+        </h1>
+
         <div class="bg-slate-100 dark:bg-gray-800 p-4 rounded-lg shadow-md">
             <Line :data="chartData" :options="chartOptions" />
         </div>
+
         <div class="mt-8">
-            <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Detalle Mensual</h2>
-            <div class="overflow-x-auto">
-                <table class="min-w-full bg-white dark:bg-gray-700 rounded-lg shadow-md">
-                    <thead>
-                        <tr>
-                            <th
-                                class="py-2 px-4 border-b dark:border-gray-600 text-left text-gray-600 dark:text-gray-300">
-                                Mes</th>
-                            <th
-                                class="py-2 px-4 border-b dark:border-gray-600 text-left text-gray-600 dark:text-gray-300">
-                                Ingresos</th>
-                            <th
-                                class="py-2 px-4 border-b dark:border-gray-600 text-left text-gray-600 dark:text-gray-300">
-                                Gastos</th>
-                            <th
-                                class="py-2 px-4 border-b dark:border-gray-600 text-left text-gray-600 dark:text-gray-300">
-                                Saldo</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(item, index) in monthlyData" :key="index"
-                            class="hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <td
-                                class="py-2 px-4 border-b border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200">
-                                {{ formatearMes(index) }}
-                            </td>
-                            <td
-                                class="py-2 px-4 border-b border-gray-300 dark:border-gray-600 text-green-500 dark:text-green-400">
-                                {{
-                                    formatoMoneda(item.ingreso) }}</td>
-                            <td
-                                class="py-2 px-4 border-b border-gray-300 dark:border-gray-600 text-red-500 dark:text-red-400">
-                                {{
-                                    formatoMoneda(item.gasto) }}</td>
-                            <td
-                                class="py-2 px-4 border-b border-gray-300 dark:border-gray-600 text-indigo-500 dark:text-indigo-300">
-                                {{
-                                    formatoMoneda(item.saldo) }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+
+            <h2 class="text-center text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Detalle Mensual</h2>
+
+            <div v-for="(item, index) in monthlyData" :key="index" class="mb-4 max-w-xl mx-auto">
+                
+                <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-md mb-2 flex gap-4 items-center justify-between">
+                    
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                        {{ formatearMes(index) }}
+                    </h3>
+
+                    <p class="text-gray-600 dark:text-gray-300">
+                        <span>Ingresos: </span>
+                        <span class="text-green-500 dark:text-green-400">
+                            {{ formatoMoneda(item.ingreso) }}
+                        </span>
+                    </p>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        <span>Gastos: </span>
+                        <span class="text-red-500 dark:text-red-400">
+                            {{ formatoMoneda(item.gasto) }}
+                        </span>
+                    </p>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        <span>Saldo: </span>
+                        <span class="text-indigo-500 dark:text-indigo-300">
+                            {{ formatoMoneda(item.saldo) }}
+                        </span>
+                    </p>
+                </div>
             </div>
         </div>
     </div>

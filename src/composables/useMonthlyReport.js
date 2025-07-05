@@ -30,7 +30,7 @@ export const useMonthlyReport = () => {
     const formatearMes = (dateString) => {
         const [year, month] = dateString.split('-');
         const date = new Date(year, month - 1, 1);
-        return formatoMes.format(date);
+        return formatoMes.format(date).replace(/^\w/, (c) => c.toUpperCase());
     };
 
     const chartData = computed(() => {
@@ -44,7 +44,7 @@ export const useMonthlyReport = () => {
             labels = Object.keys(monthlyData.value).map((key) => {
                 const [year, month] = key.split('-');
                 const date = new Date(year, month - 1, 1);
-                return formatoMes.format(date);
+                return formatoMes.format(date).replace(/^\w/, (c) => c.toUpperCase());
             });
         }
 
