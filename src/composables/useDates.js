@@ -41,6 +41,15 @@ export function useDateFilters() {
         return `${year}-${month}-${day}T${hours}:${minutes}`;
     };
 
+    function getTimezoneOffsetString() {
+        const offsetMinutes = new Date().getTimezoneOffset(); // Ej: 300 para UTC-5
+        const sign = offsetMinutes > 0 ? '-' : '+';
+        const absMinutes = Math.abs(offsetMinutes);
+        const hours = String(Math.floor(absMinutes / 60)).padStart(2, '0');
+        const minutes = String(absMinutes % 60).padStart(2, '0');
+        return `${sign}${hours}:${minutes}`;
+    }
+
     watch(selectedMonth, updateDatesFromMonth, { immediate: true });
 
     return {
@@ -48,6 +57,7 @@ export function useDateFilters() {
         startDate,
         endDate,
         resetToCurrentMonth,
-        toLocalDateTime
+        toLocalDateTime,
+        getTimezoneOffsetString
     };
 }
