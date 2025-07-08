@@ -111,44 +111,81 @@
                 <!-- Movimientos del día -->
                 <div
                      class="border border-gray-200 dark:border-gray-700 rounded-b-lg divide-y divide-gray-200 dark:divide-gray-700">
-                    <div v-for="mov in dia.detalles" :key="mov.id"
-                         class="p-3 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors duration-300">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <div class="font-medium flex items-center gap-2 dark:text-gray-200">
-                                    <ArrowTrendingUpIcon v-if="mov.type === 'ingreso'" class="w-6 text-green-500" />
-                                    <ArrowTrendingDownIcon v-else class="w-6 text-red-500" />
-                                    {{ mov.description }}
-                                </div>
-                                <div class="text-sm text-gray-500 mt-1 flex gap-2 items-center">
-                                    <div :class=[getRandomBgColor(mov.Category.icon)]
-                                         class="rounded-full p-1 text-white text-lg">
-                                        <Icon :icon="mov.Category.icon" />
+
+                    <div
+                         v-for="(mov, idx) in dia.detalles"
+                         :key="mov.id"
+                         class="overflow-x-hidden block"
+                         @touchstart="startTouch($event)"
+                         @touchmove="handleTouchMove($event, mov.id)"
+                         @touchend="endTouch(mov.id)">
+
+                        <!-- Deslizable -->
+                        <div
+                             class="flex w-[calc(100%+158px)] sm:w-full transition-transform duration-100"
+                             :style="{ transform: `translateX(${swipeOffsets[mov.id] || 0}px)` }">
+
+                            <!-- Contenido del movimiento (ocupa el 100%) -->
+                            <div
+                                 class="w-full p-3 hover:bg-gray-200 dark:hover:bg-gray-800 flex justify-between items-center gap-4 transition-colors duration-300">
+
+                                <div class="flex justify-between items-center w-full">
+                                    <div>
+                                        <div class="font-medium flex items-center gap-2 dark:text-gray-200">
+                                            <ArrowTrendingUpIcon v-if="mov.type === 'ingreso'"
+                                                                 class="w-6 text-green-500" />
+                                            <ArrowTrendingDownIcon v-else class="w-6 text-red-500" />
+                                            {{ mov.description }}
+                                        </div>
+                                        <div class="text-sm text-gray-500 mt-1 flex gap-2 items-center">
+                                            <div :class=[getRandomBgColor(mov.Category.icon)]
+                                                 class="rounded-full p-1 text-white text-lg">
+                                                <Icon :icon="mov.Category.icon" />
+                                            </div>
+                                            {{ mov.Category.name }} • {{ mov.type }}
+                                        </div>
                                     </div>
-                                    {{ mov.Category.name }} •
-                                    {{ mov.type }}
+
+                                    <span class="font-medium whitespace-nowrap"
+                                          :class="mov.type === 'ingreso' ? 'dark:text-green-400 text-green-600' : 'dark:text-red-400 text-red-600'">
+                                        {{ (mov.type === 'gasto' ? '-' : '') + formatoMoneda(mov.amount) }}
+                                    </span>
                                 </div>
-                            </div>
-                            <div class="flex flex-col gap-2">
-                                <span class="font-medium whitespace-nowrap"
-                                      :class="mov.type === 'ingreso' ? 'dark:text-green-400 text-green-600' : 'dark:text-red-400 text-red-600'">
-                                    {{ (mov.type === 'gasto' ? '-' : '') + formatoMoneda(mov.amount) }}
-                                </span>
-                                <div class="flex gap-2 justify-center items-center">
-                                    <button @click="edit(mov)"
-                                            class="dark:text-blue-400 text-blue-500 hover:text-blue-700 cursor-pointer"
+
+                                <div class="hidden sm:flex gap-2">
+                                    <button @click.stop="edit(mov)"
+                                            class="w-6 flex items-center justify-center text-blue-500 hover:text-blue-600 cursor-pointer"
                                             title="Editar movimiento">
-                                        <PencilSquareIcon class="h-5 w-5" />
+                                        <PencilSquareIcon class="h-6 w-6" />
                                     </button>
-                                    <button @click="deleteMovement(mov.id)"
-                                            class="dark:text-red-400 text-red-500 hover:text-red-700 ml-2 cursor-pointer"
+                                    <button @click.stop="deleteMovement(mov.id)"
+                                            class="w-6 flex items-center justify-center text-red-500 hover:text-red-600 cursor-pointer"
                                             title="Eliminar movimiento">
-                                        <TrashIcon class="h-5 w-5" />
+                                        <TrashIcon class="h-6 w-6" />
                                     </button>
                                 </div>
+
                             </div>
+
+                            <!-- Botones de acción (ocultos a la derecha hasta hacer swipe) -->
+                            <div class="sm:hidden flex w-[154px] shrink-0">
+                                <button @click.stop="edit(mov)"
+                                        class="w-full flex gap-2 p-2 items-center justify-center text-white bg-blue-500 hover:bg-blue-600">
+                                    <PencilSquareIcon class="h-5 w-5" />
+                                    <span>Editar</span>
+                                </button>
+                                <button @click.stop="deleteMovement(mov.id)"
+                                        class="w-full flex gap-2 p-2 items-center justify-center text-white bg-red-500 hover:bg-red-600"
+                                        :class="[idx === dia.detalles.length - 1 ? 'rounded-br-lg' : '']">
+                                    <TrashIcon class="h-5 w-5" />
+                                    <span>Eliminar</span>
+                                </button>
+                            </div>
+
                         </div>
+
                     </div>
+
                 </div>
             </div>
         </div>
@@ -214,6 +251,38 @@ watch(() => movementStore.isSaved, async (newVal) => {
 })
 
 onMounted(async () => await fetchMovements())
+
+const swipeOffsets = ref({})
+let touchStartX = 0
+
+const startTouch = (e) => {
+    touchStartX = e.touches[0].clientX
+}
+
+const handleTouchMove = (e, id) => {
+    const currentX = e.touches[0].clientX
+    const diff = currentX - touchStartX
+
+    // Solo permitir desplazamiento hacia la izquierda
+    if (diff < 0 && diff > -120) {
+        swipeOffsets.value[id] = diff
+    }
+
+
+    if (diff > 0 && swipeOffsets.value[id]) {
+        swipeOffsets.value[id] = diff
+    }
+}
+
+const endTouch = (id) => {
+    const offset = swipeOffsets.value[id] || 0
+    swipeOffsets.value[id] = offset < -50 ? -195 : 0
+
+    if (offset > 0) {
+        swipeOffsets.value[id] = 0
+    }
+}
+
 
 </script>
 

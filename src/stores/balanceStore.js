@@ -25,7 +25,7 @@ export const useBalanceStore = defineStore("balance", () => {
         }
     };
 
-    watch([startDate, endDate], fetchBalance, { immediate: true });
+    watch([startDate, endDate], fetchBalance);
 
     return {
         selectedMonth,
