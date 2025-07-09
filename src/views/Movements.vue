@@ -93,17 +93,17 @@
             <div v-for="dia in movements" :key="dia.fecha" class="mb-8">
                 <!-- Encabezado del día -->
                 <div
-                     class="flex flex-col gap-1 justify-between items-end p-3 dark:bg-gray-800 bg-gray-100 rounded-t-lg">
-                    <h2 class="text-sm text-gray-800 dark:text-gray-200">
-                        {{ dia.nombreDia }}, {{ dia.dia }} de {{ dia.mes }}
+                     class="flex gap-1 justify-between items-center p-2 dark:bg-gray-800 bg-gray-100 rounded-t-lg">
+                    <h2 class="text-xs sm:text-base text-gray-800 dark:text-gray-200">
+                        {{ dia.nombreDia }}, {{ dia.dia }} De {{ dia.mes }}
                     </h2>
 
-                    <div class="flex gap-4">
+                    <div class="flex gap-2">
                         <span class="dark:text-green-400 text-green-600 text-xs sm:text-base" v-if="dia.ingresos > 0">
-                            Ingresos: +{{ formatoMoneda(dia.ingresos) }}
+                            Ingresos: {{ formatoMoneda(dia.ingresos) }}
                         </span>
                         <span class="dark:text-red-400 text-red-600 text-xs sm:text-base" v-if="dia.gastos > 0">
-                            Gastos: -{{ formatoMoneda(dia.gastos) }}
+                            Gastos: {{ formatoMoneda(dia.gastos) }}
                         </span>
                     </div>
                 </div>
@@ -168,14 +168,14 @@
                             </div>
 
                             <!-- Botones de acción (ocultos a la derecha hasta hacer swipe) -->
-                            <div class="sm:hidden flex w-[154px] shrink-0">
+                            <div class="sm:hidden flex w-[158px] shrink-0">
                                 <button @click.stop="edit(mov)"
-                                        class="w-full flex gap-2 p-2 items-center justify-center text-white bg-blue-500 hover:bg-blue-600">
+                                        class="w-full flex gap-2 p-2 items-center justify-center text-white bg-blue-500">
                                     <PencilSquareIcon class="h-5 w-5" />
                                     <span>Editar</span>
                                 </button>
                                 <button @click.stop="deleteMovement(mov.id)"
-                                        class="w-full flex gap-2 p-2 items-center justify-center text-white bg-red-500 hover:bg-red-600"
+                                        class="w-full flex gap-2 p-2 items-center justify-center text-white bg-red-500"
                                         :class="[idx === dia.detalles.length - 1 ? 'rounded-br-lg' : '']">
                                     <TrashIcon class="h-5 w-5" />
                                     <span>Eliminar</span>

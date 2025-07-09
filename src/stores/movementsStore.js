@@ -22,6 +22,8 @@ export const useMovementsStore = defineStore('movements', () => {
     const selectedCategory = ref(0);
     const isLoading = ref(false);
 
+    const camelCase = (str) => str.replace(/^\w/, c => c.toUpperCase())
+
     const fetchMovements = async (page = 1) => {
         currentPage.value = page;
         movements.value = [];
@@ -43,8 +45,8 @@ export const useMovementsStore = defineStore('movements', () => {
             movements.value = dias.map(dia => {
                 const objDate = new Date(dia.fecha_server);
                 dia.dia = objDate.getDate();
-                dia.nombreDia = formatoDia.format(objDate);
-                dia.mes = formatoMes.format(objDate);
+                dia.nombreDia = camelCase(formatoDia.format(objDate));
+                dia.mes = camelCase(formatoMes.format(objDate));
 
                 const { ingresos, gastos } = dia.detalles.reduce((totales, movimiento) => {
                     if (movimiento.type === 'ingreso') {
