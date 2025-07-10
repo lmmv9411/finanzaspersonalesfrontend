@@ -11,6 +11,19 @@ export function useDateFilters() {
         return `${year}-${month}`;
     };
 
+    const getCurrentDateString = () => {
+
+        const pad = n => n.toString().padStart(2, '0');
+
+        const now = new Date();
+        const year = pad(now.getFullYear())
+        const month = pad(now.getMonth() + 1)
+        const day = pad(now.getDate())
+        const hours = pad(now.getHours())
+        const minutes = pad(now.getMinutes())
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+    };
+
     const selectedMonth = ref(getCurrentMonthString());
 
     const updateDatesFromMonth = (monthValue) => {
@@ -58,6 +71,7 @@ export function useDateFilters() {
         endDate,
         resetToCurrentMonth,
         toLocalDateTime,
-        getTimezoneOffsetString
+        getTimezoneOffsetString,
+        getCurrentDateString
     };
 }

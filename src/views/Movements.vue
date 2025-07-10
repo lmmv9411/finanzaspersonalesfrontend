@@ -52,19 +52,22 @@
         </Transition>
 
         <!-- Resumen Mensual -->
-        <div class="flex gap-2 justify-between mb-6 p-2 dark:bg-gray-800 bg-blue-50 rounded-lg">
+        <div
+             class="flex flex-wrap gap-2 mb-6 p-2 dark:bg-gray-800 bg-blue-50 rounded-lg">
 
-            <div class="dark:text-green-400 dark:text-green-400 text-green-600 font-bold flex gap-1">
-                <ArrowTrendingUpIcon class="w-6" />
-                <span>Ingresos: {{ formatoMoneda(totalIngreso) }}</span>
+            <div
+                 class="dark:text-green-400 dark:text-green-400 text-green-600 font-bold flex gap-1 items-center flex-1 flex-col">
+                <span>Ingresos:</span>
+                <span>{{ formatoMoneda(totalIngreso) }}</span>
             </div>
-            <div class="dark:text-red-400 dark:text-red-400 text-red-600 font-bold flex gap-1">
-                <ArrowTrendingDownIcon class="w-6" />
-                <span>Gastos: {{ formatoMoneda(totalGasto) }}</span>
+            <div
+                 class="dark:text-red-400 dark:text-red-400 text-red-600 font-bold flex gap-1 items-center flex-1 flex-col">
+                <span>Gastos:</span>
+                <span>{{ formatoMoneda(totalGasto) }}</span>
             </div>
-            <div class="font-bold dark:text-indigo-200 text-indigo-700 flex gap-1">
-                <CurrencyDollarIcon class="w-6" />
-                <span>Saldo: {{ formatoMoneda(balance) }}</span>
+            <div class="dark:text-indigo-200 text-indigo-700 font-bold flex gap-1 items-center flex-1 flex-col">
+                <span>Saldo:</span>
+                <span>{{ formatoMoneda(balance) }}</span>
             </div>
 
         </div>
@@ -202,7 +205,7 @@
 </template>
 
 <script setup>
-import { ArrowPathIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, CurrencyDollarIcon, FunnelIcon, PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/solid';
+import { ArrowPathIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, FunnelIcon, PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/solid';
 import { Icon } from '@iconify/vue';
 import { storeToRefs } from 'pinia';
 import { onMounted, reactive, ref, watch } from 'vue';

@@ -6,6 +6,8 @@ export const useMovementStore = defineStore('movement', () => {
 
     const isSaved = ref(false)
 
+    const showPicker = ref(false)
+
     const movement = ref({
         type: 'ingreso',
         amount: '',
@@ -18,11 +20,14 @@ export const useMovementStore = defineStore('movement', () => {
 
         try {
 
+            if (movement.value.date && showPicker.value) {
+                const localDate = new Date(movement.value.date);
+                movement.value.date = localDate.toISOString()
+            }
+
             if (!isEdit) {
                 await api.post('/movements', movement.value)
             } else {
-                const localDate = new Date(movement.value.date)
-                movement.value.date = localDate.toISOString()
                 await api.put(`/movements/${movement.value.id}`, movement.value)
             }
 
@@ -34,5 +39,5 @@ export const useMovementStore = defineStore('movement', () => {
         }
     }
 
-    return { saveMovement, isSaved, movement }
+    return { saveMovement, isSaved, movement, showPicker }
 })

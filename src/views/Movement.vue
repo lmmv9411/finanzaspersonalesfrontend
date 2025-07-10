@@ -2,17 +2,22 @@
     <div
          class="mt-4 max-w-xl mx-4 sm:mx-auto p-4 rounded-lg shadow-lg bg-slate-100  dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700">
 
-        <h2 class="text-2xl font-semibold mb-4">{{ isEdit ? 'Editar' : 'Registrar' }} Movimiento</h2>
+        <h2 class="text-2xl text-center font-semibold mb-4">{{ isEdit ? 'Editar' : 'Registrar' }} Movimiento</h2>
 
         <form @submit.prevent="submitForm(isEdit)" class="flex flex-col gap-4 items-end" autocomplete="off">
 
-            <div v-show="isEdit" class="flex flex-col w-full">
-                <label for="createdAt">Fecha</label>
-                <BaseInput id="createdAt" type="datetime-local" v-model="movement.date" />
-            </div>
+            <Transition name="slide-date">
+                <div v-if="showPicker" class="w-full">
+                    <BaseInput id="createdAt" type="datetime-local" v-model="movement.date" />
+                </div>
+            </Transition>
 
-            <div class="w-full flex gap-4">
+            <div class="w-full flex justify-between gap-4">
                 <RadioButton v-model="movement.type" :options="options" />
+                <button type="button" class="cursor-pointer" @click="showPicker = !showPicker">
+                    <CalendarDaysIcon class="w-8 h-8"
+                                      :class="{ 'text-indigo-500': showPicker, 'text-green-700': !showPicker }" />
+                </button>
             </div>
 
             <div class="w-full">
@@ -47,9 +52,7 @@
 </template>
 
 <script setup>
-import { ArrowsRightLeftIcon } from '@heroicons/vue/16/solid';
-import { ArrowPathIcon } from '@heroicons/vue/20/solid';
-import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/vue/24/solid';
+import { ArrowDownIcon, ArrowPathIcon, ArrowsRightLeftIcon, ArrowUpIcon, CalendarDaysIcon } from '@heroicons/vue/24/solid';
 import { storeToRefs } from 'pinia';
 import { watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
@@ -85,12 +88,12 @@ const {
     movementStore,
     submitForm,
     valor,
-    resetForm
+    resetForm,
 } = useMovement();
 
-const { movement } = storeToRefs(movementStore)
+const { movement, showPicker } = storeToRefs(movementStore)
 
-const { toLocalDateTime } = useDateFilters()
+const { toLocalDateTime, getCurrentDateString } = useDateFilters()
 
 watchEffect(async () => {
 
@@ -99,6 +102,7 @@ watchEffect(async () => {
     if (isEdit && data) {
 
         sessionStorage.removeItem('data')
+        showPicker.value = true
 
         const localDateTime = toLocalDateTime(data.date);
 
@@ -107,6 +111,23 @@ watchEffect(async () => {
         valor.value = formatoMoneda(data.amount)
     }
 
+    if (showPicker.value && !isEdit) {
+        movement.value.date = getCurrentDateString()
+    }
+
 })
 
 </script>
+
+<style scoped>
+.slide-date-enter-active,
+.slide-date-leave-active {
+    transition: all 0.3s ease;
+}
+
+.slide-date-enter-from,
+.slide-date-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+</style>
