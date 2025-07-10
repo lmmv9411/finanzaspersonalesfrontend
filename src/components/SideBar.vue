@@ -4,11 +4,11 @@
         <div class="p-2 h-full flex flex-col">
             <div class="flex items-center py-4 px-2 gap-2">
                 <img
-                     :src="profileUrl || preview"
+                     :src="profileUrl"
                      alt="Foto de perfil"
                      class="w-20 h-20 rounded-full object-cover border-1 border-gray-300 dark:border-gray-600 shadow" />
                 <span class="text-lg font-bold dark:text-gray-200 text-gray-100">
-                    {{ user.name }} {{ user.lastName }}
+                    {{ user?.name }} {{ user?.lastName }}
                 </span>
             </div>
             <nav class="flex flex-col flex-1 justify-between gap-2">
@@ -42,11 +42,13 @@
 
 <script setup>
 import { AdjustmentsVerticalIcon, ArrowRightStartOnRectangleIcon, ChartBarIcon, HomeIcon, PlusIcon, TagIcon } from '@heroicons/vue/24/solid';
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { BASE_URL } from '../constants';
 import api from '../constants/api';
+import { useUserStore } from '../stores/userStore';
 import ToggleTheme from './ToggleTheme.vue';
+import { storeToRefs } from 'pinia';
 
 const menu = [
     { name: 'Home', to: '/', icon: HomeIcon },
@@ -65,9 +67,7 @@ const logout = () => {
     router.push({ name: 'Login' })
 }
 
-const user = ref({});
-const preview = ref(`${BASE_URL}/uploads/default.jpg`);
-const profileUrl = ref(null);
+const { user, profileUrl } = storeToRefs(useUserStore());
 
 onMounted(async () => {
     const { data } = await api.get('/user')

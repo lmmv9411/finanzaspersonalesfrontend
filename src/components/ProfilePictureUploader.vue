@@ -33,17 +33,19 @@
 
 <script setup>
 import { Icon } from '@iconify/vue';
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { BASE_URL } from '../constants';
 import api from '../constants/api';
 import BaseButton from './ui/BaseButton.vue';
+import { useUserStore } from '../stores/userStore';
+import { storeToRefs } from 'pinia';
 
-const profileUrl = ref(`${BASE_URL}/uploads/default.jpg`);
 const fileInput = ref(null);
 const selectedFile = ref(null);
-const preview = ref(null);
 const uploading = ref(false);
-const user = ref(null);
+const preview = ref(null);
+
+const { user, profileUrl } = storeToRefs(useUserStore());
 
 function triggerFileInput() {
     fileInput.value.click();
@@ -97,11 +99,5 @@ async function uploadImage() {
         uploading.value = false;
     }
 }
-
-onMounted(async () => {
-    const { data } = await api.get('/user')
-    user.value = data
-    profileUrl.value = `${BASE_URL}${data.profilePicture}`
-})
 
 </script>
