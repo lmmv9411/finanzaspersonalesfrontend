@@ -3,12 +3,14 @@
 
         <!-- Botón para mostrar/ocultar filtros -->
         <div class="mb-4 flex justify-end gap-2">
-            <div v-if="showFilters">
-                <BaseButton color="danger" @click="handleReset" class="flex gap-2 items-center">
-                    <ArrowPathIcon class="w-5 h-5" />
-                    <span>Borrar Filtros</span>
-                </BaseButton>
-            </div>
+            <Transition name="button-slide">
+                <div v-if="showFilters">
+                    <BaseButton color="danger" @click="handleReset" class="flex gap-2 items-center">
+                        <ArrowPathIcon class="w-5 h-5" />
+                        <span>Borrar Filtros</span>
+                    </BaseButton>
+                </div>
+            </Transition>
 
             <BaseButton class="flex items-center gap-2" @click="showFilters = !showFilters">
                 <FunnelIcon class="h-4 w-4" />
@@ -288,14 +290,23 @@ const endTouch = (id) => {
 <style scoped>
 .filter-slide-enter-active,
 .filter-slide-leave-active {
-    will-change: max-height;
-    transition: max-height 400ms linear;
-    max-height: 230px;
-    overflow: hidden;
+    transition: all 0.3s ease-in-out;
 }
 
 .filter-slide-enter-from,
 .filter-slide-leave-to {
-    max-height: 0;
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+.button-slide-enter-active,
+.button-slide-leave-active {
+    transition: all 0.3s ease-in-out;
+}
+
+.button-slide-enter-from,
+.button-slide-leave-to {
+    opacity: 0;
+    transform: translateX(-40px);
 }
 </style>
