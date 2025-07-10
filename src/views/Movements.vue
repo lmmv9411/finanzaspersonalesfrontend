@@ -203,7 +203,7 @@
 import { ArrowPathIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, CurrencyDollarIcon, FunnelIcon, PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/solid';
 import { Icon } from '@iconify/vue';
 import { storeToRefs } from 'pinia';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import CategorySelect from '../components/CategorySelect.vue';
 import Pagination from '../components/Pagination.vue';
@@ -252,7 +252,7 @@ watch(() => movementStore.isSaved, async (newVal) => {
 
 onMounted(async () => await fetchMovements())
 
-const swipeOffsets = ref({})
+const swipeOffsets = reactive({})
 let touchStartX = 0
 
 const startTouch = (e) => {
@@ -265,21 +265,20 @@ const handleTouchMove = (e, id) => {
 
     // Solo permitir desplazamiento hacia la izquierda
     if (diff < 0 && diff > -120) {
-        swipeOffsets.value[id] = diff
+        swipeOffsets[id] = diff
     }
 
-
-    if (diff > 0 && swipeOffsets.value[id]) {
-        swipeOffsets.value[id] = diff
+    if (diff > 0 && swipeOffsets[id]) {
+        swipeOffsets[id] = diff
     }
 }
 
 const endTouch = (id) => {
-    const offset = swipeOffsets.value[id] || 0
-    swipeOffsets.value[id] = offset < -50 ? -195 : 0
+    const offset = swipeOffsets[id] || 0
+    swipeOffsets[id] = offset < -100 ? -195 : 0
 
     if (offset > 0) {
-        swipeOffsets.value[id] = 0
+        swipeOffsets[id] = 0
     }
 }
 
