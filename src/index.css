@@ -7,4 +7,8 @@
     font-style: normal;
 }
 
+.dp__theme_dark {
+    --dp-background-color: #111827;
+}
+
 @custom-variant dark (&:where(.dark, .dark *));

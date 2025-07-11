@@ -8,9 +8,15 @@
 
             <Transition name="slide-date">
                 <div v-if="showPicker" class="w-full">
-                    <BaseInput id="createdAt" type="datetime-local" v-model="movement.date" />
+                    <VueDatePicker
+                                   :dark="themePlane === 'dark'"
+                                   v-model="movement.date"
+                                   format="EEEE, dd MMM yyyy hh:mm a"
+                                   :format-locale="es" />
                 </div>
             </Transition>
+
+
 
             <div class="w-full flex justify-between gap-4">
                 <RadioButton v-model="movement.type" :options="options" />
@@ -53,6 +59,8 @@
 
 <script setup>
 import { ArrowDownIcon, ArrowPathIcon, ArrowsRightLeftIcon, ArrowUpIcon, CalendarDaysIcon } from '@heroicons/vue/24/solid';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import { es } from 'date-fns/locale';
 import { storeToRefs } from 'pinia';
 import { watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
@@ -61,7 +69,9 @@ import BaseButton from '../components/ui/BaseButton.vue';
 import BaseInput from '../components/ui/BaseInput.vue';
 import RadioButton from '../components/ui/RadioButton.vue';
 import { useMovement } from '../composables/movement';
-import { useDateFilters } from '../composables/useDates';
+import { useThemeStore } from '../composables/useTheme';
+
+const { themePlane } = storeToRefs(useThemeStore());
 
 const route = useRoute()
 
@@ -93,9 +103,7 @@ const {
 
 const { movement, showPicker } = storeToRefs(movementStore)
 
-const { toLocalDateTime, getCurrentDateString } = useDateFilters()
-
-watchEffect(async () => {
+watchEffect(() => {
 
     const data = JSON.parse(sessionStorage.getItem('data'))
 
@@ -104,15 +112,13 @@ watchEffect(async () => {
         sessionStorage.removeItem('data')
         showPicker.value = true
 
-        const localDateTime = toLocalDateTime(data.date);
-
-        movement.value = { ...data, date: localDateTime }
+        movement.value = { ...data, date: new Date(data.date) }
 
         valor.value = formatoMoneda(data.amount)
     }
 
     if (showPicker.value && !isEdit) {
-        movement.value.date = getCurrentDateString()
+        movement.value.date = new Date()
     }
 
 })

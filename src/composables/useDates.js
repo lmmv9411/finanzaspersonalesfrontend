@@ -1,4 +1,4 @@
-import { ref, watch } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 export function useDateFilters() {
     const startDate = ref('');
@@ -7,52 +7,20 @@ export function useDateFilters() {
     const getCurrentMonthString = () => {
         const now = new Date();
         const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, '0');
-        return `${year}-${month}`;
-    };
-
-    const getCurrentDateString = () => {
-
-        const pad = n => n.toString().padStart(2, '0');
-
-        const now = new Date();
-        const year = pad(now.getFullYear())
-        const month = pad(now.getMonth() + 1)
-        const day = pad(now.getDate())
-        const hours = pad(now.getHours())
-        const minutes = pad(now.getMinutes())
-        return `${year}-${month}-${day}T${hours}:${minutes}`;
+        const month = now.getMonth();
+        return { year, month };
     };
 
     const selectedMonth = ref(getCurrentMonthString());
 
-    const updateDatesFromMonth = (monthValue) => {
-        if (!monthValue) return;
-        const [year, month] = monthValue.split('-');
-        startDate.value = `${year}-${month}-01 00:00:00`;
-        endDate.value = new Date(year, month, 0).toISOString().split('T')[0] + ' 23:59:59';
+    const updateDatesFromMonth = () => {
+        if (!selectedMonth.value) return;
+        const { year, month } = selectedMonth.value;
+        startDate.value = `${year}-${month + 1}-01 00:00:00`;
+        endDate.value = new Date(year, month + 1, 0).toISOString().split('T')[0] + ' 23:59:59';
     };
 
-    const resetToCurrentMonth = () => {
-        selectedMonth.value = getCurrentMonthString();
-    };
-
-    const toLocalDateTime = (dateString) => {
-
-        if (!dateString) return '';
-
-        const date = new Date(dateString);
-
-        const pad = n => n.toString().padStart(2, '0');
-
-        const year = date.getFullYear()
-        const month = pad(date.getMonth() + 1)
-        const day = pad(date.getDate())
-        const hours = pad(date.getHours())
-        const minutes = pad(date.getMinutes())
-
-        return `${year}-${month}-${day}T${hours}:${minutes}`;
-    };
+    const resetToCurrentMonth = () => selectedMonth.value = getCurrentMonthString();
 
     function getTimezoneOffsetString() {
         const offsetMinutes = new Date().getTimezoneOffset(); // Ej: 300 para UTC-5
@@ -63,15 +31,13 @@ export function useDateFilters() {
         return `${sign}${hours}:${minutes}`;
     }
 
-    watch(selectedMonth, updateDatesFromMonth, { immediate: true });
+    watchEffect(() => selectedMonth.value && updateDatesFromMonth())
 
     return {
         selectedMonth,
         startDate,
         endDate,
         resetToCurrentMonth,
-        toLocalDateTime,
-        getTimezoneOffsetString,
-        getCurrentDateString
+        getTimezoneOffsetString
     };
 }

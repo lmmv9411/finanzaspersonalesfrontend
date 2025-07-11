@@ -21,8 +21,7 @@ export const useMovementStore = defineStore('movement', () => {
         try {
 
             if (movement.value.date && showPicker.value) {
-                const localDate = new Date(movement.value.date);
-                movement.value.date = localDate.toISOString()
+                movement.value.date = movement.value.date.toISOString()
             }
 
             if (!isEdit) {

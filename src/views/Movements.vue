@@ -25,7 +25,14 @@
                 <div>
                     <label for="month-selector"
                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Mes:</label>
-                    <BaseInput type="month" v-model="selectedMonth" id="month-selector" />
+
+                    <VueDatePicker
+                                   month-picker
+                                   v-model="selectedMonth"
+                                   format="MMMM yyyy"
+                                   :dark="themePlane === 'dark'"
+                                   :format-locale="es" />
+
                 </div>
 
                 <!-- Filtro por Tipo -->
@@ -207,17 +214,20 @@
 <script setup>
 import { ArrowPathIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, FunnelIcon, PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/solid';
 import { Icon } from '@iconify/vue';
+import { es } from 'date-fns/locale';
 import { storeToRefs } from 'pinia';
 import { onMounted, reactive, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import CategorySelect from '../components/CategorySelect.vue';
 import Pagination from '../components/Pagination.vue';
 import BaseButton from '../components/ui/BaseButton.vue';
-import BaseInput from '../components/ui/BaseInput.vue';
+import { useThemeStore } from '../composables/useTheme';
 import { formatoMoneda } from '../constants';
 import { useMovementStore } from '../stores/movementStore';
 import { useMovementsStore } from '../stores/movementsStore';
 import { getRandomBgColor } from './configs/icons';
+
+const { themePlane } = storeToRefs(useThemeStore());
 
 const movementStore = useMovementStore();
 const movementsStore = useMovementsStore()

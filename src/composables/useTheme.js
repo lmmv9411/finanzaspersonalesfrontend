@@ -3,12 +3,13 @@ import { onMounted, ref, watch } from 'vue'
 
 export const useThemeStore = defineStore('theme', () => {
     const theme = ref('light') // 'light', 'dark', o 'system'   
-    return { theme }
+    const themePlane = ref('light') // 'light' o 'dark'
+    return { theme, themePlane }
 })
 
 export const useTheme = function () {
 
-    const { theme } = storeToRefs(useThemeStore())
+    const { theme, themePlane } = storeToRefs(useThemeStore())
 
     const setThemeClass = (value) => {
         const root = document.documentElement
@@ -23,8 +24,10 @@ export const useTheme = function () {
         if (theme.value === 'system') {
             const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
             setThemeClass(isDark ? 'dark' : 'light')
+            themePlane.value = isDark ? 'dark' : 'light'
         } else {
             setThemeClass(theme.value)
+            themePlane.value = theme.value
         }
     }
 

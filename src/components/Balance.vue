@@ -6,7 +6,12 @@
              class="col-span-full sm:col-span-2 w-full p-4 dark:bg-gray-800 bg-slate-100 rounded-lg shadow-md max-w-md mx-auto">
             <div class="flex gap-2 items-center">
                 <span class="font-semibold dark:text-gray-200">Mes</span>
-                <BaseInput type="month" v-model="balanceStore.selectedMonth" />
+                <VueDatePicker
+                                   month-picker
+                                   v-model="balanceStore.selectedMonth"
+                                   format="MMMM yyyy"
+                                   :dark="themePlane === 'dark'"
+                                   :format-locale="es" />
             </div>
         </div>
 
@@ -49,8 +54,11 @@
 import { ArrowTrendingDownIcon, ArrowTrendingUpIcon, CurrencyDollarIcon } from '@heroicons/vue/24/solid';
 import { onMounted } from 'vue';
 import { useBalanceStore } from '../stores/balanceStore';
-import BaseInput from './ui/BaseInput.vue';
 import { formatoMoneda } from '../constants';
+import { useThemeStore } from '../composables/useTheme';
+import { storeToRefs } from 'pinia';
+
+const { themePlane } = storeToRefs(useThemeStore());
 
 const balanceStore = useBalanceStore();
 

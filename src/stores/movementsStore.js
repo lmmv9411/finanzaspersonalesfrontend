@@ -7,7 +7,7 @@ import { useDateFilters } from '../composables/useDates';
 export const useMovementsStore = defineStore('movements', () => {
 
     const { showError, showConfirm, showInfo, showLoading, showSuccess } = useNotifications();
-    const { selectedMonth, startDate, endDate, resetToCurrentMonth } = useDateFilters();
+    const { selectedMonth, startDate, endDate, resetToCurrentMonth, getTimezoneOffsetString } = useDateFilters();
 
     const movements = ref([]);
     const totalPages = ref(1);
@@ -21,6 +21,7 @@ export const useMovementsStore = defineStore('movements', () => {
     const selectedType = ref('');
     const selectedCategory = ref(0);
     const isLoading = ref(false);
+    const tz = getTimezoneOffsetString();
 
     const camelCase = (str) => str.replace(/^\w/, c => c.toUpperCase())
 
@@ -37,7 +38,8 @@ export const useMovementsStore = defineStore('movements', () => {
                 page: currentPage.value,
                 pageSize,
                 type: selectedType.value,
-                categoryId: selectedCategory.value || ''
+                categoryId: selectedCategory.value || '',
+                tz
             });
 
             const { dias } = resp.data;
