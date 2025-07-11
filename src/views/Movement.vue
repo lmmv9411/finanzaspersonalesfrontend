@@ -59,7 +59,6 @@
 
 <script setup>
 import { ArrowDownIcon, ArrowPathIcon, ArrowsRightLeftIcon, ArrowUpIcon, CalendarDaysIcon } from '@heroicons/vue/24/solid';
-import VueDatePicker from '@vuepic/vue-datepicker';
 import { es } from 'date-fns/locale';
 import { storeToRefs } from 'pinia';
 import { watchEffect } from 'vue';
@@ -120,7 +119,6 @@ watchEffect(() => {
     if (showPicker.value && !isEdit) {
         movement.value.date = new Date()
     }
-
 })
 
 </script>
