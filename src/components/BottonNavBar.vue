@@ -5,7 +5,7 @@
                          v-for="(item, idx) in navItems"
                          :key="item.to"
                          :to="item.to"
-                         class="flex flex-col items-center p-2 text-xs"
+                         class="flex flex-col items-center justify-center p-2 text-[10px] leading-tight flex-1 text-center"
                          :class="{
                             'text-blue-500 dark:text-blue-400': $route.path === item.to,
                             'text-gray-400 dark:text-gray-500': $route.path !== item.to,
@@ -29,15 +29,14 @@
 </template>
 
 <script setup>
-import { HomeIcon, TagIcon, UserIcon } from '@heroicons/vue/24/outline';
-import { ArrowsRightLeftIcon, CreditCardIcon, PlusIcon } from '@heroicons/vue/24/solid';
+import { HomeIcon, UserIcon } from '@heroicons/vue/24/outline';
+import { ArrowsRightLeftIcon, PlusIcon, Squares2X2Icon } from '@heroicons/vue/24/solid';
 
 const navItems = [
     { to: '/', icon: HomeIcon, label: 'Home' },
     { to: '/movements', icon: ArrowsRightLeftIcon, label: 'Movimientos' },
     { to: '/movement', icon: PlusIcon, label: 'Nuevo' },
-    { to: '/categories', icon: TagIcon, label: 'Categorias' },
-    { to: '/accounts', icon: CreditCardIcon, label: 'Cuentas' },
+    { to: '/catalogs', icon: Squares2X2Icon, label: 'Gestión' },
     { to: '/configs', icon: UserIcon, label: 'Yo' },
 ];
 
