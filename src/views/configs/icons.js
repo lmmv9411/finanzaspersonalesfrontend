@@ -43,6 +43,13 @@ export const categoriesIcons = [
         ]
     },
     {
+        name: "Préstamos",
+        icons: [
+            { name: "Préstamo", icon: "mdi:hand-coin" },
+            { name: "Deuda", icon: "mdi:cash-refund" }
+        ]
+    },
+    {
         name: "Educación",
         icons: [
             { name: "Libros", icon: "mdi:book" },
@@ -101,15 +108,43 @@ export const categoriesIcons = [
         name: "Finanzas",
         icons: [
             { name: "Ahorros", icon: "mdi:bank" },
-            { name: "Inversiones", icon: "mdi:chart-line" },
-            { name: "Préstamos", icon: "mdi:hand-coin" }
+            { name: "Tarjetas", icon: "mdi:credit-card" },
+            { name: "Efectivo", icon: "mdi:cash" },
+            { name: "Billetes", icon: "mdi:cash-multiple" },
+            { name: "Monedas", icon: "mdi:coin" }
+        ]
+    },
+    {
+        name: "Inversiones",
+        icons: [
+            { name: "Inversión", icon: "mdi:chart-line" },
+            { name: "Bolsa", icon: "mdi:finance" },
+            { name: "Criptomonedas", icon: "mdi:bitcoin" }
+        ]
+    },
+    {
+        name: "Bancos",
+        icons: [
+            { name: "Cuenta bancaria", icon: "mdi:bank" },
+            { name: "Ahorros", icon: "mdi:piggy-bank" },
+            { name: "Cuenta corriente", icon: "mdi:bank-outline" }
+        ]
+    },
+    {
+        name: "Billeteras digitales",
+        icons: [
+            { name: "Wallet", icon: "mdi:wallet" },
+            { name: "Pago móvil", icon: "mdi:cellphone-nfc" },
+            { name: "QR", icon: "mdi:qrcode-scan" }
         ]
     },
     {
         name: "Otros",
         icons: [
             { name: "Misceláneo", icon: "mdi:dots-horizontal" },
-            { name: "Reparaciones", icon: "mdi:wrench" }
+            { name: "Reparaciones", icon: "mdi:wrench" },
+            { name: "Caja fuerte", icon: "mdi:safe" },
+            { name: "Dinero genérico", icon: "mdi:currency-usd" }
         ]
     }
 ];
@@ -144,6 +179,7 @@ const colorClasses = [
 
 export const getRandomBgColor = (iconName) => {
     // Genera un índice consistente basado en el nombre
+    if (iconName === null || iconName === undefined) return colorClasses[Math.floor(Math.random() * colorClasses.length)];
     const hash = Array.from(iconName).reduce((acc, char) => (char.charCodeAt(0) * 31 + acc) >>> 0, 0);
     return colorClasses[hash % colorClasses.length];
 };
