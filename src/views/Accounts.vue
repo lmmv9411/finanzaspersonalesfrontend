@@ -46,7 +46,9 @@
                 <div class="flex justify-between items-start gap-2">
                     <div>
                         <h3 class="font-semibold text-lg">{{ account.name }}</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Saldo: {{ formatoMoneda(account.balance) }}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Saldo: {{ formatoMoneda(account.currentBalance) }}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Gastos: {{ formatoMoneda(account.totalGasto) }}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Ingresos: {{ formatoMoneda(account.totalIngreso) }}</p>
                     </div>
                     <div class="flex gap-1">
                         <button @click="startEdit(account)" title="Editar" class="text-blue-500 hover:text-blue-600 cursor-pointer">
@@ -87,16 +89,12 @@ const form = reactive({
 
 const parseAmount = (value) => Number((value || '').replace(/\D/g, '') || 0);
 
-const mapAccount = (account) => ({
-    ...account,
-    balance: Number(account.balance ?? account.initialBalance ?? 0)
-});
 
 const fetchAccounts = async () => {
     try {
         const { data } = await getAccounts();
         const list = Array.isArray(data) ? data : (data.accounts ?? []);
-        accounts.value = list.map(mapAccount);
+        accounts.value = list;
     } catch (error) {
         console.error(error);
         showError('No se pudieron cargar las cuentas');
