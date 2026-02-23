@@ -158,7 +158,8 @@
                                             {{ mov.Category.name }} • {{ mov.type }}
                                             <template v-if="mov.Account">
                                                 <span class="text-gray-400">•</span>
-                                                <div class="rounded-full p-1 text-white text-lg bg-indigo-500">
+                                                <div class="rounded-full p-1 text-white text-lg bg-indigo-500 shadow-xl"
+                                                     :class="[getRandomBgColor(mov.Account.type)]">
                                                     <Icon :icon="mov.Account.type || 'mdi:credit-card-outline'" />
                                                 </div>
                                                 <span>{{ mov.Account.name }}</span>

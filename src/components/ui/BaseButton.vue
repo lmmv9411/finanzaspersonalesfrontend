@@ -35,7 +35,8 @@ const colorMap = {
     primary: 'bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-400',
     secondary: 'bg-gray-600 hover:bg-gray-700 focus:ring-gray-400',
     danger: 'bg-red-600 hover:bg-red-700 focus:ring-red-400',
-    blue: 'bg-blue-500 hover:bg-blue-600 focus:ring-blue-400'
+    blue: 'bg-blue-500 hover:bg-blue-600 focus:ring-blue-400',
+    none: 'bg-transparent hover:bg-transparent focus:ring-transparent',
 }
 
 const colorClasses = computed(() => {
