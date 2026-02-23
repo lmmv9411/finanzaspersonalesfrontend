@@ -13,7 +13,8 @@ export const useMovementStore = defineStore('movement', () => {
         amount: '',
         description: '',
         CategoryId: 0,
-        date: null
+        date: null,
+        AccountId: 0
     })
 
     const saveMovement = async (isEdit) => {

@@ -21,6 +21,16 @@ export const useMovement = () => {
 
         movementStore.movement.amount = valor.value.replace(/\D/g, '');
 
+        if (!movementStore.movement.AccountId) {
+            showInfo('Selecciona una cuenta para el movimiento');
+            return;
+        }
+
+        if(!movementStore.movement.CategoryId){
+            showInfo('Selecciona una categoría para el movimiento');
+            return;
+        }
+
         if (isEdit) {
             const confirm = await showConfirm('¿Desea Editar Registro?', 'Sí, Editar', 'Cancelar');
 
@@ -59,7 +69,8 @@ export const useMovement = () => {
             description: '',
             CategoryId: 0,
             id: '',
-            date: null
+            date: null,
+            AccountId: 0
         }
         valor.value = ''
         movementStore.isSaved = false

@@ -30,13 +30,14 @@
 
 <script setup>
 import { HomeIcon, TagIcon, UserIcon } from '@heroicons/vue/24/outline';
-import { ArrowsRightLeftIcon, PlusIcon } from '@heroicons/vue/24/solid';
+import { ArrowsRightLeftIcon, CreditCardIcon, PlusIcon } from '@heroicons/vue/24/solid';
 
 const navItems = [
     { to: '/', icon: HomeIcon, label: 'Home' },
     { to: '/movements', icon: ArrowsRightLeftIcon, label: 'Movimientos' },
     { to: '/movement', icon: PlusIcon, label: 'Nuevo' },
     { to: '/categories', icon: TagIcon, label: 'Categorias' },
+    { to: '/accounts', icon: CreditCardIcon, label: 'Cuentas' },
     { to: '/configs', icon: UserIcon, label: 'Yo' },
 ];
 

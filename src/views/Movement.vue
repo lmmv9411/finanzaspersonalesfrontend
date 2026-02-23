@@ -31,6 +31,11 @@
             </div>
 
             <div class="w-full">
+                <label class="block text-gray-700 dark:text-gray-300">Cuenta</label>
+                <AccountSelect v-model="movement.AccountId" />
+            </div>
+
+            <div class="w-full">
                 <label for="amount" class="block text-gray-700 dark:text-gray-300">Monto</label>
                 <BaseInput type="tel"
                            id="amount"
@@ -69,6 +74,7 @@ import BaseInput from '../components/ui/BaseInput.vue';
 import RadioButton from '../components/ui/RadioButton.vue';
 import { useMovement } from '../composables/movement';
 import { useThemeStore } from '../composables/useTheme';
+import AccountSelect from '../components/AccountSelect.vue';
 
 const { themePlane } = storeToRefs(useThemeStore());
 
@@ -111,7 +117,11 @@ watchEffect(() => {
         sessionStorage.removeItem('data')
         showPicker.value = true
 
-        movement.value = { ...data, date: new Date(data.date) }
+        movement.value = {
+            ...data,
+            AccountId: data.AccountId ?? data.accountId ?? data.Account?.id ?? 0,
+            date: new Date(data.date)
+        }
 
         valor.value = formatoMoneda(data.amount)
     }

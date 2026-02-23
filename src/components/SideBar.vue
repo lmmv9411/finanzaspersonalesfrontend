@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import { AdjustmentsVerticalIcon, ArrowRightStartOnRectangleIcon, ChartBarIcon, HomeIcon, PlusIcon, TagIcon } from '@heroicons/vue/24/solid';
+import { AdjustmentsVerticalIcon, ArrowRightStartOnRectangleIcon, ChartBarIcon, CreditCardIcon, HomeIcon, PlusIcon, TagIcon } from '@heroicons/vue/24/solid';
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { BASE_URL } from '../constants';
@@ -55,6 +55,7 @@ const menu = [
     { name: 'Nuevo Movimiento', to: '/movement', icon: PlusIcon },
     { name: 'Movimientos', to: '/movements', icon: ChartBarIcon },
     { name: 'Categorias', to: '/categories', icon: TagIcon },
+    { name: 'Cuentas', to: '/accounts', icon: CreditCardIcon },
     { name: 'Configuraciones', to: '/configs', icon: AdjustmentsVerticalIcon },
 ];
 

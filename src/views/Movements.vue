@@ -149,12 +149,20 @@
                                             <ArrowTrendingDownIcon v-else class="w-6 text-red-500" />
                                             {{ mov.description }}
                                         </div>
-                                        <div class="text-sm text-gray-500 mt-1 flex gap-2 items-center">
+                                        <!--<div class="text-sm text-gray-500 mt-1 flex gap-2 items-center">-->
+                                        <div class="text-sm text-gray-500 mt-1 flex flex-wrap gap-2 items-center">
                                             <div :class=[getRandomBgColor(mov.Category.icon)]
                                                  class="rounded-full p-1 text-white text-lg">
                                                 <Icon :icon="mov.Category.icon" />
                                             </div>
                                             {{ mov.Category.name }} • {{ mov.type }}
+                                            <template v-if="mov.Account">
+                                                <span class="text-gray-400">•</span>
+                                                <div class="rounded-full p-1 text-white text-lg bg-indigo-500">
+                                                    <Icon :icon="mov.Account.type || 'mdi:credit-card-outline'" />
+                                                </div>
+                                                <span>{{ mov.Account.name }}</span>
+                                            </template>
                                         </div>
                                     </div>
 
@@ -203,10 +211,7 @@
         </div>
 
 
-        <Pagination
-                    :currentPage="currentPage"
-                    :totalPages="totalPages"
-                    @page-changed="fetchMovements" />
+        <Pagination :currentPage="currentPage" :totalPages="totalPages" @page-changed="fetchMovements" />
     </div>
 
 </template>
