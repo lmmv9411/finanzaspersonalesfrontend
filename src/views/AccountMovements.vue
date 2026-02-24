@@ -27,8 +27,9 @@
         <div class="mb-6 p-2 sm:p-3 dark:bg-gray-800 bg-blue-50 rounded-lg">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
                 <div class="rounded-lg bg-white/90 dark:bg-gray-900 p-2 sm:p-3 text-center">
-                    <span class="text-[11px] sm:text-xs text-cyan-700 dark:text-cyan-300 font-semibold block">Saldo
-                        inicial</span>
+                    <span class="text-[11px] sm:text-xs text-cyan-700 dark:text-cyan-300 font-semibold block">
+                        Saldo Inicial
+                    </span>
                     <span class="text-sm sm:text-base font-bold text-cyan-700 dark:text-cyan-300 break-words">{{
                         formatoMoneda(account.initialBalance) }}</span>
                 </div>
@@ -68,12 +69,12 @@
             <div v-for="dia in movements" :key="dia.fecha_server" class="mb-6">
                 <div class="flex justify-between p-2 bg-gray-100 dark:bg-gray-800 rounded-t-lg">
                     <h3 class="text-xs sm:text-base dark:text-gray-200">{{ dia.nombreDia }}, {{ dia.dia }} de {{ dia.mes
-                        }}</h3>
+                    }}</h3>
                     <div class="flex gap-2 text-xs sm:text-base">
                         <span v-if="dia.ingresos > 0" class="text-green-600 dark:text-green-400">{{
                             formatoMoneda(dia.ingresos) }}</span>
                         <span v-if="dia.gastos > 0" class="text-red-600 dark:text-red-400">{{ formatoMoneda(dia.gastos)
-                            }}</span>
+                        }}</span>
                     </div>
                 </div>
 
