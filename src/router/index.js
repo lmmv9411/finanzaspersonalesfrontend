@@ -52,6 +52,11 @@ const routes = [
                 component: () => import('../views/Accounts.vue')
             },
             {
+                path: '/accounts/:id/movements',
+                name: 'AccountMovements',
+                component: () => import('../views/AccountMovements.vue')
+            },
+            {
                 path: '/catalogs',
                 name: 'Catalogs',
                 component: () => import('../views/Catalogs.vue')

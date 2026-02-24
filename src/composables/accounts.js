@@ -2,12 +2,15 @@ import { reactive, ref } from "vue";
 import { useNotifications } from "./useNotifications";
 import { createAccount, deleteAccount, getAccounts, updateAccount } from "../api/accounts";
 import { formatoMoneda } from "../constants";
+import { useRouter } from "vue-router";
 
 export const useAccounts = () => {
 
     const { showConfirm, showError, showInfo, showLoading, showSuccess, close } = useNotifications();
 
     const defaultType = 'mdi:credit-card-outline';
+
+    const router = useRouter();
 
     const accounts = ref([]);
     const showForm = ref(false);
@@ -137,6 +140,10 @@ export const useAccounts = () => {
         }
     };
 
+    const goToAccountMovements = (id) => {
+        router.push({ name: 'AccountMovements', params: { id } });
+    };
+
     return {
         accounts,
         showForm,
@@ -151,7 +158,8 @@ export const useAccounts = () => {
         handleAmountInput,
         handleSubmit,
         startEdit,
-        removeAccount
+        removeAccount,
+        goToAccountMovements
     };
 
 }

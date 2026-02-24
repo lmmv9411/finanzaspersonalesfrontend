@@ -56,6 +56,7 @@
             <article
                      v-for="account in accounts"
                      :key="account.id"
+                     @click.stop="goToAccountMovements(account.id)"
                      class="rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm bg-white dark:bg-gray-900">
                 <div class="flex justify-between items-start gap-2">
                     <div>
@@ -75,11 +76,11 @@
                         </p>
                     </div>
                     <div class="flex gap-1">
-                        <button @click="startEdit(account)" title="Editar"
+                        <button @click.stop="startEdit(account)" title="Editar"
                                 class="text-blue-500 hover:text-blue-600 cursor-pointer">
                             <PencilSquareIcon class="w-5 h-5" />
                         </button>
-                        <button @click="removeAccount(account.id)" title="Eliminar"
+                        <button @click.stop="removeAccount(account.id)" title="Eliminar"
                                 class="text-red-500 hover:text-red-600 cursor-pointer">
                             <TrashIcon class="w-5 h-5" />
                         </button>
@@ -116,7 +117,9 @@ const {
     handleAmountInput,
     startEdit,
     removeAccount,
-    showIconPicker
+    showIconPicker,
+    goToAccountMovements,
+    formattedAmount
 } = useAccounts()
 
 onMounted(fetchAccounts);
