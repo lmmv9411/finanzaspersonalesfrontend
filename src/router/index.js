@@ -41,16 +41,7 @@ const routes = [
                 name: 'Movement',
                 component: () => import('../views/Movement.vue')
             },
-            {
-                path: '/categories',
-                name: 'Categories',
-                component: () => import('../views/Categories.vue')
-            },
-            {
-                path: '/accounts',
-                name: 'Accounts',
-                component: () => import('../views/Accounts.vue')
-            },
+
             {
                 path: '/accounts/:id/movements',
                 name: 'AccountMovements',
@@ -59,7 +50,26 @@ const routes = [
             {
                 path: '/catalogs',
                 name: 'Catalogs',
-                component: () => import('../views/Catalogs.vue')
+                component: () => import('../views/Catalogs.vue'),
+                children: [
+                    {
+                        path: '',
+                        name: 'Accounts',
+                        component: () => import('../views/Accounts.vue')
+                    },
+                    {
+
+                        path: 'transfers',
+                        name: 'Transfers',
+                        component: () => import('../views/Transfers.vue')
+                    },
+                    {
+                        path: 'categories',
+                        name: 'Categories',
+                        component: () => import('../views/Categories.vue')
+                    }
+
+                ]
             },
             {
                 path: '/monthly-report',

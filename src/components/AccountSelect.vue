@@ -39,8 +39,7 @@
                             </div>
                             <span>{{ account.name }}</span>
                         </div>
-                        <span class="text-xs text-gray-500 dark:text-gray-300">{{ formatoMoneda(Number(account.balance
-                            || 0)) }}</span>
+                        <span class="text-xs text-gray-500 dark:text-gray-300">{{ formatoMoneda(Number(account.currentBalance || 0)) }}</span>
                     </button>
                 </div>
             </div>

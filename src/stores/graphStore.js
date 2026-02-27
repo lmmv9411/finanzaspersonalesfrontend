@@ -43,10 +43,18 @@ export const useGraphStore = defineStore("graph", () => {
             const resp = await api.get(`/stats/totalByCategory?startDate=${sd}&endDate=${ed}`)
             const { data } = resp
 
-            chartDataGasto.value.labels = data.totalGastoByCategory.map(d => d.Category.name)
+            chartDataGasto.value.labels = data.totalGastoByCategory.map(d => {
+                if (d.Category) {
+                    return d.Category.name
+                }
+            })
             chartDataGasto.value.datasets[0].data = data.totalGastoByCategory.map(d => Number(d.total))
 
-            chartDataIngreso.value.labels = data.totalIngresoByCategory.map(d => d.Category.name)
+            chartDataIngreso.value.labels = data.totalIngresoByCategory.map(d => {
+                if (d.Category) {
+                    return d.Category.name
+                }
+            })
             chartDataIngreso.value.datasets[0].data = data.totalIngresoByCategory.map(d => Number(d.total))
 
             chartKeyA.value += 1

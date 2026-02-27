@@ -58,180 +58,206 @@
             </div>
         </Transition>
 
-        <div>
+        <!-- Resumen Mensual -->
+        <div class="mb-6 p-2 sm:p-3 dark:bg-gray-800 bg-blue-50 rounded-lg">
+            <div
+                 class="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3">
 
-            <!-- Resumen Mensual -->
-            <div class="mb-6 p-2 sm:p-3 dark:bg-gray-800 bg-blue-50 rounded-lg">
                 <div
-                     class="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3">
-
-                    <div
-                         class="rounded-lg bg-white/90 dark:bg-gray-900 p-2 sm:p-3 text-center shadow-sm">
-                        <span
-                              class="text-[11px] sm:text-xs text-cyan-700 dark:text-cyan-300 font-semibold block">Ingresos</span>
-                        <span class="text-sm sm:text-base font-bold text-cyan-700 dark:text-cyan-300">{{
-                            formatoMoneda(totalIngreso) }}</span>
-                    </div>
-                    <div
-                         class="rounded-lg bg-white/90 dark:bg-gray-900 p-2 sm:p-3 text-center shadow-sm">
-                        <span
-                              class="text-[11px] sm:text-xs text-red-600 dark:text-red-400 font-semibold block">Gastos</span>
-                        <span class="text-sm sm:text-base font-bold text-red-600 dark:text-red-400">{{
-                            formatoMoneda(totalGasto) }}</span>
-                    </div>
-                    <div
-                         class="rounded-lg bg-white/90 dark:bg-gray-900 p-2 sm:p-3 text-center col-span-2 md:col-span-1 shadow-sm">
-                        <span
-                              class="text-[11px] sm:text-xs text-indigo-700 dark:text-indigo-200 font-semibold block">Saldo</span>
-                        <span class="text-sm sm:text-base font-bold text-indigo-700 dark:text-indigo-200">{{
-                            formatoMoneda(balance) }}</span>
-                    </div>
+                     class="rounded-lg bg-white/90 dark:bg-gray-900 p-2 sm:p-3 text-center shadow-sm">
+                    <span
+                          class="text-[11px] sm:text-xs text-cyan-700 dark:text-cyan-300 font-semibold block">Ingresos</span>
+                    <span class="text-sm sm:text-base font-bold text-cyan-700 dark:text-cyan-300">{{
+                        formatoMoneda(totalIngreso) }}</span>
                 </div>
-
-            </div>
-
-            <!-- Overlay de carga -->
-            <div v-if="isLoading"
-                 class="min-h-[200px] flex items-center justify-center rounded-lg">
-                <div class="text-center">
-                    <svg class="animate-spin h-8 w-8 text-blue-500 mx-auto mb-2" xmlns="http://www.w3.org/2000/svg"
-                         fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
-                        </circle>
-                        <path class="opacity-75" fill="currentColor"
-                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                        </path>
-                    </svg>
-                    <span class="text-gray-600 dark:text-gray-300">Cargando movimientos...</span>
+                <div
+                     class="rounded-lg bg-white/90 dark:bg-gray-900 p-2 sm:p-3 text-center shadow-sm">
+                    <span
+                          class="text-[11px] sm:text-xs text-red-600 dark:text-red-400 font-semibold block">Gastos</span>
+                    <span class="text-sm sm:text-base font-bold text-red-600 dark:text-red-400">{{
+                        formatoMoneda(totalGasto) }}</span>
+                </div>
+                <div
+                     class="rounded-lg bg-white/90 dark:bg-gray-900 p-2 sm:p-3 text-center col-span-2 md:col-span-1 shadow-sm">
+                    <span
+                          class="text-[11px] sm:text-xs text-indigo-700 dark:text-indigo-200 font-semibold block">Saldo</span>
+                    <span class="text-sm sm:text-base font-bold text-indigo-700 dark:text-indigo-200">{{
+                        formatoMoneda(balance) }}</span>
                 </div>
             </div>
 
-            <!-- Mensaje si no hay datos -->
-            <div v-if="movements.length === 0 && !isLoading" class="text-center py-8 text-gray-500">
-                No hay movimientos para este período
+        </div>
+
+        <!-- Overlay de carga -->
+        <div v-if="isLoading"
+             class="min-h-[200px] flex items-center justify-center rounded-lg">
+            <div class="text-center">
+                <svg class="animate-spin h-8 w-8 text-blue-500 mx-auto mb-2" xmlns="http://www.w3.org/2000/svg"
+                     fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                    </circle>
+                    <path class="opacity-75" fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                    </path>
+                </svg>
+                <span class="text-gray-600 dark:text-gray-300">Cargando movimientos...</span>
             </div>
+        </div>
 
-            <!-- Listado por días -->
-            <div v-else>
-                <div v-for="dia in movements" :key="dia.fecha" class="mb-8">
-                    <!-- Encabezado del día -->
-                    <div
-                         class="flex gap-1 justify-between items-center p-2 dark:bg-gray-800 bg-gray-100 rounded-t-lg">
-                        <h2 class="text-xs sm:text-base text-gray-800 dark:text-gray-200">
-                            {{ dia.nombreDia }}, {{ dia.dia }} De {{ dia.mes }}
-                        </h2>
+        <!-- Mensaje si no hay datos -->
+        <div v-if="movements.length === 0 && !isLoading" class="text-center py-8 text-gray-500">
+            No hay movimientos para este período
+        </div>
 
-                        <div class="flex gap-2">
-                            <span class="dark:text-green-400 text-green-600 text-xs sm:text-base"
-                                  v-if="dia.ingresos > 0">
-                                Ingresos: {{ formatoMoneda(dia.ingresos) }}
-                            </span>
-                            <span class="dark:text-red-400 text-red-600 text-xs sm:text-base" v-if="dia.gastos > 0">
-                                Gastos: {{ formatoMoneda(dia.gastos) }}
-                            </span>
-                        </div>
+        <!-- Listado por días -->
+        <div>
+            <div v-for="dia in movements" :key="dia.fecha" class="mb-8">
+                <!-- Encabezado del día -->
+                <div
+                     class="flex gap-1 justify-between items-center p-2 dark:bg-gray-800 bg-gray-100 rounded-t-lg">
+                    <h2 class="text-xs sm:text-base text-gray-800 dark:text-gray-200">
+                        {{ dia.nombreDia }}, {{ dia.dia }} De {{ dia.mes }}
+                    </h2>
+
+                    <div class="flex gap-2">
+                        <span class="dark:text-green-400 text-green-600 text-xs sm:text-base"
+                              v-if="dia.ingresos > 0">
+                            Ingresos: {{ formatoMoneda(dia.ingresos) }}
+                        </span>
+                        <span class="dark:text-red-400 text-red-600 text-xs sm:text-base" v-if="dia.gastos > 0">
+                            Gastos: {{ formatoMoneda(dia.gastos) }}
+                        </span>
                     </div>
+                </div>
 
-                    <!-- Movimientos del día -->
+                <!-- Movimientos del día -->
+                <div
+                     class="border border-gray-200 dark:border-gray-700 rounded-b-lg divide-y divide-gray-200 dark:divide-gray-700">
+
                     <div
-                         class="border border-gray-200 dark:border-gray-700 rounded-b-lg divide-y divide-gray-200 dark:divide-gray-700">
+                         v-for="(mov, idx) in dia.detalles"
+                         :key="mov.id"
+                         class="overflow-x-hidden block"
+                         @touchstart="startTouch($event)"
+                         @touchmove="handleTouchMove($event, mov.id)"
+                         @touchend="endTouch(mov.id)">
 
+                        <!-- Deslizable -->
                         <div
-                             v-for="(mov, idx) in dia.detalles"
-                             :key="mov.id"
-                             class="overflow-x-hidden block"
-                             @touchstart="startTouch($event)"
-                             @touchmove="handleTouchMove($event, mov.id)"
-                             @touchend="endTouch(mov.id)">
+                             class="flex w-[calc(100%+158px)] sm:w-full transition-transform duration-100"
+                             :style="{ transform: `translateX(${swipeOffsets[mov.id] || 0}px)` }">
 
-                            <!-- Deslizable -->
+                            <!-- Contenido del movimiento (ocupa el 100%) -->
                             <div
-                                 class="flex w-[calc(100%+158px)] sm:w-full transition-transform duration-100"
-                                 :style="{ transform: `translateX(${swipeOffsets[mov.id] || 0}px)` }">
+                                 class="w-full p-3 hover:bg-gray-200 dark:hover:bg-gray-800 flex justify-between items-center gap-4 transition-colors duration-300">
 
-                                <!-- Contenido del movimiento (ocupa el 100%) -->
-                                <div
-                                     class="w-full p-3 hover:bg-gray-200 dark:hover:bg-gray-800 flex justify-between items-center gap-4 transition-colors duration-300">
+                                <div class="flex justify-between items-center w-full">
+                                    <div>
+                                        <div class="font-medium flex items-center gap-2 dark:text-gray-200">
+                                            <ArrowsRightLeftIcon v-if="mov.isTransfer"
+                                                                 class="w-6 text-indigo-500" />
 
-                                    <div class="flex justify-between items-center w-full">
-                                        <div>
-                                            <div class="font-medium flex items-center gap-2 dark:text-gray-200">
-                                                <ArrowTrendingUpIcon v-if="mov.type === 'ingreso'"
-                                                                     class="w-6 text-green-500" />
-                                                <ArrowTrendingDownIcon v-else class="w-6 text-red-500" />
-                                                {{ mov.description }}
+                                            <ArrowTrendingUpIcon v-else-if="mov.type === 'ingreso'"
+                                                                 class="w-6 text-green-500" />
+
+                                            <ArrowTrendingDownIcon v-else class="w-6 text-red-500" />
+                                            {{ mov.description }}
+                                        </div>
+
+                                        <div v-if="mov.isTransfer"
+                                             class="text-sm text-gray-500 mt-1 flex flex-wrap gap-2 items-center">
+                                            <div :class=[getRandomBgColor(mov.Transfer?.fromAccount?.type)]
+                                                 class="rounded-full p-1 text-white text-lg">
+                                                <Icon :icon="mov.Transfer?.fromAccount?.type" />
                                             </div>
-                                            <!--<div class="text-sm text-gray-500 mt-1 flex gap-2 items-center">-->
-                                            <div class="text-sm text-gray-500 mt-1 flex flex-wrap gap-2 items-center">
+                                            <span>{{ mov.Transfer?.fromAccount?.name || 'Cuenta origen' }}</span>
+                                            <span>→</span>
+                                            <div :class=[getRandomBgColor(mov.Transfer?.toAccount?.type)]
+                                                 class="rounded-full p-1 text-white text-lg">
+                                                <Icon :icon="mov.Transfer?.toAccount?.type" />
+                                            </div>
+                                            <span>{{ mov.Transfer?.toAccount?.name || 'Cuenta destino' }}</span>
+                                            <!--<span class="text-gray-400">•</span>
+                                            <span>{{ mov.transferRole === 'origen' ? 'Salida' : 'Entrada' }}</span>-->
+                                        </div>
+
+                                        <div v-else
+                                             class="text-sm text-gray-500 mt-1 flex flex-wrap gap-2 items-center">
+                                            <template v-if="mov.Category">
                                                 <div :class=[getRandomBgColor(mov.Category.icon)]
                                                      class="rounded-full p-1 text-white text-lg">
                                                     <Icon :icon="mov.Category.icon" />
                                                 </div>
-                                                {{ mov.Category.name }} • {{ mov.type }}
-                                                <template v-if="mov.Account">
-                                                    <span class="text-gray-400">•</span>
-                                                    <div class="rounded-full p-1 text-white text-lg bg-indigo-500 shadow-xl"
-                                                         :class="[getRandomBgColor(mov.Account.type)]">
-                                                        <Icon :icon="mov.Account.type || 'mdi:credit-card-outline'" />
-                                                    </div>
-                                                    <span>{{ mov.Account.name }}</span>
-                                                </template>
-                                            </div>
+                                                <span>{{ mov.Category.name }} • {{ mov.type }}</span>
+                                            </template>
+                                            <template v-else>
+                                                <span>{{ mov.type }}</span>
+                                            </template>
                                         </div>
 
-                                        <span class="font-medium whitespace-nowrap"
-                                              :class="mov.type === 'ingreso' ? 'dark:text-green-400 text-green-600' : 'dark:text-red-400 text-red-600'">
-                                            {{ (mov.type === 'gasto' ? '-' : '') + formatoMoneda(mov.amount) }}
-                                        </span>
+                                        <div v-if="mov.Account && !mov.isTransfer"
+                                             class="text-xs text-gray-400 mt-1 flex gap-2 items-center">
+                                            <div class="rounded-full p-1 text-white text-lg bg-indigo-500">
+                                                <Icon :icon="mov.Account.type || 'mdi:credit-card-outline'" />
+                                            </div>
+                                            <span>{{ mov.Account.name }}</span>
+                                        </div>
                                     </div>
 
-                                    <div class="hidden sm:flex gap-2">
-                                        <button @click.stop="edit(mov)"
-                                                class="w-6 flex items-center justify-center text-blue-500 hover:text-blue-600 cursor-pointer"
-                                                title="Editar movimiento">
-                                            <PencilSquareIcon class="h-6 w-6" />
-                                        </button>
-                                        <button @click.stop="deleteMovement(mov.id)"
-                                                class="w-6 flex items-center justify-center text-red-500 hover:text-red-600 cursor-pointer"
-                                                title="Eliminar movimiento">
-                                            <TrashIcon class="h-6 w-6" />
-                                        </button>
-                                    </div>
-
+                                    <span class="font-medium whitespace-nowrap"
+                                          :class="mov.type === 'ingreso' ? 'dark:text-green-400 text-green-600' : 'dark:text-red-400 text-red-600'">
+                                        {{ (mov.type === 'gasto' ? '-' : '') + formatoMoneda(mov.amount) }}
+                                    </span>
                                 </div>
 
-                                <!-- Botones de acción (ocultos a la derecha hasta hacer swipe) -->
-                                <div class="sm:hidden flex w-[158px] shrink-0">
+                                <div v-if="!mov.isTransfer" class="hidden sm:flex gap-2">
                                     <button @click.stop="edit(mov)"
-                                            class="w-full flex gap-2 p-2 items-center justify-center text-white bg-blue-500">
-                                        <PencilSquareIcon class="h-5 w-5" />
-                                        <span>Editar</span>
+                                            class="w-6 flex items-center justify-center text-blue-500 hover:text-blue-600 cursor-pointer"
+                                            title="Editar movimiento">
+                                        <PencilSquareIcon class="h-6 w-6" />
                                     </button>
                                     <button @click.stop="deleteMovement(mov.id)"
-                                            class="w-full flex gap-2 p-2 items-center justify-center text-white bg-red-500"
-                                            :class="[idx === dia.detalles.length - 1 ? 'rounded-br-lg' : '']">
-                                        <TrashIcon class="h-5 w-5" />
-                                        <span>Eliminar</span>
+                                            class="w-6 flex items-center justify-center text-red-500 hover:text-red-600 cursor-pointer"
+                                            title="Eliminar movimiento">
+                                        <TrashIcon class="h-6 w-6" />
                                     </button>
                                 </div>
 
+                            </div>
+
+                            <!-- Botones de acción (ocultos a la derecha hasta hacer swipe) -->
+
+                            <div v-if="!mov.isTransfer" class="sm:hidden flex w-[158px] shrink-0">
+                                <button @click.stop="edit(mov)"
+                                        class="w-full flex gap-2 p-2 items-center justify-center text-white bg-blue-500">
+                                    <PencilSquareIcon class="h-5 w-5" />
+                                    <span>Editar</span>
+                                </button>
+                                <button @click.stop="deleteMovement(mov.id)"
+                                        class="w-full flex gap-2 p-2 items-center justify-center text-white bg-red-500"
+                                        :class="[idx === dia.detalles.length - 1 ? 'rounded-br-lg' : '']">
+                                    <TrashIcon class="h-5 w-5" />
+                                    <span>Eliminar</span>
+                                </button>
                             </div>
 
                         </div>
 
                     </div>
                 </div>
+
             </div>
-
-
-            <Pagination :currentPage="currentPage" :totalPages="totalPages" @page-changed="fetchMovements" />
         </div>
+
+        <Pagination :currentPage="currentPage" :totalPages="totalPages" @page-changed="fetchMovements" />
+
     </div>
+
 
 </template>
 
 <script setup>
-import { ArrowPathIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, FunnelIcon, PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/solid';
+import { ArrowPathIcon, ArrowsRightLeftIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, FunnelIcon, PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/solid';
 import { Icon } from '@iconify/vue';
 import { es } from 'date-fns/locale';
 import { storeToRefs } from 'pinia';

@@ -51,6 +51,9 @@ export const useMovementsStore = defineStore('movements', () => {
                 dia.mes = camelCase(formatoMes.format(objDate));
 
                 const { ingresos, gastos } = dia.detalles.reduce((totales, movimiento) => {
+                    if (movimiento.isTransfer) {
+                        return totales;
+                    }
                     if (movimiento.type === 'ingreso') {
                         totales.ingresos += Number(movimiento.amount);
                     } else {
@@ -61,6 +64,8 @@ export const useMovementsStore = defineStore('movements', () => {
 
                 dia.ingresos = ingresos;
                 dia.gastos = gastos;
+
+                dia.detalles = mergeTransfers(dia.detalles);
 
                 return dia;
             });
@@ -130,3 +135,25 @@ export const useMovementsStore = defineStore('movements', () => {
         handleReset
     };
 });
+
+const mergeTransfers = (movements) => {
+    const map = new Map();
+    const result = [];
+
+    for (const mov of movements) {
+        if (!mov.isTransfer) {
+            result.push(mov);
+            continue;
+        }
+
+        const key = mov.TransferId;
+
+        if (!map.has(key)) {
+            map.set(key, { ...mov });
+        }
+
+    }
+
+    return [...result, ...map.values()]
+
+};

@@ -57,7 +57,7 @@
                      v-for="account in accounts"
                      :key="account.id"
                      @click.stop="goToAccountMovements(account.id)"
-                     class="rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm bg-white dark:bg-gray-900">
+                     class="rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm bg-white dark:bg-gray-900 cursor-pointer hover:shadow-lg transition duration-500">
                 <div class="flex justify-between items-start gap-2">
                     <div>
                         <div class="font-semibold text-lg flex items-center gap-2">

@@ -1,40 +1,26 @@
 <template>
-    <section class="py-4">
-        <div class="max-w-4xl mx-auto px-4">
+    <section class="">
+        <nav
+             class="flex justify-around border-t border-gray-300 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800">
+            <RouterLink v-for="route in routes"
+                        :key="route.label"
+                        :to="route.to"
+                        class="py-3 w-full text-center"
+                        :class="{ 'font-bold border-b-2 border-blue-500': $route.path === route.to }">
+                {{ route.label }}
+            </RouterLink>
+        </nav>
 
-            <div class="flex gap-2 mb-4 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg w-fit">
-
-                <button
-                        type="button"
-                        class="px-4 py-2 rounded-md text-sm font-semibold cursor-pointer"
-                        :class="activeTab === 'accounts'
-                            ? 'bg-indigo-600 text-white'
-                            : 'text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'"
-                        @click="activeTab = 'accounts'">
-                    Cuentas
-                </button>
-
-                <button
-                        type="button"
-                        class="px-4 py-2 rounded-md text-sm font-semibold cursor-pointer"
-                        :class="activeTab === 'categories'
-                            ? 'bg-indigo-600 text-white'
-                            : 'text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'"
-                        @click="activeTab = 'categories'">
-                    Categorías
-                </button>
-            </div>
-        </div>
-
-        <Categories v-if="activeTab === 'categories'" />
-        <Accounts v-else />
+        <RouterView />
     </section>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import Accounts from './Accounts.vue';
-import Categories from './Categories.vue';
 
-const activeTab = ref('accounts');
+const routes = [
+    { to: '/catalogs', label: 'Cuentas' },
+    { to: '/catalogs/transfers', label: 'Transferencias' },
+    { to: '/catalogs/categories', label: 'Categorías' },
+]
+
 </script>
