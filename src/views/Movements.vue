@@ -144,8 +144,8 @@
 
                         <!-- Deslizable -->
                         <div
-                             class="flex w-[calc(100%+158px)] sm:w-full transition-transform duration-100"
-                             :style="{ transform: `translateX(${swipeOffsets[mov.id] || 0}px)` }">
+                             :class="!mov.isTransfer && 'flex w-[calc(100%+158px)] sm:w-full transition-transform duration-100'"
+                             :style="!mov.isTransfer && { transform: `translateX(${swipeOffsets[mov.id] || 0}px)` }">
 
                             <!-- Contenido del movimiento (ocupa el 100%) -->
                             <div
