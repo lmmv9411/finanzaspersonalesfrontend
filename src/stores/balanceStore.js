@@ -7,7 +7,8 @@ import { useDateFilters } from "../composables/useDates";
 export const useBalanceStore = defineStore("balance", () => {
 
     const { showError } = useNotifications();
-    const { selectedMonth, startDate, endDate } = useDateFilters();
+    const { selectedMonth, startDate, endDate, getTimezoneOffsetString } = useDateFilters();
+    const tz = getTimezoneOffsetString();
 
     const balance = ref({
         totalIngreso: 0,
@@ -17,7 +18,7 @@ export const useBalanceStore = defineStore("balance", () => {
 
     const fetchBalance = async () => {
         try {
-            const resp = await getBalance({ startDate: startDate.value, endDate: endDate.value });
+            const resp = await getBalance({ startDate: startDate.value, endDate: endDate.value, tz });
             balance.value = resp.data;
         } catch (error) {
             console.error('Error al obtener el balance:', error);

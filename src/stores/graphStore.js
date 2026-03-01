@@ -2,10 +2,13 @@ import { defineStore } from "pinia";
 import { ref, watch } from "vue";
 import api from "../constants/api";
 import { useBalanceStore } from "./balanceStore";
+import { useDateFilters } from "../composables/useDates";
 
 export const useGraphStore = defineStore("graph", () => {
 
     const balanceStore = useBalanceStore();
+    const { getTimezoneOffsetString } = useDateFilters()
+    const tz = getTimezoneOffsetString()
 
     const chartDataIngreso = ref({
         labels: [],
@@ -40,7 +43,7 @@ export const useGraphStore = defineStore("graph", () => {
         const ed = balanceStore.endDate
 
         try {
-            const resp = await api.get(`/stats/totalByCategory?startDate=${sd}&endDate=${ed}`)
+            const resp = await api.get(`/stats/totalByCategory?startDate=${sd}&endDate=${ed}&tz=${tz}`)
             const { data } = resp
 
             chartDataGasto.value.labels = data.totalGastoByCategory.map(d => {

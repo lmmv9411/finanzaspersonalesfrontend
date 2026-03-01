@@ -45,5 +45,4 @@ const graphStore = useGraphStore();
 
 onMounted(() => graphStore.getTotalByCategory())
 
-
 </script>
