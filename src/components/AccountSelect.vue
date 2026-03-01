@@ -21,13 +21,13 @@
             <div
                  v-show="isOpen"
                  class="p-2 overflow-y-auto mt-1 rounded-md bg-gray-100 dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 max-h-60">
-                <div class="space-y-2">
+                <div class="space-y-2 grid grid-cols-2 gap-2">
                     <button
                             v-for="account in accounts"
                             :key="account.id"
                             type="button"
                             @click="selectAccount(account)"
-                            class="w-full flex items-center justify-between p-2 rounded-lg cursor-pointer transition-all"
+                            class="w-full flex flex-col gap-2 items-center justify-between p-2 rounded-lg cursor-pointer transition-all"
                             :class="{
                                 'bg-primary-100 dark:bg-primary-900 border border-gray-200 dark:border-gray-500': modelValue === account.id,
                                 'hover:bg-gray-200 dark:hover:bg-gray-700': modelValue !== account.id

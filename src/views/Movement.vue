@@ -16,8 +16,6 @@
                 </div>
             </Transition>
 
-
-
             <div class="w-full flex justify-between gap-4">
                 <RadioButton v-model="movement.type" :options="options" />
                 <button type="button" class="cursor-pointer" @click="showPicker = !showPicker">
