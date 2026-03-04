@@ -58,24 +58,38 @@
                      :key="account.id"
                      @click.stop="goToAccountMovements(account.id)"
                      class="rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm bg-white dark:bg-gray-900 cursor-pointer hover:shadow-lg transition duration-500">
-                <div class="flex justify-between items-start gap-2">
-                    <div>
+
+                <div class="flex justify-between items-center gap-2">
+
+                    <div class="flex flex-col gap-2 w-1/2">
+
                         <div class="font-semibold text-lg flex items-center gap-2">
                             <div class="rounded-full p-1 text-white text-lg" :class="[getRandomBgColor(account.type)]">
                                 <Icon :icon="account.type" />
                             </div>
                             <h3>{{ account.name }}</h3>
                         </div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Saldo: {{ formatoMoneda(account.balance) }}
-                        </p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Gastos: {{ formatoMoneda(account.totalGasto)
-                            }}
-                        </p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Ingresos: {{
-                            formatoMoneda(account.totalIngreso) }}
-                        </p>
+
+                        <div class="flex justify-between text-sm text-gray-500 dark:text-gray-400">
+                            <p>Saldo:</p>
+                            <div class="flex-1 border-b-2 border-b border-dotted mx-2 mb-1"></div>
+                            <p>{{ formatoMoneda(account.balance) }}</p>
+                        </div>
+
+                        <div class="flex justify-between text-sm text-gray-500 dark:text-gray-400">
+                            <p>Gastos:</p>
+                            <div class="flex-1 border-b-2 border-b border-dotted mx-2 mb-1"></div>
+                            <p>{{ formatoMoneda(account.totalGasto) }}</p>
+                        </div>
+
+                        <div class="flex justify-between text-sm text-gray-500 dark:text-gray-400">
+                            <p>Ingresos:</p>
+                            <div class="flex-1 border-b-2 border-b border-dotted mx-2 mb-1"></div>
+                            <p>{{ formatoMoneda(account.totalIngreso) }}</p>
+                        </div>
+
                     </div>
-                    <div class="flex gap-1">
+                    <div class="flex gap-3 flex-col">
                         <button @click.stop="startEdit(account)" title="Editar"
                                 class="text-blue-500 hover:text-blue-600 cursor-pointer">
                             <PencilSquareIcon class="w-5 h-5" />
