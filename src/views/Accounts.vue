@@ -116,7 +116,7 @@ import BaseButton from '../components/ui/BaseButton.vue';
 import BaseInput from '../components/ui/BaseInput.vue';
 import { formatoMoneda } from '../constants';
 import { getRandomBgColor } from './configs/icons';
-import { useAccounts } from '../composables/accounts';
+import { useAccounts } from '../composables/useAccounts';
 
 const {
     fetchAccounts,

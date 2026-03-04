@@ -99,7 +99,7 @@ import IconPickerSolid from '../components/IconPickerSolid.vue';
 import BaseButton from '../components/ui/BaseButton.vue';
 import BaseInput from '../components/ui/BaseInput.vue';
 import RadioButton from '../components/ui/RadioButton.vue';
-import { useCategories } from '../composables/categories';
+import { useCategories } from '../composables/useCategories';
 import { useCategorieStore } from '../stores/categoriesStore';
 import { getRandomBgColor } from './configs/icons';
 

@@ -70,7 +70,7 @@ import CategorySelect from '../components/CategorySelect.vue';
 import BaseButton from '../components/ui/BaseButton.vue';
 import BaseInput from '../components/ui/BaseInput.vue';
 import RadioButton from '../components/ui/RadioButton.vue';
-import { useMovement } from '../composables/movement';
+import { useMovement } from '../composables/useMovement';
 import { useThemeStore } from '../composables/useTheme';
 import AccountSelect from '../components/AccountSelect.vue';
 
