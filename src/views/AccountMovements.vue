@@ -80,20 +80,35 @@
 
                 <div class="border border-gray-200 dark:border-gray-700 rounded-b-lg overflow-hidden">
                     <div v-for="mov in dia.detalles" :key="mov.id" class="p-3 hover:bg-gray-50 dark:hover:bg-gray-800">
-                        <div class="flex justify-between items-center gap-3">
-                            <div>
-                                <p class="font-medium dark:text-gray-100">{{ mov.description }}</p>
-                                <div class="text-sm text-gray-500 mt-1 flex items-center gap-2">
-                                    <div :class="[getRandomBgColor(mov.Category.icon)]"
-                                         class="rounded-full p-1 text-white text-lg">
-                                        <Icon :icon="mov.Category.icon" />
+                        <div class="flex justify-between items-center">
+                            <div class="flex flex-col gap-3">
+                                <div class="flex gap-3 items-center">
+                                    <div class="text-sm text-gray-500 mt-1">
+                                        <ArrowsRightLeftIcon class="w-6 text-indigo-500" />
                                     </div>
-                                    <span>{{ mov.Category.name }} • {{ mov.type }}</span>
+                                    <p class="font-medium dark:text-gray-100">{{ mov.description }}</p>
                                 </div>
+
+
+                                <div class="flex gap-2 items-center text-sm text-gray-500 dark:text-gray-400">
+
+                                    <ArrowTrendingUpIcon v-if="mov.type === 'ingreso'" class="w-6 text-green-500" />
+                                    <ArrowTrendingDownIcon v-else class="w-6 text-red-500" />
+
+                                    <div :class=[getRandomBgColor(mov.Transfer?.toAccount?.type)]
+                                         class="rounded-full p-1 text-white text-lg">
+                                        <Icon :icon="mov.Transfer?.toAccount?.type" />
+                                    </div>
+                                    <span>{{ mov.Transfer.toAccount.name }}</span>
+                                    <span>•</span>
+                                    <span>{{ mov.type }}</span>
+                                </div>
+
                             </div>
+
                             <span
-                                  :class="mov.type === 'ingreso' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
-                                {{ (mov.type === 'gasto' ? '-' : '') + formatoMoneda(mov.amount) }}
+                                  class="text-blue-600 dark:text-blue-400">
+                                {{ formatoMoneda(mov.amount) }}
                             </span>
                         </div>
                     </div>
@@ -110,6 +125,7 @@
 </template>
 
 <script setup>
+import { ArrowsRightLeftIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon } from '@heroicons/vue/24/solid';
 import { Icon } from '@iconify/vue';
 import { es } from 'date-fns/locale';
 import { storeToRefs } from 'pinia';
