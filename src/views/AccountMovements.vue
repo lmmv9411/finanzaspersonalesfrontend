@@ -28,10 +28,10 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
                 <div class="rounded-lg bg-white/90 dark:bg-gray-900 p-2 sm:p-3 text-center">
                     <span class="text-[11px] sm:text-xs text-cyan-700 dark:text-cyan-300 font-semibold block">
-                        Saldo Inicial
+                        Saldo Actual
                     </span>
                     <span class="text-sm sm:text-base font-bold text-cyan-700 dark:text-cyan-300 break-words">{{
-                        formatoMoneda(account.initialBalance) }}</span>
+                        formatoMoneda(account.currentBalance) }}</span>
                 </div>
 
                 <div class="rounded-lg bg-white/90 dark:bg-gray-900 p-2 sm:p-3 text-center">
@@ -50,7 +50,8 @@
 
                 <div class="rounded-lg bg-white/90 dark:bg-gray-900 p-2 sm:p-3 text-center">
                     <span
-                          class="text-[11px] sm:text-xs text-indigo-700 dark:text-indigo-200 font-semibold block">Saldo</span>
+                          class="text-[11px] sm:text-xs text-indigo-700 dark:text-indigo-200 font-semibold block">Saldo
+                        Mes</span>
                     <span class="text-sm sm:text-base font-bold text-indigo-700 dark:text-indigo-200 break-words">{{
                         formatoMoneda(balance) }}</span>
                 </div>
@@ -66,31 +67,49 @@
         </div>
 
         <div v-else>
-            <div v-for="dia in movements" :key="dia.fecha_server" class="mb-6">
+            <div
+                 v-for="dia in movements"
+                 :key="dia.fecha_server"
+                 class="mb-6">
+
                 <div class="flex justify-between p-2 bg-gray-100 dark:bg-gray-800 rounded-t-lg">
-                    <h3 class="text-xs sm:text-base dark:text-gray-200">{{ dia.nombreDia }}, {{ dia.dia }} de {{ dia.mes
-                    }}</h3>
+                    <h3 class="text-xs sm:text-base dark:text-gray-200">
+                        {{ dia.nombreDia }}, {{ dia.dia }} de {{ dia.mes }}
+                    </h3>
                     <div class="flex gap-2 text-xs sm:text-base">
                         <span v-if="dia.ingresos > 0" class="text-green-600 dark:text-green-400">{{
                             formatoMoneda(dia.ingresos) }}</span>
-                        <span v-if="dia.gastos > 0" class="text-red-600 dark:text-red-400">{{ formatoMoneda(dia.gastos)
+                        <span v-if="dia.gastos > 0" class="text-red-600 dark:text-red-400">{{
+                            formatoMoneda(dia.gastos)
                         }}</span>
                     </div>
                 </div>
 
-                <div class="border border-gray-200 dark:border-gray-700 rounded-b-lg overflow-hidden">
-                    <div v-for="mov in dia.detalles" :key="mov.id" class="p-3 hover:bg-gray-50 dark:hover:bg-gray-800">
+                <div class="border border-gray-200 dark:border-gray-700 rounded-b-lg overflow-hidden divide-y divide-gray-200 dark:divide-gray-700">
+                    <div v-for="mov in dia.detalles" :key="mov.id"
+                         class="p-3 hover:bg-gray-50 dark:hover:bg-gray-800">
                         <div class="flex justify-between items-center">
                             <div class="flex flex-col gap-3">
                                 <div class="flex gap-3 items-center">
                                     <div class="text-sm text-gray-500 mt-1">
-                                        <ArrowsRightLeftIcon class="w-6 text-indigo-500" />
+                                        <ArrowsRightLeftIcon v-if="mov.isTransfer" class="w-6 text-indigo-500" />
+                                        <ArrowTrendingUpIcon v-else-if="mov.type === 'ingreso'"
+                                                             class="w-6 text-green-500" />
+                                        <ArrowTrendingDownIcon v-else class="w-6 text-red-500" />
                                     </div>
                                     <p class="font-medium dark:text-gray-100">{{ mov.description }}</p>
                                 </div>
 
 
-                                <div class="flex gap-2 items-center text-sm text-gray-500 dark:text-gray-400">
+                                <div v-if="mov.isTransfer"
+                                     class="flex gap-2 items-center text-sm text-gray-500 dark:text-gray-400">
+
+                                    <div :class=[getRandomBgColor(mov.Transfer?.fromAccount?.type)]
+                                         class="rounded-full p-1 text-white text-lg">
+                                        <Icon :icon="mov.Transfer?.fromAccount?.type" />
+                                    </div>
+
+                                    <span>{{ mov.Transfer?.fromAccount?.name }}</span>
 
                                     <ArrowTrendingUpIcon v-if="mov.type === 'ingreso'" class="w-6 text-green-500" />
                                     <ArrowTrendingDownIcon v-else class="w-6 text-red-500" />
@@ -99,15 +118,34 @@
                                          class="rounded-full p-1 text-white text-lg">
                                         <Icon :icon="mov.Transfer?.toAccount?.type" />
                                     </div>
-                                    <span>{{ mov.Transfer.toAccount.name }}</span>
+                                    <span>{{ mov.Transfer?.toAccount?.name }}</span>
+                                    <span>•</span>
+                                    <span>Transferencia</span>
+                                </div>
+
+                                <div v-else
+                                     class="flex gap-2 items-center text-sm text-gray-500 dark:text-gray-400">
+                                    <div :class=[getRandomBgColor(account.type)]
+                                         class="rounded-full p-1 text-white text-lg">
+                                        <Icon :icon="account.type" />
+                                    </div>
+                                    <span>{{ account.name }}</span>
                                     <span>•</span>
                                     <span>{{ mov.type }}</span>
+
                                 </div>
 
                             </div>
 
-                            <span
+                            <span v-if="mov.isTransfer"
                                   class="text-blue-600 dark:text-blue-400">
+                                {{ formatoMoneda(mov.amount) }}
+                            </span>
+                            <span v-else-if="mov.type === 'ingreso'"
+                                  class="text-green-600 dark:text-green-400">
+                                {{ formatoMoneda(mov.amount) }}
+                            </span>
+                            <span v-else class="text-red-600 dark:text-red-400">
                                 {{ formatoMoneda(mov.amount) }}
                             </span>
                         </div>
@@ -131,7 +169,7 @@ import { es } from 'date-fns/locale';
 import { storeToRefs } from 'pinia';
 import { onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { getAccounts } from '../api/accounts';
+import { getAccount, getAccounts } from '../api/accounts';
 import { getMovements } from '../api/movements';
 import Pagination from '../components/Pagination.vue';
 import BaseButton from '../components/ui/BaseButton.vue';
@@ -164,15 +202,14 @@ const camelCase = (str) => str.replace(/^\w/, (c) => c.toUpperCase());
 
 const loadAccount = async () => {
     try {
-        const { data } = await getAccounts();
-        const list = Array.isArray(data) ? data : (data.accounts ?? []);
-        const found = list.find((item) => Number(item.id) === accountId);
-        if (found) {
+        const { data } = await getAccount(accountId);
+
+        if (data) {
             account.value = {
-                name: found.name,
-                type: found.type || 'mdi:credit-card-outline',
-                currentBalance: found.currentBalance ?? 0,
-                initialBalance: found.initialBalance ?? 0
+                name: data.name,
+                type: data.type || 'mdi:credit-card-outline',
+                currentBalance: data.currentBalance ?? 0,
+                initialBalance: data.initialBalance ?? 0
             };
         }
     } catch (error) {
@@ -198,7 +235,11 @@ const fetchMovements = async (page = 1) => {
 
         movements.value = dias.map((dia) => {
             const objDate = new Date(dia.fecha_server);
+
             const totals = dia.detalles.reduce((acc, mov) => {
+                if (mov.isTransfer) {
+                    return acc;
+                }
                 if (mov.type === 'ingreso') acc.ingresos += Number(mov.amount);
                 else acc.gastos += Number(mov.amount);
                 return acc;
@@ -216,7 +257,7 @@ const fetchMovements = async (page = 1) => {
 
         totalGasto.value = Number(data?.totalGasto ?? 0);
         totalIngreso.value = Number(data?.totalIngreso ?? 0);
-        balance.value = (Number(data?.balance ?? 0)) + Number(account.value.initialBalance);
+        balance.value = (Number(data?.balance ?? 0)) //+ Number(account.value.initialBalance);
         totalPages.value = Number(data?.totalPages ?? 1);
     } catch (error) {
         console.error('Error al cargar movimientos por cuenta', error);
