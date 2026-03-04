@@ -81,11 +81,12 @@
                             formatoMoneda(dia.ingresos) }}</span>
                         <span v-if="dia.gastos > 0" class="text-red-600 dark:text-red-400">{{
                             formatoMoneda(dia.gastos)
-                        }}</span>
+                            }}</span>
                     </div>
                 </div>
 
-                <div class="border border-gray-200 dark:border-gray-700 rounded-b-lg overflow-hidden divide-y divide-gray-200 dark:divide-gray-700">
+                <div
+                     class="border border-gray-200 dark:border-gray-700 rounded-b-lg overflow-hidden divide-y divide-gray-200 dark:divide-gray-700">
                     <div v-for="mov in dia.detalles" :key="mov.id"
                          class="p-3 hover:bg-gray-50 dark:hover:bg-gray-800">
                         <div class="flex justify-between items-center">
@@ -166,111 +167,25 @@
 import { ArrowsRightLeftIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon } from '@heroicons/vue/24/solid';
 import { Icon } from '@iconify/vue';
 import { es } from 'date-fns/locale';
-import { storeToRefs } from 'pinia';
-import { onMounted, ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { getAccount, getAccounts } from '../api/accounts';
-import { getMovements } from '../api/movements';
 import Pagination from '../components/Pagination.vue';
 import BaseButton from '../components/ui/BaseButton.vue';
-import { useDateFilters } from '../composables/useDates';
-import { useThemeStore } from '../composables/useTheme';
 import { formatoMoneda } from '../constants';
 import { getRandomBgColor } from './configs/icons';
+import { useAccountsMovements } from '../composables/useAccountsMovements';
 
-const { themePlane } = storeToRefs(useThemeStore());
-const { selectedMonth, startDate, endDate, getTimezoneOffsetString } = useDateFilters();
-const route = useRoute();
-const router = useRouter();
+const {
+    account,
+    movements,
+    totalIngreso,
+    totalGasto,
+    balance,
+    isLoading,
+    currentPage,
+    totalPages,
+    selectedMonth,
+    themePlane,
+    fetchMovements,
+    accountId
+} = useAccountsMovements();
 
-const accountId = Number(route.params.id);
-const pageSize = 10;
-const tz = getTimezoneOffsetString();
-
-const account = ref({ name: '', type: '' });
-const movements = ref([]);
-const isLoading = ref(false);
-const currentPage = ref(1);
-const totalPages = ref(1);
-const totalGasto = ref(0);
-const totalIngreso = ref(0);
-const balance = ref(0);
-
-const formatoDia = new Intl.DateTimeFormat(navigator.language, { weekday: 'long' });
-const formatoMes = new Intl.DateTimeFormat(navigator.language, { month: 'long' });
-const camelCase = (str) => str.replace(/^\w/, (c) => c.toUpperCase());
-
-const loadAccount = async () => {
-    try {
-        const { data } = await getAccount(accountId);
-
-        if (data) {
-            account.value = {
-                name: data.name,
-                type: data.type || 'mdi:credit-card-outline',
-                currentBalance: data.currentBalance ?? 0,
-                initialBalance: data.initialBalance ?? 0
-            };
-        }
-    } catch (error) {
-        console.error('Error cargando cuenta', error);
-    }
-};
-
-const fetchMovements = async (page = 1) => {
-    currentPage.value = page;
-    isLoading.value = true;
-
-    try {
-        const { data } = await getMovements({
-            startDate: startDate.value,
-            endDate: endDate.value,
-            page,
-            pageSize,
-            AccountId: accountId,
-            tz
-        });
-
-        const dias = data?.dias ?? [];
-
-        movements.value = dias.map((dia) => {
-            const objDate = new Date(dia.fecha_server);
-
-            const totals = dia.detalles.reduce((acc, mov) => {
-                if (mov.isTransfer) {
-                    return acc;
-                }
-                if (mov.type === 'ingreso') acc.ingresos += Number(mov.amount);
-                else acc.gastos += Number(mov.amount);
-                return acc;
-            }, { ingresos: 0, gastos: 0 });
-
-            return {
-                ...dia,
-                dia: objDate.getDate(),
-                nombreDia: camelCase(formatoDia.format(objDate)),
-                mes: camelCase(formatoMes.format(objDate)),
-                ingresos: totals.ingresos,
-                gastos: totals.gastos
-            };
-        });
-
-        totalGasto.value = Number(data?.totalGasto ?? 0);
-        totalIngreso.value = Number(data?.totalIngreso ?? 0);
-        balance.value = (Number(data?.balance ?? 0)) //+ Number(account.value.initialBalance);
-        totalPages.value = Number(data?.totalPages ?? 1);
-    } catch (error) {
-        console.error('Error al cargar movimientos por cuenta', error);
-        movements.value = [];
-    } finally {
-        isLoading.value = false;
-    }
-};
-
-watch([startDate, endDate], () => fetchMovements(1));
-
-onMounted(async () => {
-    await loadAccount();
-    await fetchMovements();
-});
 </script>
