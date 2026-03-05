@@ -110,7 +110,7 @@
         </div>
 
         <!-- Listado por días -->
-        <div>
+        <div v-else>
             <div v-for="dia in movements" :key="dia.fecha" class="mb-8">
                 <!-- Encabezado del día -->
                 <div
