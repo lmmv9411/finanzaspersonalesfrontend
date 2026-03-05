@@ -185,7 +185,8 @@ const {
     selectedMonth,
     themePlane,
     fetchMovements,
-    accountId
+    accountId,
+    router
 } = useAccountsMovements();
 
 </script>
