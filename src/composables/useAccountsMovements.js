@@ -49,6 +49,7 @@ export const useAccountsMovements = () => {
     };
 
     const fetchMovements = async (page = 1) => {
+        movements.value = [];
         currentPage.value = page;
         isLoading.value = true;
 
