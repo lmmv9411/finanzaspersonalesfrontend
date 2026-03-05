@@ -153,7 +153,7 @@
 
                                 <div class="flex justify-between items-center w-full">
                                     <div>
-                                        <div class="font-medium flex items-center gap-2 dark:text-gray-200">
+                                        <div class="flex items-center gap-2">
                                             <ArrowsRightLeftIcon v-if="mov.isTransfer"
                                                                  class="w-6 text-indigo-500" />
 
@@ -161,24 +161,30 @@
                                                                  class="w-6 text-green-500" />
 
                                             <ArrowTrendingDownIcon v-else class="w-6 text-red-500" />
-                                            {{ mov.description }}
+                                            <p class="font-medium dark:text-gray-200">{{ mov.description }}</p>
                                         </div>
 
                                         <div v-if="mov.isTransfer"
                                              class="text-sm text-gray-500 mt-1 flex flex-wrap gap-2 items-center">
+
                                             <div :class=[getRandomBgColor(mov.Transfer?.fromAccount?.type)]
                                                  class="rounded-full p-1 text-white text-lg">
                                                 <Icon :icon="mov.Transfer?.fromAccount?.type" />
                                             </div>
+
                                             <span>{{ mov.Transfer?.fromAccount?.name || 'Cuenta origen' }}</span>
-                                            <span>→</span>
+
+                                            <span>
+                                                <ArrowLongRightIcon class="w-6 text-gray-400" />
+                                            </span>
+
                                             <div :class=[getRandomBgColor(mov.Transfer?.toAccount?.type)]
                                                  class="rounded-full p-1 text-white text-lg">
                                                 <Icon :icon="mov.Transfer?.toAccount?.type" />
                                             </div>
+
                                             <span>{{ mov.Transfer?.toAccount?.name || 'Cuenta destino' }}</span>
-                                            <!--<span class="text-gray-400">•</span>
-                                            <span>{{ mov.transferRole === 'origen' ? 'Salida' : 'Entrada' }}</span>-->
+
                                         </div>
 
                                         <div v-else
@@ -204,10 +210,18 @@
                                         </div>
                                     </div>
 
-                                    <span class="font-medium whitespace-nowrap"
-                                          :class="mov.type === 'ingreso' ? 'dark:text-green-400 text-green-600' : 'dark:text-red-400 text-red-600'">
-                                        {{ (mov.type === 'gasto' ? '-' : '') + formatoMoneda(mov.amount) }}
-                                    </span>
+                                    <template v-if="mov.isTransfer">
+                                        <span
+                                              class="font-medium whitespace-nowrap text-indigo-700 dark:text-indigo-300">
+                                            {{ formatoMoneda(mov.amount) }}
+                                        </span>
+                                    </template>
+                                    <template v-else>
+                                        <span class="font-medium whitespace-nowrap"
+                                              :class="mov.type === 'ingreso' ? 'dark:text-green-400 text-green-600' : 'dark:text-red-400 text-red-600'">
+                                            {{ (mov.type === 'gasto' ? '-' : '') + formatoMoneda(mov.amount) }}
+                                        </span>
+                                    </template>
                                 </div>
 
                                 <div v-if="!mov.isTransfer" class="hidden sm:flex gap-2">
@@ -257,7 +271,7 @@
 </template>
 
 <script setup>
-import { ArrowPathIcon, ArrowsRightLeftIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, FunnelIcon, PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/solid';
+import { ArrowLongRightIcon, ArrowPathIcon, ArrowsRightLeftIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, FunnelIcon, PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/solid';
 import { Icon } from '@iconify/vue';
 import { es } from 'date-fns/locale';
 import { storeToRefs } from 'pinia';
