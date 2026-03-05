@@ -90,6 +90,11 @@
 
                     </div>
                     <div class="flex gap-3 flex-col">
+                        <button @click.stop="adjustBalance(account)" title="Ajustar saldo"
+                                class="text-green-500 hover:text-green-600 cursor-pointer">
+
+                            <BanknotesIcon class="w-5 h-5" />
+                        </button>
                         <button @click.stop="startEdit(account)" title="Editar"
                                 class="text-blue-500 hover:text-blue-600 cursor-pointer">
                             <PencilSquareIcon class="w-5 h-5" />
@@ -108,7 +113,7 @@
 </template>
 
 <script setup>
-import { ArrowPathIcon, CheckCircleIcon, PencilSquareIcon, PlusIcon, TrashIcon } from '@heroicons/vue/24/solid';
+import { ArrowPathIcon, BanknotesIcon, CheckCircleIcon, PencilSquareIcon, PlusIcon, TrashIcon } from '@heroicons/vue/24/solid';
 import { Icon } from '@iconify/vue';
 import { onMounted } from 'vue';
 import IconPickerSolid from '../components/IconPickerSolid.vue';
@@ -133,7 +138,8 @@ const {
     removeAccount,
     showIconPicker,
     goToAccountMovements,
-    formattedAmount
+    formattedAmount,
+    adjustBalance
 } = useAccounts()
 
 onMounted(fetchAccounts);

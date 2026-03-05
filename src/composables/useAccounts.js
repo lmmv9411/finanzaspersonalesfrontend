@@ -3,6 +3,9 @@ import { useNotifications } from "./useNotifications";
 import { createAccount, deleteAccount, getAccounts, updateAccount } from "../api/accounts";
 import { formatoMoneda } from "../constants";
 import { useRouter } from "vue-router";
+import Swal from "sweetalert2";
+import { useCategorieStore } from '../stores/categoriesStore';
+import { useMovementStore } from '../stores/movementStore';
 
 export const useAccounts = () => {
 
@@ -24,6 +27,9 @@ export const useAccounts = () => {
         initialBalance: 0,
         type: defaultType
     });
+
+    const movementStore = useMovementStore();
+    const categoriesStore = useCategorieStore();
 
     const parseAmount = (value) => Number((value || '').replace(/\D/g, '') || 0);
 
@@ -144,6 +150,84 @@ export const useAccounts = () => {
         router.push({ name: 'AccountMovements', params: { id } });
     };
 
+    const adjustBalance = async (account) => {
+        const { value: newBalance } = await Swal.fire({
+            title: 'Ajustar saldo',
+            input: 'text',
+            inputLabel: `Saldo actual en ${account.name}: ${formatoMoneda(account.balance)}`,
+            inputValue: formatoMoneda(account.balance),
+            showCancelButton: true,
+            confirmButtonText: 'Ajustar',
+            cancelButtonText: 'Cancelar',
+
+            didOpen: () => {
+                const input = Swal.getInput();
+
+                input.addEventListener('input', (e) => {
+                    let valor = e.target.value;
+
+                    // quitar todo lo que no sea número
+                    valor = valor.replace(/[^\d]/g, '');
+
+                    if (valor === '') {
+                        e.target.value = '';
+                        return;
+                    }
+
+                    // convertir a número
+                    const numero = Number(valor);
+
+                    // formatear
+                    e.target.value = formatoMoneda(numero);
+                });
+            }
+        });
+
+        if (newBalance !== undefined && newBalance !== null) {
+            const cleanNewBalance = Number(newBalance.toString().replace(/\D/g, ''));
+            const diff = cleanNewBalance - account.balance;
+
+            if (diff === 0) {
+                showError("Saldo iguales.")
+                return
+            } // No hay cambio
+
+            const type = diff > 0 ? 'ingreso' : 'gasto';
+            const amount = Math.abs(diff);
+
+            try {
+                // Buscamos una categoría para el ajuste (ej: "Otros" o la primera disponible)
+                if (categoriesStore.categories.length === 0) await categoriesStore.getCategories();
+
+                const category = categoriesStore.categories.find(c => c.name === 'ajuste')
+
+                if (!category) {
+                    showError(`No existe categoria "ajuste", creala antes de seguir.`)
+                    return
+                }
+
+                showLoading('Realizando ajuste...');
+
+                movementStore.movement = {
+                    type,
+                    amount: amount.toString(),
+                    description: 'Ajuste de saldo manual',
+                    CategoryId: category.id,
+                    date: new Date(),
+                    AccountId: account.id
+                };
+
+                await movementStore.saveMovement(false);
+                await fetchAccounts();
+
+                showSuccess('Saldo ajustado correctamente');
+
+            } catch (error) {
+                showError('Error al procesar el ajuste');
+            }
+        }
+    };
+
     return {
         accounts,
         showForm,
@@ -159,7 +243,8 @@ export const useAccounts = () => {
         handleSubmit,
         startEdit,
         removeAccount,
-        goToAccountMovements
+        goToAccountMovements,
+        adjustBalance
     };
 
 }
