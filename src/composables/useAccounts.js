@@ -1,11 +1,9 @@
 import { reactive, ref } from "vue";
 import { useNotifications } from "./useNotifications";
-import { createAccount, deleteAccount, getAccounts, updateAccount } from "../api/accounts";
+import { createAccount, deleteAccount, getAccounts, updateAccount, reconcileAccountBalance } from "../api/accounts";
 import { formatoMoneda } from "../constants";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
-import { useCategorieStore } from '../stores/categoriesStore';
-import { useMovementStore } from '../stores/movementStore';
 
 export const useAccounts = () => {
 
@@ -27,9 +25,6 @@ export const useAccounts = () => {
         initialBalance: 0,
         type: defaultType
     });
-
-    const movementStore = useMovementStore();
-    const categoriesStore = useCategorieStore();
 
     const parseAmount = (value) => Number((value || '').replace(/\D/g, '') || 0);
 
@@ -151,80 +146,49 @@ export const useAccounts = () => {
     };
 
     const adjustBalance = async (account) => {
-        const { value: newBalance } = await Swal.fire({
-            title: 'Ajustar saldo',
+        const { value: realBalance } = await Swal.fire({
+            title: 'Reconciliar Saldo',
             input: 'text',
             inputLabel: `Saldo actual en ${account.name}: ${formatoMoneda(account.balance)}`,
             inputValue: formatoMoneda(account.balance),
+            inputPlaceholder: 'Ingresa El Saldo Real De La Cuenta',
             showCancelButton: true,
-            confirmButtonText: 'Ajustar',
+            confirmButtonText: 'Reconciliar',
             cancelButtonText: 'Cancelar',
-
             didOpen: () => {
                 const input = Swal.getInput();
-
-                input.addEventListener('input', (e) => {
-                    let valor = e.target.value;
-
-                    // quitar todo lo que no sea número
-                    valor = valor.replace(/[^\d]/g, '');
-
-                    if (valor === '') {
-                        e.target.value = '';
-                        return;
-                    }
-
-                    // convertir a número
-                    const numero = Number(valor);
-
-                    // formatear
-                    e.target.value = formatoMoneda(numero);
+                input.addEventListener('input', (event) => {
+                    const cleanValue = event.target.value.replace(/\D/g, '');
+                    event.target.value = cleanValue ? formatoMoneda(Number(cleanValue)) : '';
                 });
+            },
+            preConfirm: (value) => {
+                const parsedValue = Number((value || '').toString().replace(/\D/g, ''));
+                if (Number.isNaN(parsedValue)) {
+                    Swal.showValidationMessage('Ingresa un valor válido');
+                    return null;
+                }
+                return parsedValue;
             }
         });
 
-        if (newBalance !== undefined && newBalance !== null) {
-            const cleanNewBalance = Number(newBalance.toString().replace(/\D/g, ''));
-            const diff = cleanNewBalance - account.balance;
-
-            if (diff === 0) {
-                showError("Saldo iguales.")
-                return
-            } // No hay cambio
-
-            const type = diff > 0 ? 'ingreso' : 'gasto';
-            const amount = Math.abs(diff);
-
-            try {
-                // Buscamos una categoría para el ajuste (ej: "Otros" o la primera disponible)
-                if (categoriesStore.categories.length === 0) await categoriesStore.getCategories();
-
-                const category = categoriesStore.categories.find(c => c.name === 'ajuste')
-
-                if (!category) {
-                    showError(`No existe categoria "ajuste", creala antes de seguir.`)
-                    return
-                }
-
-                showLoading('Realizando ajuste...');
-
-                movementStore.movement = {
-                    type,
-                    amount: amount.toString(),
-                    description: 'Ajuste de saldo manual',
-                    CategoryId: category.id,
-                    date: new Date(),
-                    AccountId: account.id
-                };
-
-                await movementStore.saveMovement(false);
-                await fetchAccounts();
-
-                showSuccess('Saldo ajustado correctamente');
-
-            } catch (error) {
-                showError('Error al procesar el ajuste');
-            }
+        if (realBalance === undefined || realBalance === null) {
+            return;
+        }
+        if (realBalance === Number(account.balance)) {
+            showInfo('El saldo es igual al actual, no hay cambios por reconciliar');
+            return;
+        }
+        showLoading('Reconciliando saldo...');
+        try {
+            await reconcileAccountBalance(account.id, { realBalance });
+            close();
+            await fetchAccounts();
+            showSuccess('Saldo reconciliado correctamente');
+        } catch (error) {
+            close();
+            console.error('Error al reconciliar saldo', error);
+            showError('No se pudo reconciliar el saldo');
         }
     };
 

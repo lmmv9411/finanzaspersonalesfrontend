@@ -90,7 +90,7 @@
 
                     </div>
                     <div class="flex gap-3 flex-col">
-                        <button @click.stop="adjustBalance(account)" title="Ajustar saldo"
+                        <button @click.stop="adjustBalance(account)" title="Reconciliar saldo"
                                 class="text-green-500 hover:text-green-600 cursor-pointer">
 
                             <BanknotesIcon class="w-5 h-5" />
