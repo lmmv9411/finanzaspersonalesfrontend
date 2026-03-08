@@ -51,7 +51,7 @@ export const useMovementsStore = defineStore('movements', () => {
                 dia.mes = camelCase(formatoMes.format(objDate));
 
                 const { ingresos, gastos } = dia.detalles.reduce((totales, movimiento) => {
-                    if (movimiento.isTransfer) {
+                    if (movimiento.isTransfer || movimiento.description.startsWith('[AJUSTE]')) {
                         return totales;
                     }
                     if (movimiento.type === 'ingreso') {
