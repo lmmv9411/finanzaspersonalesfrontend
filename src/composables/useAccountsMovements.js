@@ -69,7 +69,7 @@ export const useAccountsMovements = () => {
                 const objDate = new Date(dia.fecha_server);
 
                 const totals = dia.detalles.reduce((acc, mov) => {
-                    if (mov.isTransfer) {
+                    if (mov.isTransfer || mov.description.startsWith('[AJUSTE]')) {
                         return acc;
                     }
                     if (mov.type === 'ingreso') acc.ingresos += Number(mov.amount);
